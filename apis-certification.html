@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APIS Certified Advisor | Get Early Access</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dark: #1a1008;
+    --brown: #3d2010;
+    --terracotta: #8b3a1e;
+    --copper: #b85c2a;
+    --gold: #c8842a;
+    --olive: #4a5c2a;
+    --olive-light: #6b7c3e;
+    --cream: #f5efe2;
+    --cream-2: #ede4d0;
+    --cream-3: #faf6ee;
+    --text-dark: #1e1208;
+    --text-body: #3a2a18;
+    --text-muted: #7a6848;
+    --border: rgba(139, 58, 30, 0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream-3);
+    color: var(--text-body);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(245, 239, 226, 0.94);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dark);
+    text-decoration: none;
+  }
+
+  .nav-wordmark span { color: var(--terracotta); }
+
+  .nav-back {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-back:hover { color: var(--terracotta); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--dark);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 50% 70% at 80% 40%, rgba(139, 58, 30, 0.35) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 50% at 15% 70%, rgba(74, 92, 42, 0.2) 0%, transparent 60%);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 10rem 3rem 8rem;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.75rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+    font-weight: 300;
+    line-height: 1.08;
+    color: var(--cream);
+    margin-bottom: 1.25rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.35s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--copper);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(245, 239, 226, 0.7);
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  .hero-cta {
+    opacity: 0;
+    animation: fadeUp 0.8s 0.65s forwards;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--terracotta);
+    color: var(--cream);
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover { background: var(--copper); transform: translateY(-1px); }
+
+  .hero-quote {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(245, 239, 226, 0.1);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .hero-quote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.6;
+    color: rgba(245, 239, 226, 0.8);
+    max-width: 680px;
+    margin: 0 auto 0.75rem;
+  }
+
+  .hero-quote cite {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  /* VIDEO SECTION */
+  .video-section {
+    background: var(--cream-2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .video-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+    text-align: center;
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--text-dark);
+    margin-bottom: 2.5rem;
+  }
+
+  .section-title em { font-style: italic; color: var(--copper); }
+
+  .video-placeholder {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--dark);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .video-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(139, 58, 30, 0.2) 0%, transparent 70%);
+  }
+
+  .video-play {
+    width: 64px;
+    height: 64px;
+    border: 1.5px solid rgba(245, 239, 226, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .video-play svg {
+    width: 22px;
+    height: 22px;
+    fill: rgba(245, 239, 226, 0.7);
+    margin-left: 3px;
+  }
+
+  .video-caption {
+    margin-top: 1rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* WHY / PROBLEM */
+  .why-section {
+    background: var(--cream-3);
+  }
+
+  .why-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+
+  .why-body {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--text-body);
+  }
+
+  .why-body p + p { margin-top: 1.25rem; }
+
+  .stats-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .stat-row {
+    background: var(--cream-2);
+    padding: 1.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: background 0.2s;
+  }
+
+  .stat-row:hover { background: var(--cream); }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: var(--terracotta);
+    line-height: 1;
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+
+  .stat-text {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--text-body);
+  }
+
+  /* WHAT YOU GET */
+  .get-section {
+    background: var(--cream-2);
+  }
+
+  .get-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+  }
+
+  .get-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  .get-card {
+    background: var(--cream-2);
+    padding: 2rem 1.75rem;
+    transition: background 0.25s;
+  }
+
+  .get-card:hover { background: var(--cream-3); }
+
+  .get-icon {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .get-icon svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: var(--terracotta);
+    stroke-width: 1.5;
+  }
+
+  .get-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .get-desc {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
+  /* WHO IT'S FOR */
+  .who-section {
+    background: var(--dark);
+  }
+
+  .who-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+    text-align: center;
+  }
+
+  .who-section .section-label { color: var(--gold); }
+
+  .who-section .section-title { color: var(--cream); }
+
+  .who-section .section-title em { color: var(--copper); }
+
+  .who-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 2.5rem;
+  }
+
+  .who-tag {
+    border: 1px solid rgba(245, 239, 226, 0.2);
+    color: rgba(245, 239, 226, 0.75);
+    padding: 0.6rem 1.25rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    border-radius: 2px;
+  }
+
+  .who-note {
+    margin-top: 2.5rem;
+    font-size: 0.9rem;
+    color: rgba(245, 239, 226, 0.5);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+  }
+
+  /* WAITLIST FORM */
+  .form-section {
+    background: var(--cream-3);
+  }
+
+  .form-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+  }
+
+  .form-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .form-intro-body {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--text-body);
+    margin-top: 1.5rem;
+  }
+
+  .form-intro-body p + p { margin-top: 1rem; }
+
+  .founding-cohort {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--cream-2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--terracotta);
+  }
+
+  .founding-cohort-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.5rem;
+  }
+
+  .founding-cohort p {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--text-body);
+  }
+
+  /* FORM FIELDS */
+  .waitlist-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-group label {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    color: var(--text-dark);
+    padding: 0.75rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 300;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--terracotta);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: var(--text-muted); opacity: 0.6; }
+
+  .form-group select option { background: var(--cream-3); }
+
+  .form-note {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .form-submit {
+    background: var(--terracotta);
+    color: var(--cream);
+    border: none;
+    padding: 1rem 2.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s;
+    align-self: flex-start;
+    margin-top: 0.25rem;
+  }
+
+  .form-submit:hover { background: var(--copper); }
+
+  /* CONSULTING BAND */
+  .consult-band {
+    background: var(--cream-2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .consult-band-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+
+  .consult-band-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--olive-light);
+    margin-bottom: 0.4rem;
+  }
+
+  .consult-band-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text-dark);
+  }
+
+  .consult-band-sub {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    max-width: 480px;
+  }
+
+  .btn-outline {
+    display: inline-block;
+    border: 1px solid var(--border);
+    color: var(--text-dark);
+    padding: 0.75rem 1.75rem;
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--terracotta); color: var(--terracotta); }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    padding: 2.5rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-top: 1px solid rgba(200, 132, 42, 0.1);
+  }
+
+  .footer-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245, 239, 226, 0.4);
+  }
+
+  .footer-wordmark span { color: var(--gold); }
+
+  .footer-note {
+    font-size: 0.72rem;
+    color: rgba(245, 239, 226, 0.3);
+  }
+
+  .footer-link {
+    font-size: 0.72rem;
+    color: rgba(245, 239, 226, 0.35);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+
+  .footer-link:hover { color: var(--gold); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 3rem;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* SUCCESS STATE */
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 3rem 2rem;
+    border: 1px solid var(--border);
+    background: var(--cream-2);
+    border-left: 3px solid var(--olive);
+  }
+
+  .form-success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+  }
+
+  .form-success p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .hero-inner { padding: 8rem 1.5rem 5rem; }
+    .why-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .get-grid { grid-template-columns: 1fr; }
+    .form-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .consult-band-inner { flex-direction: column; align-items: flex-start; }
+    .why-inner, .get-inner, .form-inner, .video-inner, .who-inner { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-wordmark"><span>APIS</span></a>
+  <a href="index.html" class="nav-back">← APIS Consulting</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Applied Pollination Institute of Science</p>
+    <h1 class="hero-title">
+      The first professional credential<br>
+      in <em>agricultural pollination<br>management.</em>
+    </h1>
+    <p class="hero-sub">
+      Pollination is a critical input for 90% of global food production — and growers manage it blind. APIS is building the credential, and the advisor network, to change that.
+    </p>
+    <div class="hero-cta">
+      <a href="#waitlist" class="btn-primary">Get Early Access</a>
+    </div>
+
+    <div class="hero-quote">
+      <p>"I've watched growers spray for pests that weren't there, and invest in pollination products and services that went nowhere, when the real problem — poor pollination — went unmanaged. The true gap isn't bees, or technology. It's knowledge and I aim to change that."</p>
+      <cite>— Angelita De la Luz PhD, Founder & CEO</cite>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="video-section">
+  <div class="video-inner">
+    <p class="section-label reveal">Why APIS</p>
+    <h2 class="section-title reveal">Watch the <em>overview.</em></h2>
+    <!-- Replace this placeholder with your actual video embed -->
+    <div class="video-placeholder reveal">
+      <div class="video-play">
+        <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+      </div>
+    </div>
+    <p class="video-caption reveal">Video coming soon — join the waitlist below to be notified at launch.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHY IT MATTERS -->
+<section class="why-section">
+  <div class="why-inner">
+    <div class="why-grid">
+      <div>
+        <p class="section-label reveal">The Problem</p>
+        <h2 class="section-title reveal" style="margin-bottom:1.5rem;">Growers manage a critical input <em>completely blind.</em></h2>
+        <div class="why-body reveal">
+          <p>Pollination drives yield for 90% of global food production. One wrong decision on hive density, timing, placement, or pesticide use during a short bloom window can directly cost a grower their crop.</p>
+          <p>The CCA exam — the gold standard for crop advisors — mentions "pollination" exactly once. No advisor-level credential exists. The professionals growers already trust have no structured framework to advise on the input that matters most.</p>
+          <p>APIS fills that gap — with a rigorous, field-validated curriculum built by someone who has worked on pollination across 12 crops, 6 countries, and 150+ grower fields.</p>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="stats-stack">
+          <div class="stat-row">
+            <div class="stat-num">90%</div>
+            <div class="stat-text">of global foods produced depend on pollination as a critical input</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-num">1×</div>
+            <div class="stat-text">The word "pollination" appears in the International CCA Exam Performance Objectives</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-num">0</div>
+            <div class="stat-text">Advisor-level credentials in agricultural pollination management currently exist</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-num">13K+</div>
+            <div class="stat-text">Certified Crop Advisers in North America — the primary audience for this credential</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHAT YOU GET -->
+<section class="get-section">
+  <div class="get-inner">
+    <p class="section-label reveal">What's Included</p>
+    <h2 class="section-title reveal">What APIS <em>certified advisors</em> receive.</h2>
+    <div class="get-grid reveal">
+      <div class="get-card">
+        <div class="get-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="get-title">Expert-Led Curriculum</div>
+        <div class="get-desc">8 self-directed online modules built and taught by a PhD-level pollination scientist with applied experience across 12 crops in 6 countries.</div>
+      </div>
+      <div class="get-card">
+        <div class="get-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+        </div>
+        <div class="get-title">Field Certification</div>
+        <div class="get-desc">Submit a real pollination plan for a partner farm and complete 8 hours of verified field experience. The credential is grounded in practice, not just testing.</div>
+      </div>
+      <div class="get-card">
+        <div class="get-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
+        <div class="get-title">Quarterly Live Q&A</div>
+        <div class="get-desc">Access to quarterly live sessions with the founder and subject matter experts. Stay current as the science evolves.</div>
+      </div>
+      <div class="get-card">
+        <div class="get-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+        </div>
+        <div class="get-title">1:1 Consultation</div>
+        <div class="get-desc">One 30-minute 1:1 consultation with the founder included with tuition. Additional hours available at $200/hr.</div>
+      </div>
+      <div class="get-card">
+        <div class="get-icon">
+          <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <div class="get-title">Regional Pollination Data</div>
+        <div class="get-desc">Access to real-time regional in-season pollination insights aggregated from certified advisors in the field — data you can't get anywhere else.</div>
+      </div>
+      <div class="get-card">
+        <div class="get-icon">
+          <svg viewBox="0 0 24 24"><polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/><polyline points="17,6 23,6 23,12"/></svg>
+        </div>
+        <div class="get-title">Introductory Pricing</div>
+        <div class="get-desc">Founding cohort members receive the introductory tuition rate of $695 — before the credential scales and pricing increases with it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHO IT'S FOR -->
+<section class="who-section">
+  <div class="who-inner">
+    <p class="section-label reveal">Who It's For</p>
+    <h2 class="section-title reveal">Built for the professionals <em>growers already trust.</em></h2>
+    <div class="who-tags reveal">
+      <span class="who-tag">Certified Crop Advisers (CCAs)</span>
+      <span class="who-tag">Pest Control Advisers (PCAs)</span>
+      <span class="who-tag">Farm Managers</span>
+      <span class="who-tag">Agronomists</span>
+      <span class="who-tag">Growers</span>
+      <span class="who-tag">Crop Consulting Firms</span>
+      <span class="who-tag">Agribusiness Professionals</span>
+    </div>
+    <p class="who-note reveal">If you advise growers — or want to — APIS gives you something no other credential does.</p>
+  </div>
+</section>
+
+<!-- WAITLIST FORM -->
+<section class="form-section" id="waitlist">
+  <div class="form-inner">
+    <div class="form-layout">
+      <div>
+        <p class="section-label reveal">Early Access</p>
+        <h2 class="section-title reveal" style="text-align:left;">Be among the <em>first to certify.</em></h2>
+        <div class="form-intro-body reveal">
+          <p>APIS is accepting early interest from crop advisors, agronomists, and growers who want to be part of the founding cohort.</p>
+          <p>Joining the waitlist means you'll be first to know when enrollment opens, and first in line for introductory pricing.</p>
+        </div>
+        <div class="founding-cohort reveal">
+          <p class="founding-cohort-label">Founding Cohort</p>
+          <p>The first 50 students to enroll will receive the introductory tuition rate of $695 — before pricing scales with the credential's growth. Waitlist members are first notified when enrollment opens.</p>
+        </div>
+      </div>
+
+      <div>
+        <form class="waitlist-form reveal" id="waitlistForm" action="https://formsubmit.co/girasolconsulting@gmail.com" method="POST">
+          <!-- FormSubmit config -->
+          <input type="hidden" name="_subject" value="New APIS Waitlist Signup">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" style="display:none">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="first_name">First Name</label>
+              <input type="text" id="first_name" name="first_name" placeholder="First name" required>
+            </div>
+            <div class="form-group">
+              <label for="last_name">Last Name</label>
+              <input type="text" id="last_name" name="last_name" placeholder="Last name" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="role">Role / Title</label>
+              <select id="role" name="role">
+                <option value="" disabled selected>Select your role</option>
+                <option>Certified Crop Adviser (CCA)</option>
+                <option>Pest Control Adviser (PCA)</option>
+                <option>Farm Manager</option>
+                <option>Agronomist</option>
+                <option>Grower</option>
+                <option>Crop Consulting Firm</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="organization">Organization</label>
+              <input type="text" id="organization" name="organization" placeholder="Company or farm name">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="crop">Primary Crop(s)</label>
+            <input type="text" id="crop" name="crop" placeholder="e.g. Almonds, Blueberries, Strawberries">
+          </div>
+
+          <p class="form-note">Your information is used only to contact you about APIS enrollment. No spam, ever.</p>
+
+          <button type="submit" class="form-submit">Get Early Access</button>
+        </form>
+
+        <div class="form-success" id="formSuccess">
+          <div class="form-success-title">You're on the list.</div>
+          <p>We'll be in touch when enrollment opens. In the meantime, follow along at <a href="index.html" style="color:var(--terracotta);">apisinstitute.com</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSULTING BAND -->
+<div class="consult-band">
+  <div class="consult-band-inner">
+    <div>
+      <p class="consult-band-eyebrow">Also from APIS</p>
+      <p class="consult-band-title">Need pollination expertise now?</p>
+      <p class="consult-band-sub">APIS Consulting offers direct advisory services for growers and agricultural operations while the credential program is in development.</p>
+    </div>
+    <a href="index.html" class="btn-outline">Visit APIS Consulting →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-wordmark"><span>APIS</span> — Applied Pollination Institute of Science</div>
+  <div class="footer-note">© 2026 Angelita De la Luz PhD. All rights reserved.</div>
+  <a href="index.html" class="footer-link">APIS Consulting →</a>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 70);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Form success state
+  const form = document.getElementById('waitlistForm');
+  const success = document.getElementById('formSuccess');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      // Allow native POST to FormSubmit, show success after short delay
+      setTimeout(() => {
+        form.style.display = 'none';
+        success.style.display = 'block';
+      }, 800);
+    });
+  }
+</script>
+</body>
+</html>
