@@ -226,7 +226,7 @@
   .founder-img-wrap::before {
     content: '';
     position: absolute;
-    inset: -12px -12px 12px 12px;
+    inset: 12px -12px -12px 12px;
     border: 1px solid rgba(139, 58, 30, 0.2);
     border-radius: 2px;
     z-index: 0;
@@ -258,13 +258,14 @@
 
   .founder-stats {
     position: absolute;
-    bottom: -2rem;
-    right: -3rem;
+    bottom: 1.5rem;
+    right: -4rem;
     background: var(--cream-2);
     border: 1px solid var(--border);
     padding: 1.25rem 1.5rem;
     border-radius: 2px;
     z-index: 2;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   }
 
   .founder-stats-grid {
@@ -333,7 +334,7 @@
 
   .results-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: var(--border);
     margin-top: 3rem;
@@ -729,7 +730,7 @@
 
     .hero-right { display: none; }
 
-    .results-grid { grid-template-columns: 1fr 1fr; }
+    .results-grid { grid-template-columns: 1fr; }
 
     .about-grid,
     .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
@@ -836,12 +837,6 @@
         <div class="result-stat">20%</div>
         <div class="result-desc">More kernels with active pollination management versus unmanaged controls.</div>
         <div class="result-source">Peer-reviewed. Co-authored with Elina Niño, Arathi Seshadri & Zac Ellis</div>
-      </div>
-      <div class="result-card">
-        <div class="result-crop">Cane Berries</div>
-        <div class="result-stat" style="font-size:2rem; padding-top:0.3rem;">Fungicide<br>Avoided</div>
-        <div class="result-desc">Botrytis pressure reduced by adjusting bee visitation timing. Fungicide application eliminated entirely.</div>
-        <div class="result-source">Field study, A. De la Luz</div>
       </div>
     </div>
   </div>
