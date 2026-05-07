@@ -888,6 +888,7 @@
           <input type="hidden" name="_subject" value="New APIS Waitlist Signup">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://apisinstitute.org/apis-certification.html?submitted=true">
           <input type="text" name="_honey" style="display:none">
 
           <div class="form-row">
@@ -932,6 +933,7 @@
           </div>
 
           <p class="form-note">Your information is used only to contact you about APIS enrollment. No spam, ever.</p>
+          <p class="form-note">Questions? Email us at <a href="mailto:hello@apisinstitute.org" style="color:var(--terracotta);">hello@apisinstitute.org</a></p>
 
           <button type="submit" class="form-submit">Get Early Access</button>
         </form>
@@ -977,17 +979,12 @@
   }, { threshold: 0.08 });
   reveals.forEach(el => observer.observe(el));
 
-  // Form success state
+  // Show success state if redirected back after FormSubmit
   const form = document.getElementById('waitlistForm');
   const success = document.getElementById('formSuccess');
-  if (form) {
-    form.addEventListener('submit', function(e) {
-      // Allow native POST to FormSubmit, show success after short delay
-      setTimeout(() => {
-        form.style.display = 'none';
-        success.style.display = 'block';
-      }, 800);
-    });
+  if (new URLSearchParams(window.location.search).get('submitted') === 'true') {
+    if (form) form.style.display = 'none';
+    if (success) success.style.display = 'block';
   }
 </script>
 </body>
