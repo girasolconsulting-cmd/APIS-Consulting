@@ -383,8 +383,8 @@
 
   .about-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
+    grid-template-columns: 320px 1fr;
+    gap: 5rem;
     align-items: start;
     margin-top: 1rem;
   }
@@ -773,15 +773,15 @@
   /* ABOUT PHOTO */
   .about-photo {
     width: 100%;
-    max-width: 340px;
-    margin-bottom: 2rem;
     border-radius: 2px;
     overflow: hidden;
+    position: sticky;
+    top: 6rem;
   }
 
   .about-photo img {
     width: 100%;
-    height: 380px;
+    height: 460px;
     object-fit: cover;
     object-position: top;
     display: block;
@@ -827,7 +827,9 @@
 
     .results-grid { grid-template-columns: 1fr; }
 
-    .about-grid,
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .about-photo { position: static; }
+    .about-photo img { height: 300px; }
     .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
 
     .form-row { grid-template-columns: 1fr; }
@@ -935,24 +937,23 @@
 <section class="about-section" id="about">
   <div class="section-inner">
     <div class="about-grid">
+      <!-- Left: Photo -->
+      <div class="about-photo reveal">
+        <img src="founder-photo.jpg" alt="Angelita De la Luz PhD">
+      </div>
+
+      <!-- Right: All text -->
       <div>
-        <div class="about-photo reveal">
-          <img src="founder-photo.jpg" alt="Angelita De la Luz PhD">
-        </div>
         <p class="section-label reveal">The Expert</p>
         <h2 class="section-title reveal">Angelita De la Luz<br><em>PhD</em></h2>
         <div class="about-body reveal">
           <p>I've studied pollination from every angle over the past decade — first as an ecologist tracking how plant-pollinator networks respond to stress, then leading applied research across 12 crops in 6 countries as the Global Pollination Expert for one of the most innovative ag biotech companies in the world.</p>
           <p>I have advised on pollination management from family farms to global producers and built pollination management courses for two of the largest crop advising companies in the world. I now provide pollination consulting services for leading berry and tree nut producers.</p>
         </div>
-
         <div class="about-quote reveal">
           <p>"I've watched growers spray for pests that weren't there, and invest in pollination products and services that went nowhere, when the real problem — poor pollination — went unmanaged. The true gap isn't bees, or technology. It's knowledge."</p>
         </div>
-      </div>
-
-      <div>
-        <p class="section-label reveal" style="margin-top:3.5rem;">Background</p>
+        <p class="section-label reveal" style="margin-top:2.5rem;">Background</p>
         <ul class="credentials-list reveal">
           <li>10+ years in pollination science across research and applied practice</li>
           <li>Applied research across 12 crops in 6 countries spanning 77 production cycles</li>
