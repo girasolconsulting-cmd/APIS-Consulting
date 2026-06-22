@@ -96,10 +96,10 @@
 
   /* HERO */
   .hero {
-    min-height: 80vh;
+    min-height: 560px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    align-items: center;
+    align-items: stretch;
     position: relative;
     overflow: hidden;
   }
@@ -376,6 +376,14 @@
     color: var(--text-muted);
     font-style: italic;
   }
+
+  .result-source a {
+    color: var(--text-muted);
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+
+  .result-source a:hover { color: var(--terracotta); }
 
   /* ABOUT */
   .about-section {
@@ -695,7 +703,7 @@
   .carousel {
     position: relative;
     width: 100%;
-    height: 480px;
+    height: 100%;
     overflow: hidden;
     border-radius: 2px;
   }
@@ -924,13 +932,13 @@
         <div class="result-crop">Blueberries</div>
         <div class="result-stat">36%</div>
         <div class="result-desc">Increase in berry size over two seasons under managed pollination protocols.</div>
-        <div class="result-source">Co-investigated with Lisa DeVetter, Washington State University</div>
+        <div class="result-source">Co-investigated with Lisa DeVetter, Washington State University. <a href="https://extension.wsu.edu/wam/2023/02/20/effect-of-beeflow-on-highbush-blueberry-pollination-in-northwest-washington/" target="_blank" rel="noopener">Read the study</a></div>
       </div>
       <div class="result-card">
         <div class="result-crop">Self-Compatible Almonds</div>
         <div class="result-stat">20%</div>
         <div class="result-desc">More kernels with active pollination management versus unmanaged controls.</div>
-        <div class="result-source">Peer-reviewed. Co-authored with Elina Niño, Arathi Seshadri & Zac Ellis</div>
+        <div class="result-source">Peer-reviewed. Co-authored with Elina Niño, Arathi Seshadri & Zac Ellis. <a href="https://besjournals.onlinelibrary.wiley.com/doi/10.1002/2688-8319.70107" target="_blank" rel="noopener">Read the study</a></div>
       </div>
     </div>
   </div>
@@ -952,11 +960,11 @@
         <p class="section-label reveal">The Expert</p>
         <h2 class="section-title reveal">Angelita De la Luz<br><em>PhD</em></h2>
         <div class="about-body reveal">
-          <p>I've studied pollination from every angle over the past decade — first as an ecologist tracking how plant-pollinator networks respond to stress, then leading applied research across 12 crops in 6 countries as the Global Pollination Expert for one of the most innovative ag biotech companies in the world.</p>
+          <p>I've studied pollination from every angle over the past decade, first as an ecologist tracking how plant-pollinator networks respond to stress, then leading applied research across 12 crops in 6 countries as the Global Pollination Expert for one of the most innovative ag biotech companies in the world.</p>
           <p>I have advised on pollination management from family farms to global producers and built pollination management courses for two of the largest crop advising companies in the world. I now provide pollination consulting services for leading berry and tree nut producers.</p>
         </div>
         <div class="about-quote reveal">
-          <p>"I've watched growers spray for pests that weren't there, and invest in pollination products and services that went nowhere, when the real problem — poor pollination — went unmanaged. The true gap isn't bees, or technology. It's knowledge."</p>
+          <p>"I've watched growers spray for pests that weren't there, and invest in pollination products and services that went nowhere, when the real problem, poor pollination, went unmanaged. The true gap isn't bees, or technology. It's knowledge."</p>
         </div>
         <p class="section-label reveal" style="margin-top:2.5rem;">Background</p>
         <ul class="credentials-list reveal">
@@ -990,7 +998,7 @@
 <!-- BOOK A CALL -->
 <div class="book-band" id="book">
   <h3 class="book-band-title">Ready to talk about your operation?</h3>
-  <p class="book-band-sub">30-minute introductory calls available. No pitch — just pollination.</p>
+  <p class="book-band-sub">30-minute introductory calls available. No pitch, just pollination.</p>
   <a href="https://calendar.app.google/Ff6cS6J2KUM6V1SG6" target="_blank" class="btn-book">Book a Call</a>
 </div>
 
@@ -1016,7 +1024,7 @@
       </div>
 
       <form class="contact-form reveal" action="https://formsubmit.co/a.delaluz@apisinstitute.org" method="POST">
-        <input type="hidden" name="_subject" value="New Consulting Inquiry — APIS">
+        <input type="hidden" name="_subject" value="New Consulting Inquiry: APIS">
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_next" value="https://apisinstitute.org/index.html?submitted=true">
         <div class="form-row">
@@ -1051,7 +1059,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-wordmark"><span>APIS</span> — Applied Pollination Institute of Science</div>
+  <div class="footer-wordmark"><span>APIS</span>: Applied Pollination Institute of Science</div>
   <div class="footer-note">© 2026 Angelita De la Luz PhD. All rights reserved.</div>
   <a href="apis-certification.html" class="footer-cert-link">APIS Certified Advisor →</a>
 </footer>
@@ -1106,7 +1114,7 @@
   if (new URLSearchParams(window.location.search).get('submitted') === 'true') {
     const form = document.querySelector('.contact-form');
     if (form) {
-      form.innerHTML = '<p style="color:#4a5c2a; font-weight:600; padding: 1rem 0;">Sent — thank you. We\'ll be in touch soon.</p>';
+      form.innerHTML = '<p style="color:#4a5c2a; font-weight:600; padding: 1rem 0;">Sent. Thank you. We\'ll be in touch soon.</p>';
     }
   }
 </script>
