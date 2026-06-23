@@ -779,6 +779,18 @@
 
   .carousel-dot.active { background: var(--cream); }
 
+  .carousel-caption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 10;
+    color: var(--cream);
+    font-size: 0.68rem;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8), 0 1px 10px rgba(0,0,0,0.5);
+  }
+
   /* ABOUT PHOTO */
   .about-photo {
     width: 100%;
@@ -891,14 +903,14 @@
   <div class="hero-right" style="padding:0; overflow:hidden;">
     <div class="carousel" id="heroCarousel">
       <div class="carousel-track" id="carouselTrack">
-        <div class="carousel-slide"><img src="field-1.jpg" alt="Field photo 1"></div>
-        <div class="carousel-slide"><img src="field-2.jpg" alt="Field photo 2"></div>
-        <div class="carousel-slide"><img src="field-3.jpg" alt="Field photo 3"></div>
-        <div class="carousel-slide"><img src="field-4.jpg" alt="Field photo 4"></div>
-        <div class="carousel-slide"><img src="field-5.jpg" alt="Field photo 5"></div>
-        <div class="carousel-slide"><img src="field-6.jpg" alt="Field photo 6"></div>
-        <div class="carousel-slide"><img src="field-7.jpg" alt="Field photo 7"></div>
-        <div class="carousel-slide"><img src="field-8.jpg" alt="Field photo 8"></div>
+        <div class="carousel-slide"><img src="field-1.jpg" alt="Field photo 1"><div class="carousel-caption">Photo: A. De la Luz. Oxnard, CA</div></div>
+        <div class="carousel-slide"><img src="field-2.jpg" alt="Field photo 2"><div class="carousel-caption">Photo: A. De la Luz. Lynden, WA</div></div>
+        <div class="carousel-slide"><img src="field-3.jpg" alt="Field photo 3"><div class="carousel-caption">Photo: A. De la Luz. Fresno, CA</div></div>
+        <div class="carousel-slide"><img src="field-4.jpg" alt="Field photo 4"><div class="carousel-caption">Photo: A. De la Luz. Aurora, OR</div></div>
+        <div class="carousel-slide"><img src="field-5.jpg" alt="Field photo 5"><div class="carousel-caption">Photo: A. De la Luz. Jaguaré, Espírito Santo, Brazil</div></div>
+        <div class="carousel-slide"><img src="field-6.jpg" alt="Field photo 6"><div class="carousel-caption">Photo: A. De la Luz. Osorno, Chile</div></div>
+        <div class="carousel-slide"><img src="field-7.jpg" alt="Field photo 7"><div class="carousel-caption">Photo: A. De la Luz. Independence, OR</div></div>
+        <div class="carousel-slide"><img src="field-8.jpg" alt="Field photo 8"><div class="carousel-caption">Photo: A. De la Luz. Aurora, OR</div></div>
       </div>
       <button class="carousel-btn prev" onclick="carouselMove(-1)">
         <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
