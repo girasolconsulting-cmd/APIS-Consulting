@@ -124,58 +124,6 @@
     margin: 0 auto;
   }
 
-  /* WHAT TO EXPECT */
-  .expect-section {
-    background: var(--cream-2);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .expect-inner {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 3.5rem 3rem;
-  }
-
-  .expect-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--terracotta);
-    text-align: center;
-    margin-bottom: 1.75rem;
-  }
-
-  .expect-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-  }
-
-  .expect-step {
-    text-align: center;
-  }
-
-  .expect-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-style: italic;
-    color: var(--terracotta);
-    margin-bottom: 0.4rem;
-  }
-
-  .expect-title {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--text-dark);
-    margin-bottom: 0.35rem;
-  }
-
-  .expect-desc {
-    font-size: 0.78rem;
-    line-height: 1.55;
-    color: var(--text-muted);
-  }
-
   /* FORM SECTION */
   .form-section {
     background: var(--cream-3);
@@ -385,7 +333,6 @@
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
     .hero-inner { padding: 7rem 1.5rem 3.5rem; }
-    .expect-grid { grid-template-columns: 1fr 1fr; row-gap: 2rem; }
     .form-inner { padding: 3.5rem 1.5rem 4rem; }
     .form-row { grid-template-columns: 1fr; }
     .radio-row { flex-wrap: wrap; }
@@ -407,35 +354,6 @@
     <p class="hero-eyebrow">APIS Certified Farm</p>
     <h1 class="hero-title">Apply for <em>certification.</em></h1>
     <p class="hero-sub">Tell us about your farm. Applications are accepted on a rolling basis, and we'll follow up to schedule your on-site visit during your bloom window.</p>
-  </div>
-</section>
-
-<!-- WHAT TO EXPECT -->
-<section class="expect-section">
-  <div class="expect-inner">
-    <p class="expect-label">What Happens Next</p>
-    <div class="expect-grid">
-      <div class="expect-step">
-        <div class="expect-num">01</div>
-        <div class="expect-title">Submit</div>
-        <div class="expect-desc">Send us your farm details below.</div>
-      </div>
-      <div class="expect-step">
-        <div class="expect-num">02</div>
-        <div class="expect-title">Review</div>
-        <div class="expect-desc">We follow up by email to confirm details and next steps.</div>
-      </div>
-      <div class="expect-step">
-        <div class="expect-num">03</div>
-        <div class="expect-title">Farm Visit</div>
-        <div class="expect-desc">An on-site visit is scheduled around your bloom window.</div>
-      </div>
-      <div class="expect-step">
-        <div class="expect-num">04</div>
-        <div class="expect-title">Get Graded</div>
-        <div class="expect-desc">Every farm receives a scored report. B or above earns the label.</div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -512,11 +430,16 @@
       </div>
 
       <div class="form-group">
+        <label for="promo_code">Promo Code <span class="hint">(if you have one)</span></label>
+        <input type="text" id="promo_code" name="promo_code" placeholder="Enter code">
+      </div>
+
+      <div class="form-group">
         <label for="notes">Anything Else?<span class="hint"> (existing bee-friendly practices, questions, etc.)</span></label>
         <textarea id="notes" name="notes" rows="4" placeholder="Optional"></textarea>
       </div>
 
-      <p class="form-note">Your farm map and spray records aren't needed yet, we'll request those by email once we follow up. Questions? Email us at <a href="mailto:hello@apisinstitute.org" style="color:var(--terracotta);">hello@apisinstitute.org</a>.</p>
+      <p class="form-note">Farm map and spray records aren't needed yet, we'll request those by email once we schedule your farm visit. Questions? Email us at <a href="mailto:hello@apisinstitute.org" style="color:var(--terracotta);">hello@apisinstitute.org</a>.</p>
 
       <button type="submit" class="form-submit">Submit Application</button>
     </form>
