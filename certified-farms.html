@@ -98,8 +98,8 @@
     position: relative;
     overflow: hidden;
     background-image:
-      linear-gradient(rgba(26, 16, 8, 0.5), rgba(26, 16, 8, 0.55)),
-      url('field-4.jpg');
+      linear-gradient(rgba(26, 16, 8, 0.4), rgba(26, 16, 8, 0.45)),
+      url('field-4-hero.jpg');
     background-size: cover;
     background-position: center 50%;
   }
@@ -142,19 +142,20 @@
 
   .hero-cta {
     display: inline-block;
-    background: transparent;
-    border: 1px solid rgba(245, 239, 226, 0.55);
-    color: var(--cream);
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    color: var(--dark);
     padding: 0.9rem 2.2rem;
     border-radius: 2px;
     text-decoration: none;
     font-size: 0.8rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    font-weight: 500;
     transition: background 0.2s, border-color 0.2s;
   }
 
-  .hero-cta:hover { background: rgba(245, 239, 226, 0.12); border-color: var(--gold); }
+  .hero-cta:hover { background: var(--copper); border-color: var(--copper); }
 
   /* GENERIC SECTION */
   section.block {
@@ -531,7 +532,7 @@
 <section class="hero">
   <div class="hero-inner">
     <p class="hero-eyebrow">Applied Pollination Institute of Science</p>
-    <h1 class="hero-title">You Are Invited to Join <em>APIS Certified Farms</em></h1>
+    <h1 class="hero-title">You Are Invited to Join<br><em>APIS Certified Farms</em></h1>
     <p class="hero-sub">The certification that shows your shoppers how you manage healthy pollination. Built by a pollination scientist growers already trust and backed by respected research institutions.</p>
     <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2OAhH0ecqPQEtf_98QfoHEtFlP0waLmqDEiIA4jg1w0A4zQWD3ICBudhJzjuhG7mcE5cra5enw" class="hero-cta" target="_blank" rel="noopener">Schedule Your Free Consultation</a>
   </div>
