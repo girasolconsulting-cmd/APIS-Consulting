@@ -130,7 +130,7 @@
     margin-bottom: 1.2rem;
   }
 
-  .hero-title em { font-style: italic; color: var(--copper); }
+  .hero-title em { font-style: italic; color: var(--gold); }
 
   .hero-sub {
     font-size: 1rem;
@@ -142,7 +142,8 @@
 
   .hero-cta {
     display: inline-block;
-    background: var(--terracotta);
+    background: transparent;
+    border: 1px solid rgba(245, 239, 226, 0.55);
     color: var(--cream);
     padding: 0.9rem 2.2rem;
     border-radius: 2px;
@@ -150,10 +151,10 @@
     font-size: 0.8rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    transition: background 0.2s;
+    transition: background 0.2s, border-color 0.2s;
   }
 
-  .hero-cta:hover { background: var(--copper); }
+  .hero-cta:hover { background: rgba(245, 239, 226, 0.12); border-color: var(--gold); }
 
   /* GENERIC SECTION */
   section.block {
