@@ -140,6 +140,13 @@
     margin: 0 auto 2.2rem;
   }
 
+  .hero-farms-logo {
+    height: 72px;
+    width: auto;
+    display: block;
+    margin: 1.25rem auto 1.5rem;
+  }
+
   .hero-cta {
     display: inline-block;
     background: var(--gold);
@@ -329,8 +336,16 @@
 
   /* FLEXIBILITY */
   .flex-section {
-    background: var(--cream-2);
+    background: var(--olive);
     padding: 5rem 3rem;
+  }
+
+  .flex-section .section-label {
+    color: var(--gold);
+  }
+
+  .flex-section .body-text {
+    color: rgba(245, 239, 226, 0.8);
   }
 
   .flex-inner {
@@ -357,17 +372,17 @@
     top: 0.5em;
     width: 6px;
     height: 6px;
-    background: var(--terracotta);
+    background: var(--gold);
   }
 
   .cat-item strong {
     font-size: 0.92rem;
-    color: var(--text-dark);
+    color: var(--cream);
   }
 
   .cat-item span {
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: rgba(245, 239, 226, 0.65);
   }
 
   /* FINAL CTA */
@@ -437,6 +452,13 @@
     border-top: 1px solid rgba(200, 132, 42, 0.1);
   }
 
+  .footer-farms-logo {
+    height: 36px;
+    width: auto;
+    display: block;
+    opacity: 0.7;
+  }
+
   .footer-wordmark {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.95rem;
@@ -497,7 +519,8 @@
 <section class="hero">
   <div class="hero-inner">
     <p class="hero-eyebrow">Applied Pollination Institute of Science</p>
-    <h1 class="hero-title">You Are Invited to Join<br><em>APIS Certified Farms</em></h1>
+    <h1 class="hero-title">You Are Invited to Join</h1>
+    <img src="apis-farms-logo-inverse.svg" alt="APIS Farms" class="hero-farms-logo">
     <p class="hero-sub">The certification that shows your shoppers how you manage healthy pollination. Built by a pollination scientist growers already trust and backed by respected research institutions.</p>
     <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2OAhH0ecqPQEtf_98QfoHEtFlP0waLmqDEiIA4jg1w0A4zQWD3ICBudhJzjuhG7mcE5cra5enw" class="hero-cta" target="_blank" rel="noopener">Schedule Your Free Consultation</a>
   </div>
@@ -583,10 +606,10 @@
     <p class="section-label">Built for Flexibility: You Choose What Fits Your Farm</p>
     <p class="body-text">Every farm is unique, and budgets are real. Instead of a one-size-fits-all requirement, our program allows you to choose which practices to put in place across the categories weighted by their actual impact on pollinator health.</p>
     <div class="cat-grid">
+      <div class="cat-item"><strong>Clean Water Sources: </strong><span>Accessible, maintained water near bloom</span></div>
       <div class="cat-item"><strong>Applications: </strong><span>Timing, product choice, bee-friendly substitutions</span></div>
       <div class="cat-item"><strong>IPM Practices: </strong><span>Threshold-based, not calendar-based, decisions</span></div>
       <div class="cat-item"><strong>Hive Management: </strong><span>Placement, communication, entrance health</span></div>
-      <div class="cat-item"><strong>Clean Water Sources: </strong><span>Accessible, maintained water near bloom</span></div>
       <div class="cat-item"><strong>Pollinator Habitat: </strong><span>Dedicated habitat and/or forage for pollinators</span></div>
       <div class="cat-item"><strong>Alternative Pollinator Presence: </strong><span>Native bees, mason bees, or other pollinators beyond managed hives</span></div>
     </div>
@@ -605,7 +628,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-wordmark"><span>APIS</span>: Applied Pollination Institute of Science | APIS Certified Farms</div>
+  <img src="apis-farms-logo-inverse.svg" alt="APIS Farms" class="footer-farms-logo">
   <div class="footer-note">&copy; 2026 Angelita De la Luz PhD. All rights reserved.</div>
   <a href="index.html" class="footer-link">apisinstitute.org &rarr;</a>
 </footer>
