@@ -8,28 +8,42 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+  /* ============================================
+     NEW DESIGNER PALETTE — MOCKUP
+     Off Black:    #181009
+     Off White:    #f9f6ef
+     Yellow 1:     #ffd38d  (light)
+     Yellow 2:     #ffc871  (mid)
+     Yellow 3:     #dda450  (deep)
+     Terracotta:   #ba543f
+     Clay:         #d1a199
+     Dark Green:   #777f44
+     Light Green:  #a8b095
+  ============================================ */
   :root {
-    --dark: #1a1008;
-    --brown: #3d2010;
-    --terracotta: #8b3a1e;
-    --copper: #b85c2a;
-    --gold: #c8842a;
-    --olive: #4a5c2a;
-    --olive-light: #6b7c3e;
-    --cream: #f5efe2;
-    --cream-2: #ede4d0;
-    --cream-3: #faf6ee;
-    --text-dark: #1e1208;
-    --text-body: #3a2a18;
-    --text-muted: #7a6848;
-    --border: rgba(139, 58, 30, 0.15);
+    --dark:          #181009;
+    --terracotta:    #ba543f;
+    --terracotta-dk: #9e3e2b;
+    --gold:          #dda450;   /* Yellow 3 — primary gold */
+    --gold-mid:      #ffc871;   /* Yellow 2 */
+    --gold-light:    #ffd38d;   /* Yellow 1 — hero eyebrow */
+    --dark-green:    #777f44;
+    --light-green:   #a8b095;
+    --clay:          #d1a199;
+    --cream:         #f9f6ef;   /* Off White */
+    --cream-sage:    #eceade;   /* Off White + subtle green tint — section alt bg */
+    --cream-clay:    #f4ece5;   /* Off White + subtle clay tint — section alt bg */
+    --text-dark:     #181009;
+    --text-body:     #2a2015;
+    --text-muted:    #777f44;   /* dark green as muted — on-brand */
+    --border:        rgba(119, 127, 68, 0.2);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--cream-3);
+    background: var(--cream);
     color: var(--text-body);
     font-family: 'DM Sans', sans-serif;
     font-weight: 300;
@@ -45,7 +59,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1.25rem 3rem 1.25rem 5rem;
-    background: rgba(245, 239, 226, 0.94);
+    background: rgba(249, 246, 239, 0.94);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
   }
@@ -91,14 +105,14 @@
     transition: background 0.2s;
   }
 
-  .nav-cta:hover { background: var(--copper); }
+  .nav-cta:hover { background: var(--terracotta-dk); }
 
   /* HERO */
   .hero {
     position: relative;
     overflow: hidden;
     background-image:
-      linear-gradient(rgba(26, 16, 8, 0.4), rgba(26, 16, 8, 0.45)),
+      linear-gradient(rgba(24, 16, 9, 0.45), rgba(24, 16, 9, 0.5)),
       url('field-4-hero.jpg');
     background-size: cover;
     background-position: center 50%;
@@ -117,7 +131,7 @@
     font-size: 0.68rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--gold-light);
     margin-bottom: 1.5rem;
   }
 
@@ -127,17 +141,7 @@
     font-weight: 300;
     line-height: 1.12;
     color: var(--cream);
-    margin-bottom: 1.2rem;
-  }
-
-  .hero-title em { font-style: italic; color: var(--gold); }
-
-  .hero-sub {
-    font-size: 1rem;
-    line-height: 1.75;
-    color: rgba(245, 239, 226, 0.78);
-    max-width: 580px;
-    margin: 0 auto 2.2rem;
+    margin-bottom: 0;
   }
 
   .hero-farms-logo {
@@ -147,10 +151,18 @@
     margin: 1.25rem auto 1.5rem;
   }
 
+  .hero-sub {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: rgba(249, 246, 239, 0.75);
+    max-width: 580px;
+    margin: 0 auto 2.2rem;
+  }
+
   .hero-cta {
     display: inline-block;
-    background: var(--gold);
-    border: 1px solid var(--gold);
+    background: var(--gold-mid);
+    border: 1px solid var(--gold-mid);
     color: var(--dark);
     padding: 0.9rem 2.2rem;
     border-radius: 2px;
@@ -162,7 +174,7 @@
     transition: background 0.2s, border-color 0.2s;
   }
 
-  .hero-cta:hover { background: var(--copper); border-color: var(--copper); }
+  .hero-cta:hover { background: var(--gold); border-color: var(--gold); }
 
   /* SHARED */
   .section-label {
@@ -183,13 +195,13 @@
     font-size: 1rem;
     line-height: 1.8;
     font-weight: 500;
-    color: var(--terracotta);
+    color: var(--dark-green);
     margin-top: 1.2rem;
   }
 
-  /* CONTENT SECTION — 2-column matching flyer */
+  /* CONTENT SECTION — subtle sage tint */
   .content-section {
-    background: var(--cream-2);
+    background: var(--cream-sage);
     padding: 5rem 3rem;
   }
 
@@ -241,10 +253,11 @@
   }
 
   .results-sidebar {
-    background: var(--brown);
+    background: var(--dark);
     padding: 1.25rem 1.4rem;
     margin-top: 1.25rem;
     border-radius: 2px;
+    border-top: 3px solid var(--dark-green);
   }
 
   .results-label {
@@ -267,7 +280,7 @@
   .results-list li {
     font-size: 0.8rem;
     line-height: 1.55;
-    color: rgba(245, 239, 226, 0.85);
+    color: rgba(249, 246, 239, 0.82);
     padding-left: 1rem;
     position: relative;
     margin-bottom: 0.55rem;
@@ -280,12 +293,13 @@
     top: 0.55em;
     width: 5px;
     height: 5px;
-    background: var(--gold);
+    background: var(--dark-green);
   }
 
   /* MARKET / INTRO BAND */
   .market-section {
     padding: 4rem 3rem 2rem;
+    background: var(--cream);
   }
 
   .market-inner {
@@ -302,6 +316,7 @@
   /* HOW IT WORKS */
   .steps-section {
     padding: 2rem 3rem 5rem;
+    background: var(--cream);
   }
 
   .steps-inner {
@@ -317,7 +332,7 @@
   }
 
   .step-card {
-    border-top: 2px solid var(--terracotta);
+    border-top: 2px solid var(--dark-green);
     padding-top: 1.1rem;
   }
 
@@ -334,18 +349,18 @@
     color: var(--text-muted);
   }
 
-  /* FLEXIBILITY */
+  /* FLEXIBILITY — dark green background */
   .flex-section {
-    background: var(--olive);
+    background: var(--dark-green);
     padding: 5rem 3rem;
   }
 
   .flex-section .section-label {
-    color: var(--gold);
+    color: var(--gold-light);
   }
 
   .flex-section .body-text {
-    color: rgba(245, 239, 226, 0.8);
+    color: rgba(249, 246, 239, 0.8);
   }
 
   .flex-inner {
@@ -372,7 +387,7 @@
     top: 0.5em;
     width: 6px;
     height: 6px;
-    background: var(--gold);
+    background: var(--gold-light);
   }
 
   .cat-item strong {
@@ -382,7 +397,7 @@
 
   .cat-item span {
     font-size: 0.85rem;
-    color: rgba(245, 239, 226, 0.65);
+    color: rgba(249, 246, 239, 0.65);
   }
 
   /* FINAL CTA */
@@ -396,8 +411,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 50% 70% at 80% 30%, rgba(139, 58, 30, 0.35) 0%, transparent 65%),
-      radial-gradient(ellipse 40% 50% at 15% 70%, rgba(74, 92, 42, 0.2) 0%, transparent 60%);
+      radial-gradient(ellipse 50% 70% at 80% 30%, rgba(186, 84, 63, 0.3) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 50% at 15% 70%, rgba(119, 127, 68, 0.25) 0%, transparent 60%);
   }
 
   .final-cta-inner {
@@ -430,15 +445,15 @@
     transition: background 0.2s;
   }
 
-  .final-cta-btn:hover { background: var(--copper); }
+  .final-cta-btn:hover { background: var(--terracotta-dk); }
 
   .final-cta-alt {
     margin-top: 1.5rem;
     font-size: 0.82rem;
-    color: rgba(245, 239, 226, 0.5);
+    color: rgba(249, 246, 239, 0.45);
   }
 
-  .final-cta-alt a { color: var(--gold); }
+  .final-cta-alt a { color: var(--gold-light); }
 
   /* FOOTER */
   footer {
@@ -449,7 +464,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1rem;
-    border-top: 1px solid rgba(200, 132, 42, 0.1);
+    border-top: 1px solid rgba(119, 127, 68, 0.15);
   }
 
   .footer-farms-logo {
@@ -459,30 +474,20 @@
     opacity: 0.7;
   }
 
-  .footer-wordmark {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.95rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(245, 239, 226, 0.4);
-  }
-
-  .footer-wordmark span { color: var(--gold); }
-
   .footer-note {
     font-size: 0.72rem;
-    color: rgba(245, 239, 226, 0.3);
+    color: rgba(249, 246, 239, 0.3);
   }
 
   .footer-link {
     font-size: 0.72rem;
-    color: rgba(245, 239, 226, 0.35);
+    color: rgba(249, 246, 239, 0.35);
     text-decoration: none;
     letter-spacing: 0.08em;
     transition: color 0.2s;
   }
 
-  .footer-link:hover { color: var(--gold); }
+  .footer-link:hover { color: var(--gold-light); }
 
   /* RESPONSIVE */
   @media (max-width: 900px) {
@@ -502,7 +507,6 @@
     .steps-grid { grid-template-columns: 1fr; }
   }
 </style>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "73e6f033c6d645a588d00d7e101f41cc"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
 <body>
 
@@ -526,11 +530,10 @@
   </div>
 </section>
 
-<!-- 2-COLUMN CONTENT: matches flyer page 1 -->
+<!-- 2-COLUMN CONTENT -->
 <section class="content-section">
   <div class="content-inner">
 
-    <!-- LEFT: text sections -->
     <div class="content-left">
       <p class="section-label">Who's Behind This</p>
       <p class="body-text">Angelita De la Luz PhD has spent 10+ years managing pollination across 12 crops in 6 countries, working with hundreds of growers, from small family farms to global producers. She holds an MS from UC San Diego and a PhD from UC Santa Cruz. She recently served as the Global Pollination Expert for a leading agricultural biotech company. Since founding APIS, she now consults for some of the largest berry and tree fruit producers in the world.</p>
@@ -543,7 +546,6 @@
       <p class="callout-text">APIS certification recognizes what you already do to manage pollination, and offers an achievable roadmap for what's next.</p>
     </div>
 
-    <!-- RIGHT: photo + results sidebar -->
     <div class="content-right">
       <img class="founder-photo-right" src="founder-photo.jpg" alt="Angelita De la Luz PhD">
       <p class="bio-name">Angelita De la Luz, PhD</p>
@@ -568,7 +570,7 @@
   </div>
 </section>
 
-<!-- MARKET INTRO — flyer page 2 opening -->
+<!-- MARKET INTRO -->
 <section class="market-section">
   <div class="market-inner">
     <p class="market-text">In today's discerning market, certification helps you stand out to shoppers, gives professional buyers peace of mind, and adds credibility with the restaurants and retailers you supply. Certified farms earn the right to display the APIS Certified Farm label at their farm stand, on packaging, and in marketing materials.</p>
