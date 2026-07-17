@@ -44,7 +44,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.25rem 3rem;
+    padding: 1.25rem 3rem 1.25rem 5rem;
     background: rgba(245, 239, 226, 0.94);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
@@ -157,44 +157,20 @@
 
   .hero-cta:hover { background: var(--copper); border-color: var(--copper); }
 
-  /* GENERIC SECTION */
-  section.block {
-    padding: 5rem 3rem;
-  }
-
-  .block-inner {
-    max-width: 920px;
-    margin: 0 auto;
-  }
-
-  .block-inner.narrow { max-width: 720px; }
-
+  /* SHARED */
   .section-label {
     font-size: 0.68rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--terracotta);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
-
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
-    font-weight: 300;
-    line-height: 1.2;
-    color: var(--text-dark);
-    margin-bottom: 1.2rem;
-  }
-
-  .section-title em { font-style: italic; color: var(--copper); }
 
   .body-text {
     font-size: 0.98rem;
     line-height: 1.8;
     color: var(--text-body);
   }
-
-  .body-text + .body-text { margin-top: 1.1rem; }
 
   .callout-text {
     font-size: 1rem;
@@ -204,21 +180,37 @@
     margin-top: 1.2rem;
   }
 
-  /* BIO SECTION */
-  .bio-section {
+  /* CONTENT SECTION — 2-column matching flyer */
+  .content-section {
     background: var(--cream-2);
+    padding: 5rem 3rem;
   }
 
-  .bio-grid {
+  .content-inner {
+    max-width: 960px;
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: 260px 1fr;
-    gap: 3rem;
+    grid-template-columns: 2fr 1fr;
+    gap: 3.5rem;
     align-items: start;
   }
 
-  .bio-photo {
+  .content-left .section-label {
+    margin-top: 2rem;
+  }
+
+  .content-left .section-label:first-child {
+    margin-top: 0;
+  }
+
+  .content-left .body-text {
+    margin-top: 0.5rem;
+  }
+
+  /* RIGHT SIDEBAR */
+  .founder-photo-right {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    display: block;
     object-fit: cover;
     object-position: center 15%;
     border-radius: 2px;
@@ -226,124 +218,100 @@
 
   .bio-name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     color: var(--text-dark);
-    margin-top: 0.9rem;
+    margin-top: 0.75rem;
+    text-align: center;
   }
 
   .bio-title {
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-muted);
-    margin-top: 0.25rem;
-  }
-
-  /* STATS */
-  .stats-section {
-    background: var(--dark);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .stats-inner {
-    position: relative;
-    z-index: 2;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 5rem 3rem;
-  }
-
-  .stats-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-align: center;
-    margin-bottom: 0.6rem;
-  }
-
-  .stats-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    font-weight: 300;
-    color: var(--cream);
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.5rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .stat-card {
+    margin-top: 0.2rem;
     text-align: center;
   }
 
-  .stat-figure {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.8rem;
-    font-weight: 400;
-    color: var(--copper);
-    line-height: 1;
-    margin-bottom: 0.6rem;
-  }
-
-  .stat-desc {
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: rgba(245, 239, 226, 0.75);
-  }
-
-  .stats-footnote {
-    text-align: center;
-    font-size: 0.8rem;
-    line-height: 1.7;
-    color: rgba(245, 239, 226, 0.55);
-    max-width: 640px;
-    margin: 0 auto;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(200, 132, 42, 0.15);
-  }
-
-  .stats-tags {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.6rem;
-    margin-top: 1.5rem;
-  }
-
-  .stats-tag {
-    font-size: 0.7rem;
-    letter-spacing: 0.05em;
-    color: rgba(245, 239, 226, 0.6);
-    border: 1px solid rgba(200, 132, 42, 0.25);
-    padding: 0.35rem 0.75rem;
+  .results-sidebar {
+    background: var(--brown);
+    padding: 1.25rem 1.4rem;
+    margin-top: 1.25rem;
     border-radius: 2px;
   }
 
+  .results-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .results-label + .results-label {
+    margin-top: 1.1rem;
+  }
+
+  .results-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .results-list li {
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: rgba(245, 239, 226, 0.85);
+    padding-left: 1rem;
+    position: relative;
+    margin-bottom: 0.55rem;
+  }
+
+  .results-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    background: var(--gold);
+  }
+
+  /* MARKET / INTRO BAND */
+  .market-section {
+    padding: 4rem 3rem 2rem;
+  }
+
+  .market-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .market-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-body);
+  }
+
   /* HOW IT WORKS */
+  .steps-section {
+    padding: 2rem 3rem 5rem;
+  }
+
+  .steps-inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
   .steps-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
   }
 
   .step-card {
     border-top: 2px solid var(--terracotta);
     padding-top: 1.1rem;
-  }
-
-  .step-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    color: var(--copper);
-    margin-bottom: 0.5rem;
   }
 
   .step-title {
@@ -359,16 +327,22 @@
     color: var(--text-muted);
   }
 
-  /* FLEXIBILITY / CATEGORIES */
+  /* FLEXIBILITY */
   .flex-section {
     background: var(--cream-2);
+    padding: 5rem 3rem;
+  }
+
+  .flex-inner {
+    max-width: 960px;
+    margin: 0 auto;
   }
 
   .cat-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.3rem 2rem;
-    margin-top: 2rem;
+    gap: 1.3rem 3rem;
+    margin-top: 1.5rem;
   }
 
   .cat-item {
@@ -387,15 +361,12 @@
   }
 
   .cat-item strong {
-    display: block;
     font-size: 0.92rem;
     color: var(--text-dark);
-    margin-bottom: 0.2rem;
   }
 
   .cat-item span {
     font-size: 0.85rem;
-    line-height: 1.55;
     color: var(--text-muted);
   }
 
@@ -429,13 +400,6 @@
     font-weight: 300;
     color: var(--cream);
     margin-bottom: 1rem;
-  }
-
-  .final-cta-sub {
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: rgba(245, 239, 226, 0.7);
-    margin-bottom: 2.2rem;
   }
 
   .final-cta-btn {
@@ -503,16 +467,16 @@
     nav { padding: 1rem 1.5rem; }
     .nav-right { gap: 1rem; }
     .hero-inner { padding: 7rem 1.5rem 3.5rem; }
-    section.block { padding: 3.5rem 1.5rem; }
-    .bio-grid { grid-template-columns: 1fr; }
-    .bio-photo { max-width: 220px; }
-    .stats-grid { grid-template-columns: 1fr 1fr; gap: 1.75rem; }
+    .content-section { padding: 3.5rem 1.5rem; }
+    .content-inner { grid-template-columns: 1fr; }
+    .market-section { padding: 3rem 1.5rem 1.5rem; }
+    .steps-section { padding: 1.5rem 1.5rem 3.5rem; }
     .steps-grid { grid-template-columns: 1fr 1fr; }
+    .flex-section { padding: 3.5rem 1.5rem; }
     .cat-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 560px) {
-    .stats-grid { grid-template-columns: 1fr; }
     .steps-grid { grid-template-columns: 1fr; }
   }
 </style>
@@ -539,93 +503,73 @@
   </div>
 </section>
 
-<!-- WHO'S BEHIND THIS -->
-<section class="block bio-section">
-  <div class="block-inner">
-    <p class="section-label">Who's Behind This</p>
-    <div class="bio-grid">
-      <div>
-        <img class="bio-photo" src="founder-photo.jpg" alt="Angelita De la Luz PhD">
-        <p class="bio-name">Angelita De la Luz, PhD</p>
-        <p class="bio-title">Founder, APIS</p>
-      </div>
-      <div>
-        <p class="body-text">Angelita De la Luz PhD has spent 10+ years managing pollination across 12 crops in 6 countries, working with hundreds of growers, from small family farms to global producers. She holds an MS from UC San Diego and a PhD from UC Santa Cruz. She recently served as the Global Pollination Expert for a leading agricultural biotech company. Since founding APIS, she now consults for some of the largest berry and tree fruit producers in the world.</p>
+<!-- 2-COLUMN CONTENT: matches flyer page 1 -->
+<section class="content-section">
+  <div class="content-inner">
+
+    <!-- LEFT: text sections -->
+    <div class="content-left">
+      <p class="section-label">Who's Behind This</p>
+      <p class="body-text">Angelita De la Luz PhD has spent 10+ years managing pollination across 12 crops in 6 countries, working with hundreds of growers, from small family farms to global producers. She holds an MS from UC San Diego and a PhD from UC Santa Cruz. She recently served as the Global Pollination Expert for a leading agricultural biotech company. Since founding APIS, she now consults for some of the largest berry and tree fruit producers in the world.</p>
+
+      <p class="section-label">Backed By Real Science</p>
+      <p class="body-text">APIS draws on our own applied experience and published research as well as advisory relationships with the University of Washington, the USDA Honey Bee Lab, and UC Davis Ag Extension. Every standard behind this certification is grounded in current pollination research and field-tested practice.</p>
+
+      <p class="section-label">Our Philosophy</p>
+      <p class="body-text">Healthy pollination is great for your farming business. Most pollination certifications feel disconnected from that, focused on habitat and land set-asides rather than what actually happens on a working farm. APIS is different: it's built around the daily agronomic decisions that most directly affect pollination outcomes, spray timing, IPM practices, hive management, and water access. That makes certification accessible to growers who can't dedicate acreage to habitat, and focused on what actually drives your yield.</p>
+      <p class="callout-text">APIS certification recognizes what you already do to manage pollination, and offers an achievable roadmap for what's next.</p>
+    </div>
+
+    <!-- RIGHT: photo + results sidebar -->
+    <div class="content-right">
+      <img class="founder-photo-right" src="founder-photo.jpg" alt="Angelita De la Luz PhD">
+      <p class="bio-name">Angelita De la Luz, PhD</p>
+      <p class="bio-title">Founder, APIS</p>
+
+      <div class="results-sidebar">
+        <p class="results-label">Research &amp; Results</p>
+        <ul class="results-list">
+          <li>5 peer-reviewed publications on pollination science</li>
+          <li>Featured in BBC StoryWorks</li>
+          <li>Tried-and-true methods to increase bee visitation and biodiversity across almonds, blueberries, cane berries, strawberries, kiwi, citrus, avocado, coffee, cherries, pongamia, and more</li>
+        </ul>
+        <p class="results-label">Key Results</p>
+        <ul class="results-list">
+          <li>Up to 60% less waste in strawberry operations</li>
+          <li>30% larger blueberries over a two-year program</li>
+          <li>120% more almonds per tree</li>
+        </ul>
       </div>
     </div>
+
   </div>
 </section>
 
-<!-- BACKED BY REAL SCIENCE + PHILOSOPHY -->
-<section class="block">
-  <div class="block-inner narrow">
-    <p class="section-label">Backed By Real Science</p>
-    <p class="body-text">APIS draws on our own applied experience and published research as well as advisory relationships with the University of Washington, the USDA Honey Bee Lab, and UC Davis Ag Extension. Every standard behind this certification is grounded in current pollination research and field-tested practice.</p>
-  </div>
-</section>
-
-<section class="block" style="padding-top: 0;">
-  <div class="block-inner narrow">
-    <p class="section-label">Our Philosophy</p>
-    <p class="body-text">Healthy pollination is great for your farming business. Most pollination certifications feel disconnected from that, focused on habitat and land set-asides rather than what actually happens on a working farm. APIS is different: it's built around the daily agronomic decisions that most directly affect pollination outcomes, spray timing, IPM practices, hive management, and water access. That makes certification accessible to growers who can't dedicate acreage to habitat, and focused on what actually drives your yield.</p>
-    <p class="callout-text">APIS certification recognizes what you already do to manage pollination, and offers an achievable roadmap for what's next.</p>
-  </div>
-</section>
-
-<!-- RESEARCH & RESULTS -->
-<section class="stats-section">
-  <div class="stats-inner">
-    <p class="stats-label">Research &amp; Results</p>
-    <p class="stats-title">Real outcomes from real farms.</p>
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-figure">60%</div>
-        <div class="stat-desc">less waste in strawberry operations</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-figure">30%</div>
-        <div class="stat-desc">larger blueberries over a two-year program</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-figure">120%</div>
-        <div class="stat-desc">more almonds per tree</div>
-      </div>
-    </div>
-    <div class="stats-footnote">
-      5 peer-reviewed publications on pollination science. Featured in BBC StoryWorks. Tried-and-true methods across almonds, blueberries, cane berries, strawberries, kiwi, citrus, avocado, coffee, cherries, pongamia, and more.
-    </div>
-  </div>
-</section>
-
-<!-- BENEFITS -->
-<section class="block">
-  <div class="block-inner narrow" style="text-align:center;">
-    <p class="body-text">In today's discerning market, certification helps you stand out to shoppers, gives professional buyers peace of mind, and adds credibility with the restaurants and retailers you supply. Certified farms earn the right to display the APIS Certified Farm label at their farm stand, on packaging, and in marketing materials.</p>
+<!-- MARKET INTRO — flyer page 2 opening -->
+<section class="market-section">
+  <div class="market-inner">
+    <p class="market-text">In today's discerning market, certification helps you stand out to shoppers, gives professional buyers peace of mind, and adds credibility with the restaurants and retailers you supply. Certified farms earn the right to display the APIS Certified Farm label at their farm stand, on packaging, and in marketing materials.</p>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="block" style="padding-top: 0;">
-  <div class="block-inner">
+<section class="steps-section">
+  <div class="steps-inner">
     <p class="section-label">How It Works</p>
     <div class="steps-grid">
       <div class="step-card">
-        <div class="step-num">01</div>
         <div class="step-title">Schedule a Call</div>
         <div class="step-desc">Reach out and we'll set up a free consultation to see if APIS Certified Farms is right for you.</div>
       </div>
       <div class="step-card">
-        <div class="step-num">02</div>
         <div class="step-title">Farm Visit</div>
         <div class="step-desc">A certifier visits your farm during your crop's bloom window to review your practices on site.</div>
       </div>
       <div class="step-card">
-        <div class="step-num">03</div>
         <div class="step-title">Get Certified</div>
         <div class="step-desc">Farms that meet our standards become APIS Certified. You'll receive a detailed report with a practical roadmap either way.</div>
       </div>
       <div class="step-card">
-        <div class="step-num">04</div>
         <div class="step-title">Grow Your Business</div>
         <div class="step-desc">Healthier farms grow better produce, and customer peace of mind translates directly into stronger sales.</div>
       </div>
@@ -634,17 +578,17 @@
 </section>
 
 <!-- BUILT FOR FLEXIBILITY -->
-<section class="block flex-section">
-  <div class="block-inner">
+<section class="flex-section">
+  <div class="flex-inner">
     <p class="section-label">Built for Flexibility: You Choose What Fits Your Farm</p>
     <p class="body-text">Every farm is unique, and budgets are real. Instead of a one-size-fits-all requirement, our program allows you to choose which practices to put in place across the categories weighted by their actual impact on pollinator health.</p>
     <div class="cat-grid">
-      <div class="cat-item"><strong>Applications</strong><span>Timing, product choice, bee-friendly substitutions</span></div>
-      <div class="cat-item"><strong>IPM Practices</strong><span>Threshold-based, not calendar-based, decisions</span></div>
-      <div class="cat-item"><strong>Hive Management</strong><span>Placement, communication, entrance health</span></div>
-      <div class="cat-item"><strong>Clean Water Sources</strong><span>Accessible, maintained water near bloom</span></div>
-      <div class="cat-item"><strong>Pollinator Habitat</strong><span>Dedicated habitat and/or forage for pollinators</span></div>
-      <div class="cat-item"><strong>Alternative Pollinator Presence</strong><span>Native bees, mason bees, or other pollinators beyond managed hives</span></div>
+      <div class="cat-item"><strong>Applications: </strong><span>Timing, product choice, bee-friendly substitutions</span></div>
+      <div class="cat-item"><strong>IPM Practices: </strong><span>Threshold-based, not calendar-based, decisions</span></div>
+      <div class="cat-item"><strong>Hive Management: </strong><span>Placement, communication, entrance health</span></div>
+      <div class="cat-item"><strong>Clean Water Sources: </strong><span>Accessible, maintained water near bloom</span></div>
+      <div class="cat-item"><strong>Pollinator Habitat: </strong><span>Dedicated habitat and/or forage for pollinators</span></div>
+      <div class="cat-item"><strong>Alternative Pollinator Presence: </strong><span>Native bees, mason bees, or other pollinators beyond managed hives</span></div>
     </div>
   </div>
 </section>
@@ -654,7 +598,6 @@
   <div class="final-cta-bg"></div>
   <div class="final-cta-inner">
     <h2 class="final-cta-title">Schedule your free consultation call</h2>
-    <p class="final-cta-sub">Let's talk about whether APIS Certified Farms is a fit for your operation.</p>
     <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2OAhH0ecqPQEtf_98QfoHEtFlP0waLmqDEiIA4jg1w0A4zQWD3ICBudhJzjuhG7mcE5cra5enw" class="final-cta-btn" target="_blank" rel="noopener">Book a Time That Works for You</a>
     <p class="final-cta-alt">or email <a href="mailto:hello@apisinstitute.org">hello@apisinstitute.org</a></p>
   </div>
@@ -662,7 +605,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-wordmark"><span>APIS</span>: Applied Pollination Institute of Science</div>
+  <div class="footer-wordmark"><span>APIS</span>: Applied Pollination Institute of Science | APIS Certified Farms</div>
   <div class="footer-note">&copy; 2026 Angelita De la Luz PhD. All rights reserved.</div>
   <a href="index.html" class="footer-link">apisinstitute.org &rarr;</a>
 </footer>
