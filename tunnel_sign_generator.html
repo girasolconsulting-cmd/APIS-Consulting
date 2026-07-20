@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tunnel Sign Generator</title>
+<style>
+  :root{color-scheme:light}
+  *{box-sizing:border-box}
+  body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:26px;color:#1c2a1c;background:#fff}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:#556;font-size:13px;margin-bottom:18px}
+  .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;background:#f2f6f2;border:1px solid #d9e4d9;border-radius:12px;padding:16px;margin-bottom:16px}
+  .fld{display:flex;flex-direction:column;gap:4px}
+  .fld label{font-size:12px;color:#445;font-weight:700}
+  .fld input{font-size:16px;padding:8px 10px;border:1px solid #bcc;border-radius:8px;width:130px}
+  button{font-size:14px;font-weight:700;padding:9px 16px;border:none;border-radius:8px;cursor:pointer;background:#2E5B34;color:#fff}
+  button.sec{background:#e7ede7;color:#2E5B34}
+  .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:8px}
+  .stat{border:1px solid #e0e6e0;border-radius:10px;padding:10px 12px;background:#fff}
+  .stat .k{font-size:11px;color:#778;text-transform:uppercase;letter-spacing:.4px}
+  .stat .v{font-size:22px;font-weight:800;color:#2E5B34;margin-top:2px}
+  .warn{background:#fff4e5;border:1px solid #f0c27a;color:#8a5a00;border-radius:10px;padding:10px 14px;font-size:13px;margin:8px 0}
+  .note{font-size:12px;color:#556;line-height:1.5;margin:8px 0 16px}
+  .posbar{font-size:12px;color:#445;background:#f6f8f6;border:1px solid #e2e8e2;border-radius:8px;padding:8px 12px;margin-bottom:14px;word-break:break-word}
+  .legend{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:12px;margin-bottom:14px}
+  .sw{display:inline-flex;align-items:center;gap:6px}.sw i{width:14px;height:14px;border-radius:4px;border:1px solid #0002}
+  .uvk i{background:#7A18C9;opacity:.62}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
+  .card{border:1px solid #dfe6df;border-radius:12px;padding:10px;text-align:center;box-shadow:0 1px 2px #0000000d;position:relative;cursor:pointer;transition:box-shadow .12s,border-color .12s}
+  .card:hover{border-color:#2E5B34;box-shadow:0 2px 8px #2e5b3422}
+  .card .tn{font-size:12px;font-weight:800;color:#2E5B34;margin-bottom:4px}
+  .card .cd{font-size:11px;margin-top:7px;font-family:Menlo,Consolas,monospace;color:#243}
+  .card .df{font-size:10px;color:#889;margin-top:3px}
+  .card .act{display:flex;gap:6px;justify-content:center;margin-top:8px}
+  .mini{font-size:11px;font-weight:700;padding:4px 8px;border-radius:7px;background:#e7ede7;color:#2E5B34;border:none;cursor:pointer}
+  .mini:hover{background:#d5e0d5}
+  code{background:#eef2ee;padding:1px 5px;border-radius:4px}
+  @media print{.controls,button{display:none}.card{break-inside:avoid}}
+</style></head>
+<body>
+  <h1>Tunnel Sign Generator</h1>
+  <div class="sub">Driscoll's landmark study · a unique sign every 10th tunnel, skipping the first & last five · the first sign is random, and each one after is arranged to look as different as possible from its neighbours</div>
+
+  <div class="controls">
+    <div class="fld"><label>Number of tunnels</label><input id="tunnels" type="number" min="1" value="100"></div>
+    <div class="fld"><label>Sign every N tunnels</label><input id="spacing" type="number" min="1" value="10"></div>
+    <div class="fld"><label>Skip on each edge</label><input id="edge" type="number" min="0" value="5"></div>
+    <div class="fld"><label>Layout seed (blank = random)</label><input id="seed" type="number" placeholder="random" style="width:150px"></div>
+    <button onclick="run()">Generate</button>
+    <button class="sec" onclick="reshuffle()">Re-shuffle arrangement</button>
+    <button class="sec" onclick="window.print()">Print</button>
+  </div>
+
+  <div id="warn"></div>
+  <div class="summary" id="summary"></div>
+  <div class="posbar" id="posbar"></div>
+
+  <div class="legend">
+    <span class="sw"><i style="background:#F2C90A"></i>Yellow (Y)</span>
+    <span class="sw"><i style="background:#2FA130"></i>Green (G)</span>
+    <span class="sw"><i style="background:#1E5DDB"></i>Blue (B)</span>
+    <span class="sw"><i style="background:#6A2FB0"></i>Violet (V)</span>
+    <span class="sw uvk"><i></i>UV layer (human-invisible)</span>
+    <span style="color:#778">Code: [bgPattern]-[c1][c2] / UV-[uvPattern] / [shape]-[figColor]</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+<script>
+const COLORS={Y:"#F2C90A",G:"#2FA130",B:"#1E5DDB",V:"#6A2FB0"};
+const CORDER=["Y","G","B","V"];
+const PORDER=["BK","HZ","VT","DG"];
+const SORDER=["CI","SQ","TR","ST","DI"];
+const UVFILL="#7A18C9";
+let UID=0, SEED=1;
+
+/* ---------- rendering ---------- */
+function pattern(pt,fA,fB,opacity){
+  const op = opacity!==1?` opacity="${opacity}"`:"";
+  const rect=(x,y,w,h,f)=> f==="none"?"":`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}"/>`;
+  let inner="";
+  if(pt==="BK") inner=rect(0,0,50,50,fA)+rect(50,0,50,50,fB)+rect(0,50,50,50,fB)+rect(50,50,50,50,fA);
+  else if(pt==="HZ"){for(let i=0;i<4;i++) inner+=rect(0,i*25,100,25,i%2?fB:fA);}
+  else if(pt==="VT"){for(let i=0;i<4;i++) inner+=rect(i*25,0,25,100,i%2?fB:fA);}
+  else if(pt==="DG"){const id="c"+(UID++);let b="";for(let i=0;i<9;i++) b+=rect(-70,-70+i*30,240,30,i%2?fB:fA);
+    inner=`<clipPath id="${id}"><rect x="0" y="0" width="100" height="100"/></clipPath><g clip-path="url(#${id})"><g transform="rotate(45 50 50)">${b}</g></g>`;}
+  return `<g${op}>${inner}</g>`;
+}
+function shape(kind,fill){
+  const st=`stroke="#fff" stroke-width="7" stroke-linejoin="round"`;
+  if(kind==="CI") return `<circle cx="50" cy="50" r="40" fill="${fill}" ${st}/>`;
+  if(kind==="SQ") return `<rect x="12" y="12" width="76" height="76" rx="6" fill="${fill}" ${st}/>`;
+  if(kind==="TR") return `<polygon points="50,12 88,84 12,84" fill="${fill}" ${st}/>`;
+  if(kind==="DI") return `<polygon points="50,8 90,50 50,92 10,50" fill="${fill}" ${st}/>`;
+  if(kind==="ST"){let p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?17:42;p.push((50+r*Math.cos(a)).toFixed(1)+","+(50+r*Math.sin(a)).toFixed(1));}return `<polygon points="${p.join(" ")}" fill="${fill}" ${st}/>`;}
+}
+function signSVG(d,size){
+  const A=COLORS[d.cA],B=COLORS[d.cB];
+  return `<svg viewBox="0 0 100 100" width="${size}" height="${size}">`
+    + pattern(d.bg,A,B,1)
+    + pattern(d.uv,UVFILL,"none",0.62)
+    + `<g transform="translate(29,29) scale(0.42)">${shape(d.shp,COLORS[d.fc])}</g>`
+    + `<rect x="1" y="1" width="98" height="98" fill="none" stroke="#333" stroke-width="1.5"/></svg>`;
+}
+function code(d){return `${d.bg}-${d.cA}${d.cB} / UV-${d.uv} / ${d.shp}-${d.fc}`;}
+
+/* ---------- catalog (720 unique) ---------- */
+function pairs2(){let r=[];for(let i=0;i<CORDER.length;i++)for(let j=i+1;j<CORDER.length;j++)r.push([CORDER[i],CORDER[j]]);return r;}
+function enumerate(){
+  let out=[];
+  for(const bg of PORDER) for(const uv of PORDER){ if(uv===bg) continue;
+    for(const [a,b] of pairs2()) for(const fc of CORDER){ if(fc===a||fc===b) continue;
+      for(const shp of SORDER) out.push({bg,cA:a,cB:b,uv,shp,fc}); } }
+  return out; // 720
+}
+const ALL=enumerate();
+
+/* ---------- difference metric ---------- */
+// weighted distance: colour and shape dominate (most salient bee cues)
+function dist(a,b){
+  let d=0;
+  const sharedBg = ((a.cA===b.cA||a.cA===b.cB)?1:0)+((a.cB===b.cA||a.cB===b.cB)?1:0);
+  d += (2-sharedBg)*2;          // background colours: 0 / 2 / 4
+  d += (a.fc!==b.fc)?2:0;       // figure colour
+  d += (a.shp!==b.shp)?2:0;     // figure shape
+  d += (a.bg!==b.bg)?1:0;       // background pattern
+  d += (a.uv!==b.uv)?1:0;       // UV pattern
+  return d;                     // max 10
+}
+// simple "features different out of 5" for display
+function featDiff(a,b){
+  const bgc = (a.cA!==b.cA||a.cB!==b.cB)?1:0;
+  return bgc + (a.fc!==b.fc?1:0) + (a.shp!==b.shp?1:0) + (a.bg!==b.bg?1:0) + (a.uv!==b.uv?1:0);
+}
+
+/* ---------- seeded RNG ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+/* ---------- greedy neighbour-maximising sequence ---------- */
+function buildSequence(K,seed){
+  if(K<=0) return [];
+  const rng=mulberry32(seed>>>0);
+  const used=new Array(ALL.length).fill(false);
+  let seq=[];
+  let start=Math.floor(rng()*ALL.length);
+  seq.push(start); used[start]=true;
+  for(let step=1;step<Math.min(K,ALL.length);step++){
+    const prev=seq[seq.length-1], prev2=seq.length>=2?seq[seq.length-2]:-1;
+    let bestScore=-1, best=[];
+    for(let j=0;j<ALL.length;j++){
+      if(used[j]) continue;
+      // primary: distance to immediate neighbour; tie-break: distance to 2-back
+      const score = dist(ALL[j],ALL[prev])*100 + (prev2>=0?dist(ALL[j],ALL[prev2]):0);
+      if(score>bestScore){ bestScore=score; best=[j]; }
+      else if(score===bestScore){ best.push(j); }
+    }
+    const choose = best[Math.floor(rng()*best.length)];
+    seq.push(choose); used[choose]=true;
+  }
+  return seq.map(i=>ALL[i]);
+}
+
+/* ---------- state ---------- */
+let SEQ=[], POS=[], CTX={N:0,edge:5,spacing:10,capped:false,interior:0};
+function key(d){return d.bg+d.cA+d.cB+d.uv+d.shp+d.fc;}
+function usedSet(exceptIdx){const s=new Set();SEQ.forEach((d,k)=>{if(k!==exceptIdx)s.add(key(d));});return s;}
+
+// best design for slot i given its (fixed) neighbours, not reusing anything in avoid
+function bestForSlot(i,avoid){
+  const L=i>0?SEQ[i-1]:null, R=i<SEQ.length-1?SEQ[i+1]:null;
+  let bs=-1,best=[];
+  for(const d of ALL){ if(avoid.has(key(d))) continue;
+    const dl=L?dist(d,L):99, dr=R?dist(d,R):99;
+    const mn=Math.min(L?dl:99,R?dr:99);
+    const sm=(L?dl:0)+(R?dr:0);
+    const score= (mn===99?0:mn)*100 + sm;   // maximise the weaker neighbour first
+    if(score>bs){bs=score;best=[d];} else if(score===bs){best.push(d);}
+  }
+  return best.length?best[Math.floor(Math.random()*best.length)]:null;
+}
+
+/* ---------- main ---------- */
+function run(){
+  const N=Math.max(0,parseInt(document.getElementById("tunnels").value)||0);
+  const spacing=Math.max(1,parseInt(document.getElementById("spacing").value)||10);
+  const edge=Math.max(0,parseInt(document.getElementById("edge").value)||0);
+  const start=edge+1, end=N-edge;
+  let positions=[];
+  for(let t=start;t<=end;t+=spacing) positions.push(t);
+  let need=positions.length;
+  const capped=need>ALL.length;
+  if(capped){ need=ALL.length; positions=positions.slice(0,need); }
+
+  // first sign is random each Generate; a typed seed makes the layout reproducible
+  const sv=document.getElementById("seed").value.trim();
+  SEED = (sv!=="" && Number.isFinite(+sv)) ? ((+sv)>>>0) : (Math.floor(Math.random()*4294967296)>>>0);
+
+  SEQ = buildSequence(need,SEED);
+  POS = positions;
+  CTX = {N,edge,spacing,capped,interior:Math.max(0, end>=start? end-start+1 : 0)};
+  render();
+}
+
+// swap just one slot for a fresh design that stays maximally different from its neighbours
+function swapOne(i){
+  const d=bestForSlot(i, usedSet(i));
+  if(d){ SEQ[i]=d; render(); }
+}
+
+// keep everything before i, regenerate from i to the end (fresh random at i, then cascade)
+function recascadeFrom(i){
+  const used=new Set(); for(let k=0;k<i;k++) used.add(key(SEQ[k]));
+  for(let k=i;k<SEQ.length;k++){
+    const L=k>0?SEQ[k-1]:null, L2=k>=2?SEQ[k-2]:null;
+    let bs=-1,best=[];
+    for(const d of ALL){ if(used.has(key(d))) continue;
+      let score = L? dist(d,L)*100 : 0;      // L null only when i==0 → all equal → random
+      if(L2) score += dist(d,L2);
+      if(score>bs){bs=score;best=[d];} else if(score===bs){best.push(d);}
+    }
+    const chosen = best[Math.floor(Math.random()*best.length)];
+    SEQ[k]=chosen; used.add(key(chosen));
+  }
+  render();
+}
+
+function render(){
+  UID=0;
+  const {N,edge,capped,interior}=CTX, need=SEQ.length;
+
+  let minFeat=5, sumFeat=0, cnt=0;
+  for(let i=1;i<SEQ.length;i++){ const f=featDiff(SEQ[i],SEQ[i-1]); minFeat=Math.min(minFeat,f); sumFeat+=f; cnt++; }
+  const avgFeat = cnt? (sumFeat/cnt).toFixed(1):"–";
+
+  document.getElementById("summary").innerHTML=[
+    ["Tunnels",N],["Skipped at edges",Math.min(N,edge*2)],["Usable interior",interior],
+    ["Signs needed",need],["Unique designs available",ALL.length],
+    ["Min neighbour difference", cnt? (minFeat+" / 5 features"):"–"],
+    ["Avg neighbour difference", cnt? (avgFeat+" / 5"):"–"],
+    ["Layout seed", SEED]
+  ].map(([k,v])=>`<div class="stat"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
+
+  document.getElementById("warn").innerHTML = capped
+    ? `<div class="warn">This needs more than ${ALL.length} unique signs. The catalog maxes out at ${ALL.length}; showing ${ALL.length}. Add a shape or colour to expand it.</div>`
+    : (N<=edge*2 ? `<div class="warn">With ${N} tunnels and ${edge} skipped on each edge, there is no interior region to sign.</div>` : "");
+
+  document.getElementById("posbar").innerHTML = need>0
+    ? `<b>Tip:</b> click any sign to replace just that one · use “⟳ from here” to rebuild everything from that tunnel onward.`
+    : "";
+
+  document.getElementById("grid").innerHTML = SEQ.map((d,i)=>{
+    const f = i>0? featDiff(d,SEQ[i-1]) : null;
+    return `<div class="card" title="Click to replace this sign" onclick="swapOne(${i})">`
+      + `<div class="tn">Tunnel ${POS[i]}</div><div>${signSVG(d,120)}</div>`
+      + `<div class="cd">${code(d)}</div>`
+      + (f!==null?`<div class="df">differs from prev in ${f}/5</div>`:`<div class="df">start of run</div>`)
+      + `<div class="act"><button class="mini" onclick="event.stopPropagation();swapOne(${i})">↻ swap</button>`
+      + `<button class="mini" onclick="event.stopPropagation();recascadeFrom(${i})">⟳ from here</button></div>`
+      + `</div>`;
+  }).join("");
+}
+function reshuffle(){ document.getElementById("seed").value=""; run(); }
+run();
+</script>
+</body></html>
