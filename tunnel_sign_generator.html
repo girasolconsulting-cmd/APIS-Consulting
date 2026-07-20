@@ -24,6 +24,19 @@
   .legend{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:12px;margin-bottom:14px}
   .sw{display:inline-flex;align-items:center;gap:6px}.sw i{width:14px;height:14px;border-radius:4px;border:1px solid #0002}
   .uvk i{background:#7A18C9;opacity:.62}
+  .costbox{border:1px solid #d9e4d9;border-radius:12px;padding:10px 16px;margin-bottom:16px;background:#fbfdfb}
+  .costbox summary{font-size:15px;font-weight:800;color:#2E5B34;cursor:pointer}
+  .costnote{font-size:12px;color:#667;margin:6px 0 12px}
+  .costcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+  .costcol{display:flex;flex-direction:column;gap:6px}
+  .costhd{font-size:12px;font-weight:800;color:#445;text-transform:uppercase;letter-spacing:.4px}
+  .costcol label{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;color:#334}
+  .costcol input{width:90px;padding:5px 8px;border:1px solid #bcc;border-radius:6px;font-size:13px;text-align:right}
+  .coststats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+  .cstat{border:1px solid #e0e6e0;border-radius:10px;padding:10px 12px;background:#fff}
+  .cstat .k{font-size:11px;color:#778;text-transform:uppercase;letter-spacing:.4px}
+  .cstat .v{font-size:20px;font-weight:800;color:#2E5B34;margin-top:2px}
+  .cstat.hl{background:#eef5ee;border-color:#bcd3bc}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
   .card{border:1px solid #dfe6df;border-radius:12px;padding:10px;text-align:center;box-shadow:0 1px 2px #0000000d;position:relative;cursor:pointer;transition:box-shadow .12s,border-color .12s}
   .card:hover{border-color:#2E5B34;box-shadow:0 2px 8px #2e5b3422}
@@ -62,6 +75,31 @@
     <span class="sw uvk"><i></i>UV layer (human-invisible)</span>
     <span style="color:#778">Code: [bgPattern]-[c1][c2] / UV-[uvPattern] / [shape]-[figColor]</span>
   </div>
+
+  <details class="costbox" id="costbox" open>
+    <summary>Manufacturing cost & customer quote (DIY UV coating)</summary>
+    <div class="costnote">Your production cost to build finished signs, plus a markup to price them. Editable — adjust to your suppliers. Totals update with the sign count above.</div>
+    <div class="costcols">
+      <div class="costcol">
+        <div class="costhd">Cost to build, per sign</div>
+        <label>Plywood <input type="number" id="c_ply" value="1.50" step="0.25"></label>
+        <label>Primer + spray colors <input type="number" id="c_paint" value="2.50" step="0.25"></label>
+        <label>DIY UV coating (BaSO₄) <input type="number" id="c_uv" value="1.50" step="0.25"></label>
+        <label>Tape / stencil adhesive / masking <input type="number" id="c_cons" value="2.50" step="0.25"></label>
+        <label>Hardware + clear coat <input type="number" id="c_hw" value="2.00" step="0.25"></label>
+        <label>Your labor <input type="number" id="c_labor" value="8.00" step="0.50"></label>
+      </div>
+      <div class="costcol">
+        <div class="costhd">Your tooling (one-time)</div>
+        <label>Custom stencil set <input type="number" id="c_sten" value="250" step="10"></label>
+        <label>UV checker for QC <input type="number" id="c_uvchk" value="15" step="5"></label>
+        <label>Safety gear + brushes <input type="number" id="c_tools" value="50" step="5"></label>
+        <div class="costhd" style="margin-top:12px">Pricing</div>
+        <label>Markup % <input type="number" id="c_markup" value="40" step="5"></label>
+      </div>
+    </div>
+    <div class="coststats" id="cost"></div>
+  </details>
 
   <div class="grid" id="grid"></div>
 
@@ -135,28 +173,46 @@ function featDiff(a,b){
 /* ---------- seeded RNG ---------- */
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 
-/* ---------- greedy neighbour-maximising sequence ---------- */
+/* ---------- background-pair rotation ----------
+   Cycle through all six background colour pairs so every colour combo gets used,
+   instead of locking onto one complementary duo. The order alternates disjoint
+   and one-shared transitions to keep neighbours highly distinct. */
+const PAIR_ORDER=["YG","BV","GB","YV","YB","GV"];
+let DIR=1; // rotation direction, randomised per Generate
+function pstr(d){return d.cA+d.cB;}
+function stepPair(pairStr,dir){const i=PAIR_ORDER.indexOf(pairStr);return PAIR_ORDER[((i+dir)%6+6)%6];}
+
+// pick the unused design with a given background pair that is most different from prev (tie-break: prev2)
+function pickForPair(prev,prev2,targetPair,used,rng){
+  let bs=-1,best=[];
+  for(const d of ALL){ if(used.has(key(d))) continue; if(pstr(d)!==targetPair) continue;
+    const score = dist(d,prev)*100 + (prev2?dist(d,prev2):0);
+    if(score>bs){bs=score;best=[d];} else if(score===bs){best.push(d);}
+  }
+  if(!best.length){ // target pair exhausted (only near full catalog): fall back to any unused, most different
+    for(const d of ALL){ if(used.has(key(d))) continue;
+      const score = dist(d,prev)*100 + (prev2?dist(d,prev2):0);
+      if(score>bs){bs=score;best=[d];} else if(score===bs){best.push(d);}
+    }
+  }
+  return best[Math.floor(rng()*best.length)];
+}
+
+/* ---------- sequence: random first sign, then rotate pairs + maximise contrast ---------- */
 function buildSequence(K,seed){
   if(K<=0) return [];
   const rng=mulberry32(seed>>>0);
-  const used=new Array(ALL.length).fill(false);
-  let seq=[];
-  let start=Math.floor(rng()*ALL.length);
-  seq.push(start); used[start]=true;
+  const used=new Set();
+  let seq=[ ALL[Math.floor(rng()*ALL.length)] ];
+  used.add(key(seq[0]));
+  DIR = rng()<0.5 ? 1 : -1;
   for(let step=1;step<Math.min(K,ALL.length);step++){
-    const prev=seq[seq.length-1], prev2=seq.length>=2?seq[seq.length-2]:-1;
-    let bestScore=-1, best=[];
-    for(let j=0;j<ALL.length;j++){
-      if(used[j]) continue;
-      // primary: distance to immediate neighbour; tie-break: distance to 2-back
-      const score = dist(ALL[j],ALL[prev])*100 + (prev2>=0?dist(ALL[j],ALL[prev2]):0);
-      if(score>bestScore){ bestScore=score; best=[j]; }
-      else if(score===bestScore){ best.push(j); }
-    }
-    const choose = best[Math.floor(rng()*best.length)];
-    seq.push(choose); used[choose]=true;
+    const prev=seq[step-1], prev2=step>=2?seq[step-2]:null;
+    const target=stepPair(pstr(prev),DIR);
+    const d=pickForPair(prev,prev2,target,used,rng);
+    seq.push(d); used.add(key(d));
   }
-  return seq.map(i=>ALL[i]);
+  return seq;
 }
 
 /* ---------- state ---------- */
@@ -164,18 +220,28 @@ let SEQ=[], POS=[], CTX={N:0,edge:5,spacing:10,capped:false,interior:0};
 function key(d){return d.bg+d.cA+d.cB+d.uv+d.shp+d.fc;}
 function usedSet(exceptIdx){const s=new Set();SEQ.forEach((d,k)=>{if(k!==exceptIdx)s.add(key(d));});return s;}
 
-// best design for slot i given its (fixed) neighbours, not reusing anything in avoid
-function bestForSlot(i,avoid){
+// best design for slot i given its (fixed) neighbours, not reusing anything in avoid.
+// If targetPair is given, keep the slot's rotation colour pair (only shape/patterns/figure change).
+function bestForSlot(i,avoid,targetPair){
   const L=i>0?SEQ[i-1]:null, R=i<SEQ.length-1?SEQ[i+1]:null;
   let bs=-1,best=[];
-  for(const d of ALL){ if(avoid.has(key(d))) continue;
-    const dl=L?dist(d,L):99, dr=R?dist(d,R):99;
-    const mn=Math.min(L?dl:99,R?dr:99);
-    const sm=(L?dl:0)+(R?dr:0);
-    const score= (mn===99?0:mn)*100 + sm;   // maximise the weaker neighbour first
-    if(score>bs){bs=score;best=[d];} else if(score===bs){best.push(d);}
+  function scan(constrain){
+    for(const d of ALL){ if(avoid.has(key(d))) continue; if(constrain&&pstr(d)!==targetPair) continue;
+      const dl=L?dist(d,L):99, dr=R?dist(d,R):99;
+      const mn=Math.min(L?dl:99,R?dr:99);
+      const sm=(L?dl:0)+(R?dr:0);
+      const score= (mn===99?0:mn)*100 + sm;   // maximise the weaker neighbour first
+      if(score>bs){bs=score;best=[d];} else if(score===bs){best.push(d);}
+    }
   }
+  if(targetPair){ scan(true); if(!best.length) scan(false); } else scan(false);
   return best.length?best[Math.floor(Math.random()*best.length)]:null;
+}
+// which colour pair this slot should carry to keep the rotation intact
+function slotPair(i){
+  if(i>0) return stepPair(pstr(SEQ[i-1]),DIR);
+  if(i<SEQ.length-1) return stepPair(pstr(SEQ[i+1]),-DIR);
+  return null;
 }
 
 /* ---------- main ---------- */
@@ -200,27 +266,52 @@ function run(){
   render();
 }
 
-// swap just one slot for a fresh design that stays maximally different from its neighbours
+// swap just one slot: keep its rotation colour pair, vary shape/patterns/figure, stay distinct from neighbours
 function swapOne(i){
-  const d=bestForSlot(i, usedSet(i));
+  const d=bestForSlot(i, usedSet(i), slotPair(i));
   if(d){ SEQ[i]=d; render(); }
 }
 
-// keep everything before i, regenerate from i to the end (fresh random at i, then cascade)
+// keep everything before i, regenerate from i to the end continuing the pair rotation
 function recascadeFrom(i){
   const used=new Set(); for(let k=0;k<i;k++) used.add(key(SEQ[k]));
+  const rng=Math.random;
   for(let k=i;k<SEQ.length;k++){
-    const L=k>0?SEQ[k-1]:null, L2=k>=2?SEQ[k-2]:null;
-    let bs=-1,best=[];
-    for(const d of ALL){ if(used.has(key(d))) continue;
-      let score = L? dist(d,L)*100 : 0;      // L null only when i==0 → all equal → random
-      if(L2) score += dist(d,L2);
-      if(score>bs){bs=score;best=[d];} else if(score===bs){best.push(d);}
+    if(k===0){ // no left anchor → fresh random first sign, then rotate
+      let d; do{ d=ALL[Math.floor(rng()*ALL.length)]; } while(used.has(key(d)));
+      SEQ[0]=d; used.add(key(d)); continue;
     }
-    const chosen = best[Math.floor(Math.random()*best.length)];
-    SEQ[k]=chosen; used.add(key(chosen));
+    const prev=SEQ[k-1], prev2=k>=2?SEQ[k-2]:null;
+    const target=stepPair(pstr(prev),DIR);
+    const d=pickForPair(prev,prev2,target,used,rng);
+    SEQ[k]=d; used.add(key(d));
   }
   render();
+}
+
+function num(id,def){const v=parseFloat(document.getElementById(id).value);return isNaN(v)?def:v;}
+function money(x){return "$"+x.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+function renderCost(){
+  const n=SEQ.length||0;
+  const buildPer = num("c_ply",1.5)+num("c_paint",2.5)+num("c_uv",1.5)+num("c_cons",2.5)+num("c_hw",2)+num("c_labor",8);
+  const tooling = num("c_sten",250)+num("c_uvchk",15)+num("c_tools",50);
+  const markup = num("c_markup",40)/100;
+  const buildTotal = buildPer*n;
+  const loadedPer = n? buildPer + tooling/n : buildPer;   // production incl. amortised tooling
+  const pricePer = loadedPer*(1+markup);
+  const quote = pricePer*n;
+  const profit = quote - (buildTotal + tooling);
+  const rows=[
+    ["Signs to build", n, false],
+    ["Build cost / sign", money(buildPer), false],
+    ["Loaded cost / sign", money(loadedPer), false],
+    ["Price / sign", money(pricePer), true],
+    ["Customer quote", money(quote), true],
+    ["Your total cost", money(buildTotal+tooling), false],
+    ["Your profit", money(profit), true],
+  ];
+  document.getElementById("cost").innerHTML = rows.map(([k,v,hl])=>
+    `<div class="cstat${hl?' hl':''}"><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
 }
 
 function render(){
@@ -257,8 +348,12 @@ function render(){
       + `<button class="mini" onclick="event.stopPropagation();recascadeFrom(${i})">⟳ from here</button></div>`
       + `</div>`;
   }).join("");
+
+  renderCost();
 }
 function reshuffle(){ document.getElementById("seed").value=""; run(); }
+["c_ply","c_paint","c_uv","c_cons","c_hw","c_labor","c_sten","c_uvchk","c_tools","c_markup"]
+  .forEach(id=>document.getElementById(id).addEventListener("input",renderCost));
 run();
 </script>
 </body></html>
