@@ -123,6 +123,7 @@
       <div class="costcol">
         <div class="costhd">Pricing</div>
         <label>Markup % <input type="number" id="c_markup" value="40" step="5"></label>
+        <label>Volume discount % <input type="number" id="c_disc" value="0" step="5"></label>
       </div>
     </div>
     <div class="resultcols">
@@ -338,9 +339,13 @@ function renderCost(){
   const n=tunnels*copies;                    // physical signs to build
   const buildPer = num("c_ply",1.5)+num("c_paint",2.5)+num("c_uv",1.5)+num("c_cons",2.5)+num("c_hw",2)+num("c_labor",8);
   const markup = num("c_markup",40)/100;
+  const disc = Math.max(0,num("c_disc",0))/100;    // open-entry volume discount, applied after markup
   const buildTotal = buildPer*n;                 // marginal production cost for this run
-  const pricePer = buildPer*(1+markup);
+  const listPer = buildPer*(1+markup);           // price per sign before discount
+  const pricePer = listPer*(1-disc);
+  const subtotal = listPer*n;
   const quote = pricePer*n;
+  const discAmt = subtotal - quote;
   const profit = quote - buildTotal;
   const today=new Date().toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
 
@@ -355,15 +360,22 @@ function renderCost(){
     ["Item", "APIS landmark signs", false],
     ["Design sets", tunnels+` (${copies} signs each)`, false],
     ["Quantity", n+" signs", false],
-    ["Price per sign", money(pricePer), false],
-    ["Total estimate", money(quote), true],
+    ["Price per sign", money(listPer), false],
   ];
+  if(disc>0){
+    client.push(["Subtotal", money(subtotal), false]);
+    client.push(["Volume discount", `−${num("c_disc",0)}%  (−${money(discAmt)})`, false]);
+  }
+  client.push(["Total estimate", money(quote), true]);
   const tbl=rows=>`<table class="costtable"><tbody>`
     + rows.map(([k,v,hl])=>`<tr class="${hl?'hl':''}"><td class="k">${k}</td><td class="v">${v}</td></tr>`).join("")
     + `</tbody></table>`;
   document.getElementById("cost-internal").innerHTML=tbl(internal);
   document.getElementById("cost-client").innerHTML=tbl(client);
-  window.LASTINV=`APIS — Landmark Signs Estimate\nDate: ${today}\nItem: APIS landmark signs (colour + shape + UV)\nDesign sets: ${tunnels} (${copies} signs each)\nQuantity: ${n} signs\nPrice per sign: ${money(pricePer)}\nTotal estimate: ${money(quote)}`;
+  let inv=`APIS — Landmark Signs Estimate\nDate: ${today}\nItem: APIS landmark signs (colour + shape + UV)\nDesign sets: ${tunnels} (${copies} signs each)\nQuantity: ${n} signs\nPrice per sign: ${money(listPer)}`;
+  if(disc>0) inv+=`\nSubtotal: ${money(subtotal)}\nVolume discount: −${num("c_disc",0)}% (−${money(discAmt)})`;
+  inv+=`\nTotal estimate: ${money(quote)}`;
+  window.LASTINV=inv;
 }
 function copyInvoice(){
   const t=window.LASTINV||"";
@@ -409,7 +421,7 @@ function render(){
   renderCost();
 }
 function reshuffle(){ document.getElementById("seed").value=""; run(); }
-["c_ply","c_paint","c_uv","c_cons","c_hw","c_labor","c_markup"]
+["c_ply","c_paint","c_uv","c_cons","c_hw","c_labor","c_markup","c_disc"]
   .forEach(id=>document.getElementById(id).addEventListener("input",renderCost));
 document.getElementById("copies").addEventListener("input",render);
 run();
