@@ -94,6 +94,7 @@
     <button onclick="run()">Generate</button>
     <button class="sec" onclick="reshuffle()">Re-shuffle</button>
     <button class="sec" onclick="window.print()">Print</button>
+    <button class="sec" id="dlbtn" onclick="downloadZip()">Download PDFs (zip)</button>
     <div class="metaline" id="summary"></div>
   </div>
 
@@ -121,14 +122,14 @@
     <div class="costcols">
       <div class="costcol">
         <div class="costhd">Cost per sign (two-sided)</div>
-        <label>Printed panel (Sintra, double-sided) <input type="number" id="c_panel" value="19.00" step="0.50"></label>
-        <label>DIY UV coating (BaSO₄, both faces) <input type="number" id="c_uv" value="3.00" step="0.25"></label>
+        <label>Printed panel (Sintra, double-sided) <input type="number" id="c_panel" value="23.00" step="0.50"></label>
+        <label>DIY UV coating (BaSO₄, both faces) <input type="number" id="c_uv" value="0.92" step="0.25"></label>
         <label>Your labor (apply UV, both faces) <input type="number" id="c_labor" value="5.00" step="0.50"></label>
       </div>
       <div class="costcol">
         <div class="costhd">Pricing</div>
-        <label>Markup % <input type="number" id="c_markup" value="200" step="5"></label>
-        <label>Target price / sign <input type="number" id="c_target" value="81.00" step="1"></label>
+        <label>Markup % <input type="number" id="c_markup" value="60" step="5"></label>
+        <label>Target price / sign <input type="number" id="c_target" value="46.27" step="1"></label>
         <label>Volume discount % <input type="number" id="c_disc" value="0" step="5"></label>
       </div>
     </div>
@@ -366,7 +367,7 @@ function renderCost(){
   const tunnels=SEQ.length||0;
   const copies=getCopies();
   const n=tunnels*copies;                    // physical signs to build
-  const buildPer = num("c_panel",19)+num("c_uv",3)+num("c_labor",5);
+  const buildPer = num("c_panel",23)+num("c_uv",0.92)+num("c_labor",5);
   const markup = num("c_markup",40)/100;
   const disc = Math.max(0,num("c_disc",0))/100;    // open-entry volume discount, applied after markup
   const buildTotal = buildPer*n;                 // marginal production cost for this run
@@ -452,12 +453,64 @@ function render(){
 
   renderCost();
 }
+/* ---------- export: one print-res PDF per sign, zipped ---------- */
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=()=>rej(new Error("blocked: "+src));document.head.appendChild(s);});}
+let LIBS=false;
+async function loadLibs(){
+  if(LIBS) return;
+  if(!window.JSZip) await loadScript("https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js");
+  if(!(window.jspdf&&window.jspdf.jsPDF)) await loadScript("https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js");
+  LIBS=true;
+}
+function svgToPng(svgStr,px){
+  return new Promise((res,rej)=>{
+    const url=URL.createObjectURL(new Blob([svgStr],{type:"image/svg+xml;charset=utf-8"}));
+    const img=new Image();
+    img.onload=()=>{ const c=document.createElement("canvas"); c.width=px; c.height=px;
+      c.getContext("2d").drawImage(img,0,0,px,px); URL.revokeObjectURL(url); res(c.toDataURL("image/png")); };
+    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("svg render failed"));};
+    img.src=url;
+  });
+}
+async function downloadZip(){
+  const btn=document.getElementById("dlbtn"), label=btn.textContent;
+  if(!SEQ.length){ return; }
+  btn.disabled=true;
+  try{
+    btn.textContent="Loading…"; await loadLibs();
+    const {jsPDF}=window.jspdf;
+    const zip=new JSZip();
+    // make each sign self-contained: inline the logo symbol so <use> resolves in a standalone file
+    const sym=document.getElementById("apisIcon");
+    const symDefs=`<defs><symbol id="apisIcon" viewBox="${sym.getAttribute("viewBox")}">${sym.innerHTML}</symbol></defs>`;
+    const IN=12, DPI=200, px=IN*DPI;                       // 12 in square @ 200 dpi
+    for(let i=0;i<SEQ.length;i++){
+      btn.textContent=`Rendering ${i+1}/${SEQ.length}…`;
+      let svg=signSVG(SEQ[i],px).replace(">", ">"+symDefs);   // inject symbol after the opening <svg …>
+      const png=await svgToPng(svg,px);
+      const pdf=new jsPDF({orientation:"portrait",unit:"in",format:[IN,IN]});
+      pdf.addImage(png,"PNG",0,0,IN,IN);
+      const name=`T${POS[i]}_${code(SEQ[i]).replace(/[^A-Za-z0-9-]+/g,"-").replace(/^-|-$/g,"")}.pdf`;
+      zip.file(name, pdf.output("blob"));
+      await new Promise(r=>setTimeout(r,0));               // let the UI breathe
+    }
+    btn.textContent="Zipping…";
+    const blob=await zip.generateAsync({type:"blob"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download="honey-bee-highway-signs.zip"; document.body.appendChild(a); a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+  }catch(e){
+    alert("Download couldn't run here (external libraries are blocked in the preview). It works on the published GitHub page.");
+  }finally{
+    btn.disabled=false; btn.textContent=label;
+  }
+}
 function reshuffle(){ document.getElementById("seed").value=""; run(); }
 ["c_panel","c_uv","c_labor","c_markup","c_disc"]
   .forEach(id=>document.getElementById(id).addEventListener("input",renderCost));
 document.getElementById("copies").addEventListener("input",render);
 document.getElementById("c_target").addEventListener("input",function(){   // type a target price → back-solve the markup
-  const bp=num("c_panel",19)+num("c_uv",3)+num("c_labor",5);
+  const bp=num("c_panel",23)+num("c_uv",0.92)+num("c_labor",5);
   const t=parseFloat(this.value);
   if(bp>0 && !isNaN(t)) document.getElementById("c_markup").value=Math.round((t/bp-1)*1000)/10;
   renderCost();
