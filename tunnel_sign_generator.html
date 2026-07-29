@@ -195,8 +195,7 @@ function signSVG(d,size){
   // BaSO4 that reflects UV on the real sign). Single direction, so it reads as alternating lines, not cross-hatch.
   const defs=`<defs>`
     + `<pattern id="${figid}" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">`
-      + `<rect x="0" y="0" width="10" height="10" fill="#efe7d6"/>`
-      + `<line x1="7.7" y1="0" x2="7.7" y2="10" stroke="#c9bda3" stroke-width="1.1"/>`
+      + `<rect x="0" y="0" width="10" height="10" fill="#ffffff"/>`
       + `<rect x="0" y="0" width="5.4" height="10" fill="${F}"/></pattern>`
     + `</defs>`;
   return `<svg viewBox="0 0 100 100" width="${size}" height="${size}">`
