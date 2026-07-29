@@ -452,57 +452,81 @@ function render(){
 
   renderCost();
 }
-/* ---------- export: one print-res PDF per sign, zipped ---------- */
-function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=()=>rej(new Error("blocked: "+src));document.head.appendChild(s);});}
-let LIBS=false;
-async function loadLibs(){
-  if(LIBS) return;
-  if(!window.JSZip) await loadScript("https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js");
-  if(!(window.jspdf&&window.jspdf.jsPDF)) await loadScript("https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js");
-  LIBS=true;
-}
-function svgToPng(svgStr,px){
+/* ---------- export: one print-res PDF per sign, zipped — no external libraries ---------- */
+function dataURLToU8(dataURL){ const b=atob(dataURL.split(",")[1]); const u=new Uint8Array(b.length); for(let i=0;i<b.length;i++) u[i]=b.charCodeAt(i); return u; }
+function svgToJpeg(svgStr,px){
   return new Promise((res,rej)=>{
     const url=URL.createObjectURL(new Blob([svgStr],{type:"image/svg+xml;charset=utf-8"}));
     const img=new Image();
     img.onload=()=>{ const c=document.createElement("canvas"); c.width=px; c.height=px;
-      c.getContext("2d").drawImage(img,0,0,px,px); URL.revokeObjectURL(url); res(c.toDataURL("image/png")); };
-    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("svg render failed"));};
+      const ctx=c.getContext("2d"); ctx.fillStyle="#ffffff"; ctx.fillRect(0,0,px,px); ctx.drawImage(img,0,0,px,px);
+      URL.revokeObjectURL(url); res(dataURLToU8(c.toDataURL("image/jpeg",0.92))); };
+    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("SVG render failed"));};
     img.src=url;
   });
 }
+// minimal single-page PDF embedding a baseline JPEG on a 12-inch square page
+function jpegToPdf(jpeg,W,H){
+  const P=864; // 12 in * 72 pt
+  const enc=s=>new TextEncoder().encode(s);
+  const parts=[]; let len=0; const off=[];
+  const A=s=>{const u=enc(s);parts.push(u);len+=u.length;};
+  const Braw=u=>{parts.push(u);len+=u.length;};
+  A("%PDF-1.4\n");
+  off[1]=len; A("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+  off[2]=len; A("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+  off[3]=len; A("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 "+P+" "+P+"] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n");
+  off[4]=len; A("4 0 obj\n<< /Type /XObject /Subtype /Image /Width "+W+" /Height "+H+" /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length "+jpeg.length+" >>\nstream\n");
+  Braw(jpeg); A("\nendstream\nendobj\n");
+  const content="q "+P+" 0 0 "+P+" 0 0 cm /Im0 Do Q\n";
+  off[5]=len; A("5 0 obj\n<< /Length "+content.length+" >>\nstream\n"+content+"endstream\nendobj\n");
+  const xrefOff=len;
+  let xref="xref\n0 6\n0000000000 65535 f \n";
+  for(let i=1;i<=5;i++) xref+=String(off[i]).padStart(10,"0")+" 00000 n \n";
+  A(xref);
+  A("trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n"+xrefOff+"\n%%EOF");
+  const out=new Uint8Array(len); let p=0; for(const u of parts){ out.set(u,p); p+=u.length; } return out;
+}
+// minimal store-only ZIP
+let CRCTAB;
+function crc32(u8){ if(!CRCTAB){ CRCTAB=new Uint32Array(256); for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++) c=c&1?(0xEDB88320^(c>>>1)):(c>>>1); CRCTAB[n]=c>>>0; } }
+  let crc=0xFFFFFFFF; for(let i=0;i<u8.length;i++) crc=(crc>>>8)^CRCTAB[(crc^u8[i])&0xff]; return (crc^0xFFFFFFFF)>>>0; }
+function zipStore(files){
+  const enc=new TextEncoder(); const u16=n=>[n&255,(n>>8)&255]; const u32=n=>[n&255,(n>>8)&255,(n>>16)&255,(n>>24)&255];
+  const chunks=[]; const central=[]; let offset=0;
+  for(const f of files){
+    const nm=enc.encode(f.name), crc=crc32(f.data), sz=f.data.length;
+    const lh=new Uint8Array([].concat(u32(0x04034b50),u16(20),u16(0),u16(0),u16(0),u16(0),u32(crc),u32(sz),u32(sz),u16(nm.length),u16(0)));
+    chunks.push(lh,nm,f.data);
+    central.push(new Uint8Array([].concat(u32(0x02014b50),u16(20),u16(20),u16(0),u16(0),u16(0),u16(0),u32(crc),u32(sz),u32(sz),u16(nm.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(offset))), nm);
+    offset+=lh.length+nm.length+sz;
+  }
+  const cdStart=offset; let cdSize=0; for(const c of central) cdSize+=c.length;
+  const eocd=new Uint8Array([].concat(u32(0x06054b50),u16(0),u16(0),u16(files.length),u16(files.length),u32(cdSize),u32(cdStart),u16(0)));
+  const all=chunks.concat(central,[eocd]); let total=0; for(const c of all) total+=c.length;
+  const out=new Uint8Array(total); let p=0; for(const c of all){ out.set(c,p); p+=c.length; } return out;
+}
 async function downloadZip(){
   const btn=document.getElementById("dlbtn"), label=btn.textContent;
-  if(!SEQ.length){ return; }
-  btn.disabled=true;
+  if(!SEQ.length) return; btn.disabled=true;
   try{
-    btn.textContent="Loading…"; await loadLibs();
-    const {jsPDF}=window.jspdf;
-    const zip=new JSZip();
-    // make each sign self-contained: inline the logo symbol so <use> resolves in a standalone file
     const sym=document.getElementById("apisIcon");
     const symDefs=`<defs><symbol id="apisIcon" viewBox="${sym.getAttribute("viewBox")}">${sym.innerHTML}</symbol></defs>`;
-    const IN=12, DPI=200, px=IN*DPI;                       // 12 in square @ 200 dpi
+    const IN=12, px=IN*200;                                 // 12 in square @ 200 dpi
+    const files=[];
     for(let i=0;i<SEQ.length;i++){
       btn.textContent=`Rendering ${i+1}/${SEQ.length}…`;
-      let svg=signSVG(SEQ[i],px).replace(">", ">"+symDefs);   // inject symbol after the opening <svg …>
-      const png=await svgToPng(svg,px);
-      const pdf=new jsPDF({orientation:"portrait",unit:"in",format:[IN,IN]});
-      pdf.addImage(png,"PNG",0,0,IN,IN);
-      const name=`T${POS[i]}_${code(SEQ[i]).replace(/[^A-Za-z0-9-]+/g,"-").replace(/^-|-$/g,"")}.pdf`;
-      zip.file(name, pdf.output("blob"));
-      await new Promise(r=>setTimeout(r,0));               // let the UI breathe
+      const svg=signSVG(SEQ[i],px).replace(">", ">"+symDefs);   // inline the logo symbol so it resolves standalone
+      const jpeg=await svgToJpeg(svg,px);
+      files.push({name:`T${POS[i]}_${code(SEQ[i]).replace(/[^A-Za-z0-9-]+/g,"-").replace(/^-|-$/g,"")}.pdf`, data:jpegToPdf(jpeg,px,px)});
+      await new Promise(r=>setTimeout(r,0));
     }
     btn.textContent="Zipping…";
-    const blob=await zip.generateAsync({type:"blob"});
-    const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
-    a.download="honey-bee-highway-signs.zip"; document.body.appendChild(a); a.click();
-    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
-  }catch(e){
-    alert("Download couldn't run here (external libraries are blocked in the preview). It works on the published GitHub page.");
-  }finally{
-    btn.disabled=false; btn.textContent=label;
-  }
+    const blob=new Blob([zipStore(files)],{type:"application/zip"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="honey-bee-highway-signs.zip";
+    document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
+  }catch(e){ alert("Export failed: "+(e&&e.message||e)); }
+  finally{ btn.disabled=false; btn.textContent=label; }
 }
 function reshuffle(){ document.getElementById("seed").value=""; run(); }
 ["c_panel","c_uv","c_labor","c_markup","c_disc"]
