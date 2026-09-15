@@ -637,12 +637,7 @@
       </div>
 
       <div>
-        <form class="waitlist-form" id="waitlistForm" action="https://formsubmit.co/a.delaluz@apisinstitute.org" method="POST">
-          <input type="hidden" name="_subject" value="New APIS Waitlist Signup">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_next" value="https://apisinstitute.org/apis-certification.html?submitted=true">
-          <input type="text" name="_honey" style="display:none">
+        <form class="waitlist-form" id="waitlistForm">
 
           <div class="form-row">
             <div class="form-group">
@@ -725,12 +720,39 @@
 </footer>
 
 <script>
-  const form = document.getElementById('waitlistForm');
-  const success = document.getElementById('formSuccess');
-  if (new URLSearchParams(window.location.search).get('submitted') === 'true') {
-    if (form) form.style.display = 'none';
-    if (success) success.style.display = 'block';
-  }
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwkrHqp6dPPumnZi-CvXan28VosO4wTByjlTdxYCX7MMBqgaTH-7JjX7Vj5UKFktDeOuw/exec';
+
+  document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var form = e.target;
+    var btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+
+    var data = {
+      first_name:   form.first_name.value,
+      last_name:    form.last_name.value,
+      email:        form.email.value,
+      role:         form.role.value,
+      organization: form.organization.value,
+      crop:         form.crop.value
+    };
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(function() {
+      form.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    })
+    .catch(function() {
+      btn.disabled = false;
+      btn.textContent = 'Get Early Access';
+    });
+  });
 </script>
 </body>
 </html>
