@@ -460,7 +460,8 @@
       </div>
 
       <div>
-        <form class="waitlist-form" id="waitlistForm">
+        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none"></iframe>
+        <form class="waitlist-form" id="waitlistForm" action="https://script.google.com/macros/s/AKfycbwkrHqp6dPPumnZi-CvXan28VosO4wTByjlTdxYCX7MMBqgaTH-7JjX7Vj5UKFktDeOuw/exec" method="POST" target="hidden_iframe">
 
           <div class="form-row">
             <div class="form-group">
@@ -549,38 +550,21 @@
 </footer>
 
 <script>
-  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwkrHqp6dPPumnZi-CvXan28VosO4wTByjlTdxYCX7MMBqgaTH-7JjX7Vj5UKFktDeOuw/exec';
+  var formSubmitting = false;
 
-  document.getElementById('waitlistForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var form = e.target;
-    var btn = form.querySelector('button[type="submit"]');
+  document.getElementById('hidden_iframe').addEventListener('load', function() {
+    if (formSubmitting) {
+      document.getElementById('waitlistForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+      formSubmitting = false;
+    }
+  });
+
+  document.getElementById('waitlistForm').addEventListener('submit', function() {
+    formSubmitting = true;
+    var btn = this.querySelector('button[type="submit"]');
     btn.disabled = true;
     btn.textContent = 'Submitting…';
-
-    var data = {
-      first_name:   form.first_name.value,
-      last_name:    form.last_name.value,
-      email:        form.email.value,
-      role:         form.role.value,
-      organization: form.organization.value,
-      crop:         form.crop.value
-    };
-
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    .then(function() {
-      form.style.display = 'none';
-      document.getElementById('formSuccess').style.display = 'block';
-    })
-    .catch(function() {
-      btn.disabled = false;
-      btn.textContent = 'Get Early Access';
-    });
   });
 </script>
 </body>
