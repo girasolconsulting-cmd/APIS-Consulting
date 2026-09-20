@@ -6,21 +6,22 @@
 <title>APIS Consulting | Applied Pollination Institute of Science</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --dark: #1a1008;
+    --dark: #1c1208;
     --dark-2: #231608;
     --brown: #3d2010;
     --terracotta: #8b3a1e;
     --copper: #b85c2a;
     --gold: #c8842a;
     --olive: #4a5c2a;
-    --olive-light: #6b7c3e;
+    --olive-light: #8d9a6b;
+    --clay: #c99a7f;
     --cream: #f5efe2;
-    --cream-2: #ede4d0;
+    --cream-2: #ffffff;
     --cream-3: #faf6ee;
-    --text-dark: #1e1208;
+    --text-dark: #1c1208;
     --text-body: #3a2a18;
     --text-muted: #7a6848;
     --border: rgba(139, 58, 30, 0.15);
@@ -47,9 +48,9 @@
     align-items: center;
     justify-content: space-between;
     padding: 1.25rem 3rem 1.25rem 5rem;
-    background: rgba(245, 239, 226, 0.94);
+    background: var(--dark);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
 
   .nav-wordmark {
@@ -72,7 +73,7 @@
   }
 
   .nav-links a {
-    color: var(--text-muted);
+    color: rgba(245, 239, 226, 0.6);
     text-decoration: none;
     font-size: 0.8rem;
     letter-spacing: 0.1em;
@@ -80,7 +81,7 @@
     transition: color 0.2s;
   }
 
-  .nav-links a:hover { color: var(--terracotta); }
+  .nav-links a:hover { color: var(--cream); }
 
   .nav-cta {
     background: var(--terracotta);
@@ -109,7 +110,7 @@
     display: block;
     width: 22px;
     height: 2px;
-    background: var(--text-dark);
+    background: rgba(245, 239, 226, 0.7);
     transition: transform 0.25s, opacity 0.25s;
   }
 
@@ -174,7 +175,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 4rem 4rem 4rem 5rem;
+    padding: 7rem 4rem 4rem 5rem;
   }
 
   .hero-eyebrow {
@@ -188,7 +189,7 @@
   }
 
   .hero-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Lora', serif;
     font-size: clamp(2.5rem, 4vw, 3.75rem);
     font-weight: 300;
     line-height: 1.08;
@@ -199,9 +200,10 @@
   }
 
   .hero-title em {
-    font-style: italic;
+    font-style: normal;
     color: var(--copper);
   }
+  .hero-title strong { font-weight: 700; }
 
   .hero-sub {
     font-size: 1rem;
@@ -323,7 +325,7 @@
   .stat-item {}
 
   .stat-num {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Lora', serif;
     font-size: 1.6rem;
     font-weight: 500;
     color: var(--terracotta);
@@ -356,7 +358,7 @@
   }
 
   .section-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Lora', serif;
     font-size: clamp(2rem, 3.5vw, 3rem);
     font-weight: 300;
     line-height: 1.15;
@@ -364,7 +366,7 @@
     margin-bottom: 1.5rem;
   }
 
-  .section-title em { font-style: italic; color: var(--copper); }
+  .section-title em { font-style: normal; font-weight: 600; color: inherit; }
 
   /* DIVIDER */
   .divider {
@@ -402,7 +404,7 @@
   }
 
   .result-stat {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Lora', serif;
     font-size: 3rem;
     font-weight: 500;
     color: var(--terracotta);
@@ -459,7 +461,7 @@
   }
 
   .about-quote p {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Lora', serif;
     font-size: 1.3rem;
     font-style: italic;
     font-weight: 300;
@@ -520,7 +522,7 @@
   }
 
   .cert-band-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Lora', serif;
     font-size: 1.6rem;
     font-weight: 400;
     color: var(--cream);
@@ -678,7 +680,7 @@
   }
 
   .book-band-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Lora', serif;
     font-size: 1.8rem;
     font-weight: 300;
     color: var(--cream);
@@ -720,7 +722,7 @@
   }
 
   .footer-wordmark {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Lora', serif;
     font-size: 0.95rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -888,24 +890,25 @@
       position: absolute;
       top: 100%;
       left: 0; right: 0;
-      background: rgba(245, 239, 226, 0.98);
+      background: rgba(28, 18, 8, 0.98);
       backdrop-filter: blur(12px);
       flex-direction: column;
       align-items: stretch;
       gap: 0;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       padding: 0.5rem 0;
     }
 
     .nav-links.open { display: flex; }
 
-    .nav-links li { border-bottom: 1px solid var(--border); }
+    .nav-links li { border-bottom: 1px solid rgba(255,255,255,0.08); }
     .nav-links li:last-child { border-bottom: none; }
 
     .nav-links a {
       display: block;
       padding: 0.85rem 1.5rem;
       font-size: 0.85rem;
+      color: rgba(245, 239, 226, 0.6);
     }
 
     .nav-cta {
@@ -951,7 +954,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-wordmark"><img src="apis-logo.svg" alt="APIS Applied Pollination Institute of Science" class="nav-logo"></a>
+  <a href="#" class="nav-wordmark"><img src="apis-logo-inverse.svg" alt="APIS Applied Pollination Institute of Science" class="nav-logo"></a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#results">Results</a></li>
     <li><a href="#about">About</a></li>
@@ -970,11 +973,11 @@
   <div class="hero-texture"></div>
 
   <div class="hero-left">
-    <p class="hero-eyebrow">Applied Pollination Institute of Science</p>
+
     <h1 class="hero-title">
       Pollination<br>
       management<br>
-      <em>that moves yield.</em>
+      <strong>that moves yield</strong>
     </h1>
     <p class="hero-sub">
       Expert pollination consulting for commercial growers and agricultural operations. One wrong decision on density, timing, placement, or pesticide use during a short bloom window can directly cost you a crop.
@@ -1013,7 +1016,7 @@
 <!-- RESULTS -->
 <section class="results-section" id="results">
   <div class="section-inner">
-    <p class="section-label reveal">Proven in the Field</p>
+
     <h2 class="section-title reveal">
       Pollination management<br><em>delivers measurable results.</em>
     </h2>
@@ -1081,7 +1084,7 @@
 <div class="cert-band">
   <div class="cert-band-inner">
     <div class="cert-band-text">
-      <p class="cert-band-eyebrow">Also from APIS</p>
+
       <p class="cert-band-title">Become a Certified Advisor in Agricultural Pollination Management</p>
       <p class="cert-band-sub">The first professional credential in agricultural pollination management. Built for crop advisors who want to offer growers something no one else can.</p>
     </div>
@@ -1101,7 +1104,7 @@
   <div class="section-inner">
     <div class="contact-grid">
       <div>
-        <p class="section-label reveal">Get in Touch</p>
+
         <h2 class="section-title reveal">Start a<br><em>conversation.</em></h2>
         <div class="contact-intro reveal">
           <p>Whether you're dealing with a specific in-season problem or want to think through a longer-term pollination management strategy, reach out and describe what you're working on.</p>
