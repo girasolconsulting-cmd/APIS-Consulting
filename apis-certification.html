@@ -6,19 +6,20 @@
 <title>APIS Certified Pollination Management Course | Get Early Access</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --dark: #1a1008;
+    --dark: #1c1208;
     --terracotta: #8b3a1e;
     --copper: #b85c2a;
     --gold: #c8842a;
     --olive: #4a5c2a;
-    --olive-light: #6b7c3e;
+    --olive-light: #8d9a6b;
+    --clay: #c99a7f;
     --cream: #f5efe2;
     --cream-2: #ede4d0;
     --cream-3: #faf6ee;
-    --text-dark: #1e1208;
+    --text-dark: #1c1208;
     --text-body: #3a2a18;
     --text-muted: #7a6848;
     --border: rgba(139, 58, 30, 0.18);
@@ -46,9 +47,9 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 2rem;
-    background: rgba(245, 239, 226, 0.94);
+    background: var(--dark);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
 
   .nav-logo { height: 36px; width: auto; display: block; }
@@ -57,11 +58,11 @@
     font-size: 0.72rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: rgba(245, 239, 226, 0.6);
     text-decoration: none;
     transition: color 0.2s;
   }
-  .nav-back:hover { color: var(--terracotta); }
+  .nav-back:hover { color: var(--cream); }
 
   /* FLYER SHEET */
   .sheet {
@@ -105,6 +106,7 @@
   }
 
   .wordmark {
+    font-family: 'Lora', serif;
     font-size: 1.65rem;
     font-weight: 300;
     letter-spacing: 0.01em;
@@ -427,6 +429,7 @@
   }
 
   .form-success-title {
+    font-family: 'Lora', serif;
     font-size: 1.4rem;
     font-weight: 300;
     color: var(--text-dark);
@@ -465,6 +468,7 @@
   }
 
   .consult-band-title {
+    font-family: 'Lora', serif;
     font-size: 1.25rem;
     font-weight: 300;
     color: var(--text-dark);
@@ -537,7 +541,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="index.html"><img src="apis-logo.svg" alt="APIS Applied Pollination Institute of Science" class="nav-logo"></a>
+  <a href="index.html"><img src="apis-logo-inverse.svg" alt="APIS Applied Pollination Institute of Science" class="nav-logo"></a>
   <a href="index.html" class="nav-back">← APIS Consulting</a>
 </nav>
 
@@ -704,7 +708,6 @@
 <div class="consult-band">
   <div class="consult-band-inner">
     <div>
-      <p class="consult-band-eyebrow">Also from APIS</p>
       <p class="consult-band-title">Need pollination expertise now?</p>
       <p class="consult-band-sub">APIS Consulting offers direct advisory services for growers and agricultural operations while the credential program is in development.</p>
     </div>
