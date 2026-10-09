@@ -70,6 +70,11 @@ button:hover{background:var(--terracotta-dark)}button:disabled{opacity:.6;cursor
 #thanks .thx-head img{height:64px;width:auto;flex:none}
 footer{border-top:1px solid var(--hair);padding:1.5rem;font-size:0.8rem;color:var(--dark-green)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75rem}
+.paygroup{display:none;flex-direction:column;gap:0.5rem;margin:0.15rem 0 0.35rem 1.9rem}
+.paygroup.show{display:flex}
+.paychoice{display:flex;gap:0.75rem;align-items:flex-start;cursor:pointer;line-height:1.5}
+.paychoice input{accent-color:var(--terracotta);margin:0.25rem 0 0;width:16px;height:16px;flex:none}
+.paychoice b{font-weight:500;color:var(--text-strong)}
 </style>
 </head>
 <body>
@@ -81,7 +86,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75r
     <div>
       <div class="eyebrow">APIS Certified Pollination Advisor</div>
       <h1>Hold your founding seat</h1>
-      <p>Reserve a place in the founding cohort at the founding price. No payment today. We will follow up with enrollment details and an invoice.</p>
+      <p>Reserve a place in the founding cohort at the introductory price.</p>
     </div>
     <div class="credit">Photo: A. De la Luz</div>
   </div>
@@ -91,7 +96,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75r
     <span class="eyebrow" style="color:var(--terracotta);flex-basis:100%">Founding Cohort</span>
     <span class="amt">$1,200</span>
     <span class="reg">Regular tuition $1,500</span>
-    <span class="note">First 50 advisors or until March 31, 2027. First cohort opens November 2026.</span>
+    <span class="note">Available to the first 50 advisors or until Nov 1, 2026. First cohort opens November 2026.</span>
   </div>
 </section>
 <main>
@@ -108,6 +113,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75r
       <fieldset>
         <div class="legend">What would you like? <span class="req">*</span></div>
         <label class="choice"><input type="radio" name="intent" value="Hold founding seat"><span><b>Hold a founding seat at $1,200.</b> I plan to enroll. Your seat is held for 5 days while we send enrollment details and an invoice.<span class="ticker" id="ticker"><span class="tline"><span class="tnum" id="seatsLeft"></span><span id="seatsLabel">of 50 founding seats left</span></span><span class="tbar"><span class="tfill" id="seatsFill"></span></span></span></span></label>
+        <div class="paygroup" id="paygroup">
+          <div class="legend">How would you like to pay? <span class="req">*</span></div>
+          <label class="paychoice"><input type="radio" name="payment" value="Deposit $200"><span><b>$200 deposit now.</b> Fully refundable until the course starts. The remaining $1,000 is due before the course begins.</span></label>
+          <label class="paychoice"><input type="radio" name="payment" value="Pay in full $1,200"><span><b>Pay in full, $1,200.</b></span></label>
+        </div>
         <label class="choice"><input type="radio" name="intent" value="Updates only"><span><b>Keep me posted.</b> I am interested but not ready to commit. Send me program updates.</span></label>
       </fieldset>
       <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -125,9 +135,14 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75r
 </main>
 <footer><div class="wrap"><span>© 2026 Applied Pollination Institute of Science</span><a href="https://apisinstitute.org">apisinstitute.org</a></div></footer>
 <script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwIfsvczbTawKxesCSpfD32pueqvw_5FbgTsiDRD_tUq0kEuGTpr_04hIU6ywcOQmnxbg/exec'; // same sheet as core-course-interest
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwRsA7f9VisHCf471Fe-1YIJCbTki7F9_8MzgD0uB2VQvJW55gkfT8hjzjbbMWqmQStyQ/exec'; // Founding Seats tab
 const f = document.getElementById('f'), err = document.getElementById('err'), btn = document.getElementById('btn');
 f.addEventListener('input', () => { err.textContent = ''; });
+// Show the payment choice only when they choose to hold a seat.
+f.addEventListener('change', () => {
+  const held = (f.querySelector('input[name=intent]:checked') || {}).value === 'Hold founding seat';
+  document.getElementById('paygroup').classList.toggle('show', held);
+});
 // Seat ticker: ask the sheet how many founding seats are left. Hidden if it can't be read.
 fetch(SHEET_URL).then(r => r.json()).then(d => {
   if (!d || typeof d.left !== 'number') return;
@@ -145,6 +160,8 @@ f.addEventListener('submit', e => {
   if (!v('role')) return err.textContent = 'Add your role.';
   if (!v('crops')) return err.textContent = 'Add your primary crop(s).';
   if (!intent) return err.textContent = 'Choose hold a seat or keep me posted.';
+  const payment = intent === 'Hold founding seat' ? ((f.querySelector('input[name=payment]:checked') || {}).value || '') : '';
+  if (intent === 'Hold founding seat' && !payment) return err.textContent = 'Choose a $200 deposit or pay in full.';
   if (v('website')) return; // spam trap
   const payload = {
     timestamp: new Date().toLocaleString(),
@@ -154,7 +171,8 @@ f.addEventListener('submit', e => {
     structures: [], structOther: '', pollinators: [], pollOther: '',
     source: new URLSearchParams(location.search).get('src') || 'direct',
     role: v('role'),
-    intent
+    intent,
+    payment
   };
   btn.disabled = true; btn.textContent = 'Sending...';
   const showThanks = (seat) => {
