@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order landmark signs · APIS</title>
+<meta name="description" content="Order replacement landmark signs by code, or new sign sets for a block. Applied Pollination Institute of Science.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --off-black:#1c1208; --off-white:#fdf9f1; --paper:#fffdf9; --cream:#f3e9d7; --cream-light:#f8f1e6;
+  --terracotta:#8b3a1e; --terracotta-dark:#6f2d14; --dark-green:#4a5c2a; --light-green:#8d9a6b;
+  --clay:#c99a7f; --honey:#e8bd6d; --text-strong:#1c1208; --text-body:#33241a; --text-muted:#4a5c2a;
+  --hair:rgba(74,92,42,0.2); --strong:rgba(74,92,42,0.45);
+  --display:'Lora',Georgia,'Times New Roman',serif; --sans:'DM Sans',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--text-body);font-family:var(--sans);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--terracotta)} a:hover{color:var(--terracotta-dark)}
+.wrap{max-width:640px;margin:0 auto}
+.eyebrow{font-family:var(--display);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--terracotta)}
+
+/* Header */
+header.hero{position:relative;background:var(--off-black);color:var(--off-white);padding:2.25rem 1.5rem 3.25rem;overflow:hidden}
+header.hero .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:sepia(10%) contrast(1.02)}
+header.hero .scrim{position:absolute;inset:0;background:linear-gradient(rgba(28,18,8,.55),rgba(28,18,8,.72))}
+header.hero .wrap{position:relative;display:flex;flex-direction:column;gap:2rem;padding-top:1rem}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.topbar img{height:44px;width:auto;display:block}
+.lang{display:flex;border:1px solid rgba(253,249,241,.35);border-radius:2px;overflow:hidden}
+.lang button{appearance:none;border:0;background:transparent;color:rgba(253,249,241,.8);font:500 .75rem/1 var(--sans);letter-spacing:.1em;padding:.6rem .8rem;min-height:36px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--off-white);color:var(--off-black)}
+header.hero .eyebrow{color:var(--honey)}
+header.hero h1{margin:.6rem 0 0;font-family:var(--display);font-weight:400;font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.12;letter-spacing:-.01em;text-wrap:balance}
+header.hero p{margin:1rem 0 0;max-width:560px;font-size:1rem;line-height:1.75;color:rgba(253,249,241,.82)}
+
+/* Form */
+main{padding:2.75rem 1.5rem 4rem}
+form,#rest{display:flex;flex-direction:column;gap:2.75rem}
+section.block{display:flex;flex-direction:column;gap:1.1rem}
+h2{margin:0;font-family:var(--display);font-weight:400;font-size:1.45rem;line-height:1.2;color:var(--text-strong)}
+.hint{margin:0;font-size:.85rem;color:var(--text-muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:1rem}
+.field{display:flex;flex-direction:column;gap:.4rem;min-width:0}
+.field label,.field .lbl{font-family:var(--display);font-size:1.02rem;line-height:1.25;color:var(--text-strong)}
+.field .opt{font-family:var(--sans);font-size:.8rem;color:var(--text-muted)}
+input,textarea,select{width:100%;font:300 .95rem/1.4 var(--sans);color:var(--text-strong);background:var(--paper);border:1px solid var(--hair);border-radius:2px;padding:.75rem 1rem;min-height:46px;transition:border-color .2s ease}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--terracotta)}
+input[aria-invalid="true"]{border-color:var(--terracotta)}
+textarea{min-height:88px;resize:vertical}
+input.code{text-transform:uppercase;letter-spacing:.04em}
+
+.rows{display:flex;flex-direction:column;gap:.75rem}
+.row{display:grid;gap:.75rem;align-items:end;padding:1rem;background:var(--cream-light);border:1px solid var(--hair);border-radius:2px}
+.row.sign{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 96px 44px}
+.row.set{grid-template-columns:minmax(0,1.4fr) 120px 120px 44px}
+.row .field label{font-size:.92rem}
+.row .calc{font-size:.8rem;color:var(--text-muted);grid-column:1/-1;margin-top:-.25rem}
+.remove{appearance:none;width:44px;height:46px;border:1px solid var(--hair);border-radius:2px;background:var(--paper);color:var(--text-muted);cursor:pointer;font:400 1.1rem/1 var(--sans)}
+.remove:hover{border-color:var(--terracotta);color:var(--terracotta)}
+.add{appearance:none;align-self:flex-start;border:1px solid var(--strong);background:transparent;color:var(--text-strong);border-radius:2px;padding:.7rem 1.1rem;min-height:44px;font:500 .8rem/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:border-color .2s ease,color .2s ease}
+.add:hover{border-color:var(--terracotta);color:var(--terracotta)}
+
+.rule{margin:0;padding:1rem 1.1rem;background:var(--cream);border-radius:2px;font-size:.85rem;line-height:1.65;color:var(--text-body)}
+.rule strong{font-weight:500;color:var(--text-strong)}
+
+/* Choice gate */
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:1rem}
+.choice{appearance:none;text-align:left;display:flex;flex-direction:column;gap:.4rem;padding:1.25rem 1.25rem 1.3rem;background:var(--paper);border:1px solid var(--strong);border-radius:2px;cursor:pointer;font:inherit;color:inherit;transition:border-color .2s ease,background .2s ease,transform .15s ease}
+.choice:hover{border-color:var(--terracotta);transform:translateY(-1px)}
+.choice[aria-checked="true"]{border-color:var(--terracotta);background:var(--cream-light);box-shadow:inset 0 0 0 1px var(--terracotta)}
+.choice .ct{font-family:var(--display);font-size:1.2rem;line-height:1.25;color:var(--text-strong)}
+.choice .cd{font-size:.88rem;line-height:1.6;color:var(--text-body)}
+[hidden]{display:none !important}
+
+/* Summary */
+.summary{background:var(--off-black);color:var(--off-white);border-radius:2px;padding:1.5rem 1.5rem 1.25rem;display:flex;flex-direction:column;gap:.75rem}
+.summary .eyebrow{color:var(--honey)}
+.summary dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:.45rem 0;font-size:.92rem}
+.summary dt{color:rgba(253,249,241,.78)} .summary dd{margin:0;padding-left:1rem;text-align:right;font-variant-numeric:tabular-nums}
+.summary .total{border-top:1px solid rgba(253,249,241,.25);padding-top:.7rem;margin-top:.2rem;font-family:var(--display);font-size:1.25rem;color:var(--off-white)}
+.summary .note{margin:0;font-size:.8rem;line-height:1.6;color:rgba(253,249,241,.65)}
+
+.actions{display:flex;flex-direction:column;gap:.75rem}
+.btn{appearance:none;align-self:flex-start;border:0;border-radius:2px;background:var(--terracotta);color:var(--off-white);padding:.95rem 1.6rem;min-height:48px;font:500 .8rem/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .2s ease,transform .15s ease}
+.btn:hover{background:var(--terracotta-dark);transform:translateY(-1px)}
+.btn[disabled]{opacity:.6;cursor:wait;transform:none}
+.error{margin:0;color:var(--terracotta);font-size:.9rem}
+.fine{margin:0;font-size:.78rem;color:var(--text-muted);line-height:1.6}
+
+/* Thank you */
+.thanks{display:none;flex-direction:column;gap:1.25rem}
+.thanks h2{font-size:2rem;line-height:1.15}
+.thanks .ref{font-family:var(--display);font-size:1.1rem;color:var(--text-strong)}
+body.done form{display:none} body.done .thanks{display:flex}
+
+footer{border-top:1px solid var(--hair);padding:1.5rem;font-size:.78rem;color:var(--text-muted)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.75rem}
+
+@media (max-width:560px){
+  .row.sign{grid-template-columns:minmax(0,1fr) 80px 44px}
+  .row.sign .tunnel{grid-column:1/-1;order:3}
+  .row.set{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px}
+  .row.set .bname{grid-column:1/-1}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img class="photo" src="field-4-hero.jpg" alt="">
+  <div class="scrim"></div>
+  <div class="wrap">
+    <div class="topbar">
+      <img src="apis-logo-inverse.svg" alt="APIS, Applied Pollination Institute of Science">
+      <div class="lang" role="group" aria-label="Language / Idioma">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="es" aria-pressed="false">ES</button>
+      </div>
+    </div>
+    <div>
+      <div class="eyebrow">Honey Bee Highway</div>
+      <h1 data-t="title">Order landmark signs</h1>
+      <p data-t="intro">Order replacement signs using the code printed on each sign, or new sign sets for a block. Fill in your order, then pay securely online.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+  <form id="order" novalidate>
+
+    <section class="block" aria-labelledby="h-choose">
+      <h2 id="h-choose" data-t="chooseTitle">What do you need?</h2>
+      <div class="choices" role="radiogroup" aria-labelledby="h-choose">
+        <button type="button" class="choice" role="radio" aria-checked="false" data-mode="repl">
+          <span class="ct" data-t="optReplT">Replacement signs</span>
+          <span class="cd" data-t="optReplD">Replace a damaged or missing sign using the code printed on it.</span>
+        </button>
+        <button type="button" class="choice" role="radio" aria-checked="false" data-mode="sets">
+          <span class="ct" data-t="optSetsT">New sign sets</span>
+          <span class="cd" data-t="optSetsD">Signs for new tunnels, worked out block by block.</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="block" id="secRepl" aria-labelledby="h-repl" hidden>
+      <div>
+        <h2 id="h-repl" data-t="replTitle">Replacement signs</h2>
+        <p class="hint" id="priceHint" style="color:var(--text-strong);font-weight:400"></p>
+        <p class="hint" data-t="replHint">The code is printed on each sign, for example BK-YB / ST-G. Add a row for each code.</p>
+      </div>
+      <div class="rows" id="signRows"></div>
+      <button type="button" class="add" id="addSign" data-t="addSign">+ Add a sign code</button>
+    </section>
+
+    <section class="block" id="secSets" aria-labelledby="h-sets" hidden>
+      <div>
+        <h2 id="h-sets" data-t="setsTitle">New sign sets</h2>
+        <p class="hint" id="setPriceHint" style="color:var(--text-strong);font-weight:400"></p>
+        <p class="hint" data-t="setsHint">One set is three copies of one unique design for one signed tunnel. Add one row per block.</p>
+      </div>
+      <p class="rule" data-t-html="rule"><strong>Placement rule:</strong> one signed tunnel in every ten, with a five-tunnel buffer at each end of the block. We fill in the signed tunnels for you; change the number to match your generator plan.</p>
+      <div class="rows" id="setRows"></div>
+      <button type="button" class="add" id="addSet" data-t="addSet">+ Add a block</button>
+    </section>
+
+    <div id="rest" hidden>
+    <section class="block" aria-labelledby="h-you">
+      <h2 id="h-you" data-t="youTitle">Your details</h2>
+      <div class="grid">
+        <div class="field"><label for="name" data-t="name">Name</label><input id="name" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="farm" data-t="farm">Farm or business name</label><input id="farm" name="farm" autocomplete="organization" required></div>
+        <div class="field"><label for="email" data-t="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="phone"><span data-t="phone">Phone</span> <span class="opt" data-t="optional">(optional)</span></label><input id="phone" name="phone" type="tel" autocomplete="tel"></div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="h-ship">
+      <h2 id="h-ship" data-t="shipTitle">Ship to</h2>
+      <div class="grid">
+        <div class="field" style="grid-column:1/-1"><label for="addr" data-t="addr">Street address</label><input id="addr" name="addr" autocomplete="street-address" required></div>
+        <div class="field"><label for="city" data-t="city">City</label><input id="city" name="city" autocomplete="address-level2" required></div>
+        <div class="field"><label for="state" data-t="state">State</label><input id="state" name="state" autocomplete="address-level1" required></div>
+        <div class="field"><label for="zip" data-t="zip">ZIP code</label><input id="zip" name="zip" autocomplete="postal-code" inputmode="numeric" required></div>
+        <div class="field"><label for="ranch"><span data-t="ranch">Ranch or site name</span> <span class="opt" data-t="optional">(optional)</span></label><input id="ranch" name="ranch"></div>
+        <div class="field" style="grid-column:1/-1"><label for="notes"><span data-t="notes">Notes</span> <span class="opt" data-t="optional">(optional)</span></label><textarea id="notes" name="notes" data-tp="notesPh" placeholder="Delivery instructions, deadlines, anything we should know."></textarea></div>
+      </div>
+    </section>
+
+    <section class="summary" aria-live="polite">
+      <div class="eyebrow" data-t="sumTitle">Order summary</div>
+      <dl id="sumList"></dl>
+      <p class="note" id="sumNote"></p>
+    </section>
+
+    <div class="actions">
+      <p class="error" id="err" role="alert" hidden></p>
+      <button type="submit" class="btn" id="submit">Continue to payment →</button>
+      <p class="fine" data-t-html="fine">Questions? <a href="mailto:hello@apisinstitute.org">hello@apisinstitute.org</a> · 310-439-8561</p>
+    </div>
+    </div>
+  </form>
+
+  <div class="thanks" id="thanks">
+    <div class="eyebrow" data-t="thxEyebrow">Order received</div>
+    <h2 id="thxTitle">Thank you.</h2>
+    <p class="ref"><span data-t="thxRef">Order number</span>: <span id="thxId"></span></p>
+    <p id="thxBody" style="margin:0"></p>
+    <p class="fine" data-t-html="fine">Questions? <a href="mailto:hello@apisinstitute.org">hello@apisinstitute.org</a> · 310-439-8561</p>
+  </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Applied Pollination Institute of Science</span>
+    <a href="https://apisinstitute.org">apisinstitute.org</a>
+  </div>
+</footer>
+
+<script>
+/* ===== SETTINGS: fill these in before going live ===== */
+var CONFIG = {
+  // Web app URL from the orders Sheet's Apps Script (Deploy > New deployment > Web app).
+  SHEET_URL: 'https://script.google.com/a/macros/apisinstitute.org/s/AKfycbyXvaacQoUrmPGqo-yZOwMVr8t4ij7o0JsoXs5Q4dVD4JILsVzdxMg-4xq-cShdAec-NQ/exec',
+  // Stripe payment link set to "Customers choose what to pay". The page pre-fills the order total.
+  STRIPE_LINKS: {
+    repl: 'https://buy.stripe.com/dRmbJ20qL4TrfJY4zo8og03',  // replacement signs
+    sets: 'https://buy.stripe.com/aFa14o2yT99HfJY8PE8og04'   // new sign sets
+  },
+  // Prices in US dollars. Leave as null to take orders without prices: you then email a quote and payment link.
+  PRICE_PER_SIGN: 50,       // one replacement sign
+  PRICE_PER_SIGN_BULK: 45,  // each replacement sign when the order has BULK_MIN or more
+  BULK_MIN: 3,
+  PRICE_PER_SET: 135,       // one signed tunnel = 3 signs at the 3+ rate ($45 x 3)
+  SHIPPING: 0               // flat shipping per order
+};
+/* ===================================================== */
+
+var T = {
+  en: {
+    title:'Order landmark signs',
+    intro:'Order replacement signs using the code printed on each sign, or new sign sets for a block. Fill in your order, then pay securely online.',
+    introQuote:'Order replacement signs using the code printed on each sign, or new sign sets for a block. Send your order and we will email you a secure payment link.',
+    replTitle:'Replacement signs', replHint:'The code is printed on each sign, for example BK-YB / ST-G. Add a row for each code.',
+    chooseTitle:'What do you need?', optReplT:'Replacement signs', optReplD:'Replace a damaged or missing sign using the code printed on it.', optSetsT:'New sign sets', optSetsD:'Signs for new tunnels, worked out block by block.', eChoose:'Choose replacement signs or new sign sets.',
+    code:'Sign code', tunnel:'Tunnel ID', qty:'Quantity', optional:'(optional)', addSign:'+ Add a sign code', remove:'Remove',
+    setsTitle:'New sign sets', setsHint:'One set is three copies of one unique design for one signed tunnel. Add one row per block.',
+    rule:'<strong>Placement rule:</strong> one signed tunnel in every ten, with a five-tunnel buffer at each end of the block. We fill in the signed tunnels for you; change the number to match your generator plan.',
+    block:'Block name', tunnels:'Tunnels in block', signed:'Signed tunnels', addSet:'+ Add a block',
+    calc:function(n){return n+' sets × 3 = '+(n*3)+' signs';},
+    youTitle:'Your details', name:'Name', farm:'Farm or business name', email:'Email', phone:'Phone',
+    shipTitle:'Ship to', addr:'Street address', city:'City', state:'State', zip:'ZIP code', ranch:'Ranch or site name', notes:'Notes',
+    notesPh:'Delivery instructions, deadlines, anything we should know.',
+    sumTitle:'Order summary', sRepl:'Replacement signs', sSets:'New sign sets', sSigns:'Total signs', sShip:'Shipping', sTotal:'Total',
+    tbd:'Quoted by email',
+    noteLink:'We will email you a secure payment link for this total.',
+    setPriceHint:'$'+CONFIG.PRICE_PER_SET+' per set of 3 signs ($'+(CONFIG.PRICE_PER_SET/3)+' per sign).',
+    priceHint:'$'+CONFIG.PRICE_PER_SIGN+' per sign, or $'+CONFIG.PRICE_PER_SIGN_BULK+' each when you order '+CONFIG.BULK_MIN+' or more.',
+    notePay:'You will review and pay this amount on the secure Stripe checkout page.',
+    noteQuote:'We will confirm pricing and send a secure payment link by email.',
+    btnPay:'Continue to payment →', btnSend:'Send my order →', sending:'Sending…',
+    fine:'Questions? <a href="mailto:hello@apisinstitute.org">hello@apisinstitute.org</a> · 310-439-8561',
+    eEmpty:'Add at least one replacement sign or one block of new sets.',
+    eFields:'Please fill in the highlighted fields.',
+    eSend:'Something went wrong sending your order. Please try again, or email hello@apisinstitute.org.',
+    thxEyebrow:'Order received', thxRef:'Order number',
+    thx:function(n){return n?'Thank you, '+n+'.':'Thank you.';},
+    thxPaid:'Your payment went through. We will email you when your signs ship.',
+    thxQuote:'We will email you a quote and a secure payment link shortly.'
+  },
+  es: {
+    title:'Pedir señales',
+    intro:'Pida señales de repuesto con el código impreso en cada señal, o juegos nuevos para un bloque. Complete su pedido y pague en línea de forma segura.',
+    introQuote:'Pida señales de repuesto con el código impreso en cada señal, o juegos nuevos para un bloque. Envíe su pedido y le mandaremos un enlace de pago seguro por correo.',
+    replTitle:'Señales de repuesto', replHint:'El código está impreso en cada señal, por ejemplo BK-YB / ST-G. Agregue una fila por código.',
+    chooseTitle:'¿Qué necesita?', optReplT:'Señales de repuesto', optReplD:'Reemplace una señal dañada o perdida con el código impreso en ella.', optSetsT:'Juegos nuevos de señales', optSetsD:'Señales para túneles nuevos, calculadas por bloque.', eChoose:'Elija señales de repuesto o juegos nuevos.',
+    code:'Código de la señal', tunnel:'Número de túnel', qty:'Cantidad', optional:'(opcional)', addSign:'+ Agregar un código', remove:'Quitar',
+    setsTitle:'Juegos nuevos de señales', setsHint:'Un juego son tres copias de un diseño único para un túnel con señales. Agregue una fila por bloque.',
+    rule:'<strong>Regla de colocación:</strong> un túnel con señales cada diez, con un margen de cinco túneles en cada extremo del bloque. Calculamos los túneles con señales por usted; cambie el número según su plan del generador.',
+    block:'Nombre del bloque', tunnels:'Túneles en el bloque', signed:'Túneles con señales', addSet:'+ Agregar un bloque',
+    calc:function(n){return n+' juegos × 3 = '+(n*3)+' señales';},
+    youTitle:'Sus datos', name:'Nombre', farm:'Nombre del rancho o empresa', email:'Correo electrónico', phone:'Teléfono',
+    shipTitle:'Enviar a', addr:'Dirección', city:'Ciudad', state:'Estado', zip:'Código postal', ranch:'Nombre del rancho o sitio', notes:'Notas',
+    notesPh:'Instrucciones de entrega, fechas límite, lo que debamos saber.',
+    sumTitle:'Resumen del pedido', sRepl:'Señales de repuesto', sSets:'Juegos nuevos', sSigns:'Total de señales', sShip:'Envío', sTotal:'Total',
+    tbd:'Cotización por correo',
+    noteLink:'Le enviaremos por correo un enlace de pago seguro por este total.',
+    setPriceHint:'$'+CONFIG.PRICE_PER_SET+' por juego de 3 señales ($'+(CONFIG.PRICE_PER_SET/3)+' por señal).',
+    priceHint:'$'+CONFIG.PRICE_PER_SIGN+' por señal, o $'+CONFIG.PRICE_PER_SIGN_BULK+' cada una al pedir '+CONFIG.BULK_MIN+' o más.',
+    notePay:'Revisará y pagará este monto en la página de pago segura de Stripe.',
+    noteQuote:'Confirmaremos el precio y le enviaremos un enlace de pago seguro por correo.',
+    btnPay:'Continuar al pago →', btnSend:'Enviar mi pedido →', sending:'Enviando…',
+    fine:'¿Preguntas? <a href="mailto:hello@apisinstitute.org">hello@apisinstitute.org</a> · 310-439-8561',
+    eEmpty:'Agregue al menos una señal de repuesto o un bloque de juegos nuevos.',
+    eFields:'Complete los campos marcados.',
+    eSend:'Hubo un problema al enviar su pedido. Intente de nuevo o escriba a hello@apisinstitute.org.',
+    thxEyebrow:'Pedido recibido', thxRef:'Número de pedido',
+    thx:function(n){return n?'Gracias, '+n+'.':'Gracias.';},
+    thxPaid:'Su pago fue procesado. Le avisaremos por correo cuando sus señales se envíen.',
+    thxQuote:'En breve le enviaremos una cotización y un enlace de pago seguro.'
+  }
+};
+
+var lang = 'en';
+try { var saved = localStorage.getItem('apisOrderLang'); if (saved === 'es' || saved === 'en') lang = saved; else if ((navigator.language||'').toLowerCase().indexOf('es') === 0) lang = 'es'; } catch (e) {}
+try { var qp = new URLSearchParams(location.search).get('lang'); if (qp === 'es' || qp === 'en') lang = qp; } catch (e) {}
+
+function isPriced(){ return mode === 'repl' ? CONFIG.PRICE_PER_SIGN != null : mode === 'sets' ? CONFIG.PRICE_PER_SET != null : false; }
+function stripeLink(){ return (CONFIG.STRIPE_LINKS || {})[mode] || ''; }
+function canPay(){ return isPriced() && !!stripeLink() && !!CONFIG.SHEET_URL; } // never send to checkout without logging the order first
+function signPrice(q){ return (CONFIG.PRICE_PER_SIGN_BULK != null && q >= CONFIG.BULK_MIN) ? CONFIG.PRICE_PER_SIGN_BULK : CONFIG.PRICE_PER_SIGN; }
+var $ = function(id){ return document.getElementById(id); };
+var t = function(k){ return T[lang][k]; };
+var money = function(n){ return '$' + n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); };
+
+function signedFor(n){ n = parseInt(n,10) || 0; if (n <= 0) return 0; if (n <= 10) return 1; return Math.ceil((n - 10) / 10); }
+
+var mode = null;
+var uid = 0;
+function addSignRow(){
+  var id = ++uid, row = document.createElement('div');
+  row.className = 'row sign';
+  row.innerHTML =
+    '<div class="field"><label for="c'+id+'" data-t="code"></label><input id="c'+id+'" class="code" data-k="code" placeholder="BK-YB / ST-G" autocomplete="off"></div>'+
+    '<div class="field tunnel"><label for="t'+id+'"><span data-t="tunnel"></span> <span class="opt" data-t="optional"></span></label><input id="t'+id+'" data-k="tunnel" autocomplete="off"></div>'+
+    '<div class="field"><label for="q'+id+'" data-t="qty"></label><input id="q'+id+'" data-k="qty" type="number" min="1" step="1" value="1" inputmode="numeric"></div>'+
+    '<button type="button" class="remove" data-ta="remove">×</button>';
+  $('signRows').appendChild(row); wireRow(row); translate(row); update();
+}
+function addSetRow(){
+  var id = ++uid, row = document.createElement('div');
+  row.className = 'row set';
+  row.innerHTML =
+    '<div class="field bname"><label for="b'+id+'" data-t="block"></label><input id="b'+id+'" data-k="block" autocomplete="off"></div>'+
+    '<div class="field"><label for="n'+id+'" data-t="tunnels"></label><input id="n'+id+'" data-k="tunnels" type="number" min="1" step="1" inputmode="numeric"></div>'+
+    '<div class="field"><label for="s'+id+'" data-t="signed"></label><input id="s'+id+'" data-k="signed" type="number" min="0" step="1" inputmode="numeric"></div>'+
+    '<button type="button" class="remove" data-ta="remove">×</button>'+
+    '<div class="calc" data-calc></div>';
+  $('setRows').appendChild(row); wireRow(row); translate(row); update();
+}
+function wireRow(row){
+  row.querySelector('.remove').addEventListener('click', function(){ row.remove(); update(); });
+  var tn = row.querySelector('[data-k="tunnels"]'), sg = row.querySelector('[data-k="signed"]');
+  if (tn) {
+    tn.addEventListener('input', function(){ if (!sg.dataset.touched) sg.value = tn.value ? signedFor(tn.value) : ''; update(); });
+    sg.addEventListener('input', function(){ sg.dataset.touched = '1'; update(); });
+  }
+  row.querySelectorAll('input').forEach(function(i){ i.addEventListener('input', update); });
+}
+
+function collect(){
+  var signs = [], sets = [];
+  if (mode === 'repl') document.querySelectorAll('#signRows .row').forEach(function(r){
+    var code = r.querySelector('[data-k="code"]').value.trim().toUpperCase();
+    var qty = parseInt(r.querySelector('[data-k="qty"]').value,10) || 0;
+    if (qty > 0) signs.push({ code: code, tunnel: r.querySelector('[data-k="tunnel"]').value.trim(), qty: qty, el: r });
+  });
+  if (mode === 'sets') document.querySelectorAll('#setRows .row').forEach(function(r){
+    var tunnels = parseInt(r.querySelector('[data-k="tunnels"]').value,10) || 0;
+    var signed = parseInt(r.querySelector('[data-k="signed"]').value,10) || 0;
+    var block = r.querySelector('[data-k="block"]').value.trim();
+    if (block || tunnels || signed) sets.push({ block: block, tunnels: tunnels, signed: signed, el: r });
+  });
+  var replQty = signs.reduce(function(a,s){ return a + s.qty; }, 0);
+  var setQty = sets.reduce(function(a,s){ return a + s.signed; }, 0);
+  var priced = isPriced();
+  var subtotal = !priced ? null : (mode === 'repl' ? replQty * signPrice(replQty) : setQty * CONFIG.PRICE_PER_SET);
+  var shipping = priced && (replQty + setQty) > 0 ? (CONFIG.SHIPPING || 0) : 0;
+  return { signs: signs, sets: sets, replQty: replQty, setQty: setQty, totalSigns: replQty + setQty * 3,
+           subtotal: subtotal, shipping: shipping, total: priced ? subtotal + shipping : null };
+}
+
+function update(){
+  var o = collect();
+  document.querySelectorAll('#setRows .row').forEach(function(r){
+    var n = parseInt(r.querySelector('[data-k="signed"]').value,10) || 0;
+    r.querySelector('[data-calc]').textContent = n ? t('calc')(n) : '';
+  });
+  var rows = [];
+  var priced = isPriced();
+  if (mode === 'repl') rows.push([t('sRepl'), o.replQty + (priced && o.replQty ? ' × ' + money(signPrice(o.replQty)) : '')]);
+  if (mode === 'sets') { rows.push([t('sSets'), o.setQty + (priced && o.setQty ? ' × ' + money(CONFIG.PRICE_PER_SET) : '')]); rows.push([t('sSigns'), String(o.totalSigns)]); }
+  if (priced && CONFIG.SHIPPING) rows.push([t('sShip'), money(o.shipping)]);
+  var html = rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>'; }).join('');
+  html += '<dt class="total">'+t('sTotal')+'</dt><dd class="total">'+(priced ? money(o.total) : t('tbd'))+'</dd>';
+  $('sumList').innerHTML = html;
+  $('sumNote').textContent = canPay() ? t('notePay') : priced ? t('noteLink') : t('noteQuote');
+  var ph = $('priceHint'); if (ph) ph.textContent = t('priceHint');
+  var sh = $('setPriceHint'); if (sh) sh.textContent = CONFIG.PRICE_PER_SET != null ? t('setPriceHint') : '';
+}
+
+function translate(scope){
+  scope = scope || document;
+  scope.querySelectorAll('[data-t]').forEach(function(el){ var v = t(el.getAttribute('data-t')); if (typeof v === 'string') el.textContent = v; });
+  scope.querySelectorAll('[data-t-html]').forEach(function(el){ el.innerHTML = t(el.getAttribute('data-t-html')); });
+  scope.querySelectorAll('[data-tp]').forEach(function(el){ el.placeholder = t(el.getAttribute('data-tp')); });
+  scope.querySelectorAll('[data-ta]').forEach(function(el){ el.setAttribute('aria-label', t(el.getAttribute('data-ta'))); });
+}
+function setLang(l){
+  lang = l; document.documentElement.lang = l;
+  try { localStorage.setItem('apisOrderLang', l); } catch (e) {}
+  document.querySelectorAll('.lang button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.lang === l)); });
+  translate();
+  $('submit').textContent = canPay() ? t('btnPay') : t('btnSend');
+  document.querySelector('[data-t="intro"]').textContent = canPay() ? t('intro') : t('introQuote');
+  document.title = t('title') + ' · APIS';
+  update();
+  if (document.body.classList.contains('done')) showThanks(lastThanks);
+}
+
+function orderId(){
+  var d = new Date(), p = function(n){ return String(n).padStart(2,'0'); };
+  var r = Math.random().toString(36).slice(2,6).toUpperCase();
+  return 'APIS-' + String(d.getFullYear()).slice(2) + p(d.getMonth()+1) + p(d.getDate()) + '-' + r;
+}
+
+var lastThanks = null;
+function showThanks(info){
+  lastThanks = info;
+  document.body.classList.add('done');
+  $('thxTitle').textContent = t('thx')(info.first || '');
+  $('thxId').textContent = info.id || '';
+  $('thxBody').textContent = info.paid ? t('thxPaid') : t('thxQuote');
+  window.scrollTo(0,0);
+}
+
+$('order').addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var err = $('err'); err.hidden = true;
+  document.querySelectorAll('[aria-invalid]').forEach(function(i){ i.removeAttribute('aria-invalid'); });
+  if (!mode) { err.textContent = t('eChoose'); err.hidden = false; return; }
+  var o = collect(), bad = [];
+  if (!o.signs.length && !o.sets.length) { err.textContent = t('eEmpty'); err.hidden = false; return; }
+  o.signs.forEach(function(s){ if (!s.code) bad.push(s.el.querySelector('[data-k="code"]')); if (s.qty < 1) bad.push(s.el.querySelector('[data-k="qty"]')); });
+  o.sets.forEach(function(s){ if (!s.tunnels) bad.push(s.el.querySelector('[data-k="tunnels"]')); if (s.signed < 1) bad.push(s.el.querySelector('[data-k="signed"]')); });
+  ['name','farm','email','addr','city','state','zip'].forEach(function(id){ var i = $(id); if (!i.value.trim() || (id === 'email' && !/\S+@\S+\.\S+/.test(i.value))) bad.push(i); });
+  if (bad.length) { bad.forEach(function(i){ i.setAttribute('aria-invalid','true'); }); err.textContent = t('eFields'); err.hidden = false; bad[0].focus(); return; }
+
+  var id = orderId(), v = function(k){ return $(k).value.trim(); };
+  var payload = {
+    orderId: id, timestamp: new Date().toLocaleString(), lang: lang,
+    name: v('name'), farm: v('farm'), email: v('email'), phone: v('phone'),
+    address: v('addr'), city: v('city'), state: v('state'), zip: v('zip'), ranch: v('ranch'), notes: v('notes'),
+    replacements: o.signs.map(function(s){ return { code: s.code, tunnel: s.tunnel, qty: s.qty }; }),
+    sets: o.sets.map(function(s){ return { block: s.block, tunnels: s.tunnels, signed: s.signed }; }),
+    replQty: o.replQty, setQty: o.setQty, totalSigns: o.totalSigns,
+    total: o.total, payment: canPay() ? 'Stripe checkout started' : 'Quote requested',
+    source: (new URLSearchParams(location.search).get('src') || 'direct')
+  };
+  var btn = $('submit'); btn.disabled = true; btn.textContent = t('sending');
+  var first = payload.name.split(/\s+/)[0];
+
+  var send = CONFIG.SHEET_URL
+    ? fetch(CONFIG.SHEET_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) })
+    : Promise.resolve();
+  send.then(function(){
+    if (canPay()) {
+      try { sessionStorage.setItem('apisOrder', JSON.stringify({ id: id, first: first })); } catch (e) {}
+      var link = stripeLink();
+      var url = link + (link.indexOf('?') < 0 ? '?' : '&') +
+        'prefilled_amount=' + Math.round(o.total * 100) +
+        '&prefilled_email=' + encodeURIComponent(payload.email) +
+        '&client_reference_id=' + encodeURIComponent(id) +
+        '&locale=' + lang;
+      location.href = url;
+    } else {
+      showThanks({ id: id, first: first, paid: false });
+    }
+  }).catch(function(){
+    btn.disabled = false; btn.textContent = canPay() ? t('btnPay') : t('btnSend');
+    err.textContent = t('eSend'); err.hidden = false;
+  });
+});
+
+document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click', function(){ setLang(b.dataset.lang); }); });
+function setMode(m){
+  mode = m;
+  document.querySelectorAll('.choice').forEach(function(c){ c.setAttribute('aria-checked', String(c.dataset.mode === m)); });
+  $('secRepl').hidden = m !== 'repl';
+  $('secSets').hidden = m !== 'sets';
+  $('rest').hidden = false;
+  $('err').hidden = true;
+  $('submit').textContent = canPay() ? t('btnPay') : t('btnSend');
+  update();
+}
+document.querySelectorAll('.choice').forEach(function(c){ c.addEventListener('click', function(){ setMode(c.dataset.mode); }); });
+try { var qm = new URLSearchParams(location.search).get('type'); if (qm === 'repl' || qm === 'sets') setTimeout(function(){ setMode(qm); }, 0); } catch (e) {}
+$('addSign').addEventListener('click', addSignRow);
+$('addSet').addEventListener('click', addSetRow);
+addSignRow(); addSetRow();
+setLang(lang);
+
+// Back from Stripe: set the payment link's confirmation to redirect to this page with ?paid=1
+try {
+  if (new URLSearchParams(location.search).get('paid') === '1') {
+    var info = {}; try { info = JSON.parse(sessionStorage.getItem('apisOrder') || '{}'); } catch (e) {}
+    showThanks({ id: info.id || '', first: info.first || '', paid: true });
+  }
+} catch (e) {}
+</script>
+</body>
+</html>
