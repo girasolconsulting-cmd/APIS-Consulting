@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seat Reserved | APIS</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c1208; --body: #33241a; --muted: #6b5a4a; --paper: #fffdf9;
+    --cream: #f3e9d7; --green: #4a5c2a; --clay: #8b3a1e; --line: rgba(74,92,42,0.25);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--body); font-family: 'DM Sans', system-ui, sans-serif; font-weight: 300; }
+  a { color: var(--clay); } a:hover { color: #6f2d14; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 4rem 1.5rem 3rem; display: flex; flex-direction: column; gap: 1.25rem; min-height: 100vh; }
+  .eyebrow { font-family: 'Lora', Georgia, serif; font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--clay); }
+  h1 { margin: 0; font-family: 'Lora', Georgia, serif; font-weight: 400; font-size: clamp(1.8rem, 5vw, 2.4rem); line-height: 1.15; color: var(--ink); text-wrap: balance; }
+  p { margin: 0; line-height: 1.7; }
+  .card { background: var(--cream); padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .card h2 { margin: 0; font-family: 'Lora', Georgia, serif; font-weight: 400; font-size: 1.1rem; color: var(--ink); }
+  ol { margin: 0; padding-left: 1.2rem; line-height: 1.7; }
+  .btn { align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; padding: 0 1.5rem; background: var(--green); color: #fdf9f1; text-decoration: none; font-weight: 500; }
+  .btn:hover { color: #fdf9f1; background: #3b4a21; }
+  footer { margin-top: auto; padding-top: 2rem; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem; font-size: 0.8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="eyebrow">Payment received</div>
+    <h1>Your seat is reserved.</h1>
+    <p>Thank you for enrolling in <i>Pollination Management in Controlled Environments</i>, offered by the Applied Pollination Institute of Science. A receipt from Stripe is on its way to your inbox.</p>
+    <div class="card">
+      <h2>What happens next</h2>
+      <ol>
+        <li>We'll email you course access details before the course opens.</li>
+        <li>Keep an eye on your inbox, and check spam for mail from apisinstitute.org.</li>
+      </ol>
+    </div>
+    <p>Questions in the meantime? <a href="mailto:hello@apisinstitute.org">hello@apisinstitute.org</a> · 310-439-8561</p>
+    <a class="btn" href="https://apisinstitute.org">Back to apisinstitute.org</a>
+    <footer>
+      <span>© 2026 Applied Pollination Institute of Science</span>
+      <a href="https://apisinstitute.org">apisinstitute.org</a>
+    </footer>
+  </main>
+</body>
+</html>
