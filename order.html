@@ -194,6 +194,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.75re
       <div class="eyebrow" data-t="sumTitle">Order summary</div>
       <dl id="sumList"></dl>
       <p class="note" id="sumNote"></p>
+      <p class="note" data-t="lead" style="color:var(--honey)">Please allow 2 weeks for your signs to be made and shipped.</p>
     </section>
 
     <div class="actions">
@@ -225,7 +226,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.75re
 /* ===== SETTINGS: fill these in before going live ===== */
 var CONFIG = {
   // Web app URL from the orders Sheet's Apps Script (Deploy > New deployment > Web app).
-  SHEET_URL: 'https://script.google.com/a/macros/apisinstitute.org/s/AKfycbyXvaacQoUrmPGqo-yZOwMVr8t4ij7o0JsoXs5Q4dVD4JILsVzdxMg-4xq-cShdAec-NQ/exec',
+  SHEET_URL: 'https://script.google.com/macros/s/AKfycbyXvaacQoUrmPGqo-yZOwMVr8t4ij7o0JsoXs5Q4dVD4JILsVzdxMg-4xq-cShdAec-NQ/exec',
   // Stripe payment link set to "Customers choose what to pay". The page pre-fills the order total.
   STRIPE_LINKS: {
     repl: 'https://buy.stripe.com/dRmbJ20qL4TrfJY4zo8og03',  // replacement signs
@@ -258,6 +259,7 @@ var T = {
     sumTitle:'Order summary', sRepl:'Replacement signs', sSets:'New sign sets', sSigns:'Total signs', sShip:'Shipping', sTotal:'Total',
     tbd:'Quoted by email',
     noteLink:'We will email you a secure payment link for this total.',
+    lead:'Please allow 2 weeks for your signs to be made and shipped.',
     setPriceHint:'$'+CONFIG.PRICE_PER_SET+' per set of 3 signs ($'+(CONFIG.PRICE_PER_SET/3)+' per sign).',
     priceHint:'$'+CONFIG.PRICE_PER_SIGN+' per sign, or $'+CONFIG.PRICE_PER_SIGN_BULK+' each when you order '+CONFIG.BULK_MIN+' or more.',
     notePay:'You will review and pay this amount on the secure Stripe checkout page.',
@@ -269,8 +271,8 @@ var T = {
     eSend:'Something went wrong sending your order. Please try again, or email hello@apisinstitute.org.',
     thxEyebrow:'Order received', thxRef:'Order number',
     thx:function(n){return n?'Thank you, '+n+'.':'Thank you.';},
-    thxPaid:'Your payment went through. We will email you when your signs ship.',
-    thxQuote:'We will email you a quote and a secure payment link shortly.'
+    thxPaid:'Your payment went through. Your signs will be made and shipped within 2 weeks, and we will email you when they ship.',
+    thxQuote:'We will email you a secure payment link shortly. Signs are made and shipped within 2 weeks of payment.'
   },
   es: {
     title:'Pedir señales',
@@ -289,6 +291,7 @@ var T = {
     sumTitle:'Resumen del pedido', sRepl:'Señales de repuesto', sSets:'Juegos nuevos', sSigns:'Total de señales', sShip:'Envío', sTotal:'Total',
     tbd:'Cotización por correo',
     noteLink:'Le enviaremos por correo un enlace de pago seguro por este total.',
+    lead:'Permita 2 semanas para fabricar y enviar sus señales.',
     setPriceHint:'$'+CONFIG.PRICE_PER_SET+' por juego de 3 señales ($'+(CONFIG.PRICE_PER_SET/3)+' por señal).',
     priceHint:'$'+CONFIG.PRICE_PER_SIGN+' por señal, o $'+CONFIG.PRICE_PER_SIGN_BULK+' cada una al pedir '+CONFIG.BULK_MIN+' o más.',
     notePay:'Revisará y pagará este monto en la página de pago segura de Stripe.',
@@ -300,8 +303,8 @@ var T = {
     eSend:'Hubo un problema al enviar su pedido. Intente de nuevo o escriba a hello@apisinstitute.org.',
     thxEyebrow:'Pedido recibido', thxRef:'Número de pedido',
     thx:function(n){return n?'Gracias, '+n+'.':'Gracias.';},
-    thxPaid:'Su pago fue procesado. Le avisaremos por correo cuando sus señales se envíen.',
-    thxQuote:'En breve le enviaremos una cotización y un enlace de pago seguro.'
+    thxPaid:'Su pago fue procesado. Sus señales se fabricarán y enviarán en un plazo de 2 semanas, y le avisaremos por correo cuando se envíen.',
+    thxQuote:'En breve le enviaremos un enlace de pago seguro. Las señales se fabrican y envían en un plazo de 2 semanas después del pago.'
   }
 };
 
