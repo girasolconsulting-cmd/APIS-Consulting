@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APIS Certified Advisor — Curriculum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dark: #1c1208;
+    --dark-2: #231608;
+    --brown: #3d2010;
+    --terracotta: #8b3a1e;
+    --copper: #b85c2a;
+    --gold: #c8842a;
+    --olive: #4a5c2a;
+    --olive-light: #8d9a6b;
+    --clay: #c99a7f;
+    --cream: #f5efe2;
+    --cream-2: #ede4d0;
+    --cream-3: #faf6ee;
+    --text-dark: #1c1208;
+    --text-body: #3a2a18;
+    --text-muted: #7a6848;
+    --border: rgba(139, 58, 30, 0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream-3);
+    color: var(--text-body);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: var(--dark);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .nav-wordmark {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .nav-logo {
+    height: 44px;
+    width: auto;
+    display: block;
+  }
+
+  .nav-back {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245, 239, 226, 0.6);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-back:hover { color: var(--cream); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--dark);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 50% 70% at 80% 40%, rgba(139, 58, 30, 0.35) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 50% at 15% 70%, rgba(74, 92, 42, 0.2) 0%, transparent 60%);
+  }
+
+  .hero-photo-strip {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .hero-photo-strip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(30%) contrast(0.9);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 10rem 3rem 8rem;
+    text-align: center;
+  }
+
+  .hero-submark {
+    height: 80px;
+    width: auto;
+    margin: 0 auto 2.5rem;
+    display: block;
+    opacity: 0;
+    animation: fadeIn 1s 0.1s forwards;
+    /* invert to show on dark background */
+    filter: brightness(0) invert(1);
+  }
+
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Lora', serif;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.12;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.45s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--copper);
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(245, 239, 226, 0.65);
+    max-width: 580px;
+    margin: 0 auto 3.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    border: 1px solid rgba(245, 239, 226, 0.12);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 640px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.75s forwards;
+  }
+
+  .hero-stat {
+    flex: 1;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-right: 1px solid rgba(245, 239, 226, 0.12);
+  }
+
+  .hero-stat:last-child { border-right: none; }
+
+  .hero-stat-number {
+    font-family: 'Lora', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .hero-stat-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245, 239, 226, 0.45);
+  }
+
+  /* ── PHOTO BAND ── */
+  .photo-band {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: 260px;
+    overflow: hidden;
+  }
+
+  .photo-band img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(10%) contrast(1.02);
+    transition: transform 0.6s ease;
+  }
+
+  .photo-band img:hover { transform: scale(1.04); }
+
+  /* ── INTRO ── */
+  .intro {
+    background: var(--cream-2);
+    border-bottom: 1px solid var(--border);
+    padding: 5rem 3rem;
+  }
+
+  .intro-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .intro-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 1rem;
+  }
+
+  .intro-heading {
+    font-family: 'Lora', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--text-dark);
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+  }
+
+  .intro-heading em {
+    font-style: italic;
+    color: var(--copper);
+  }
+
+  .intro-body {
+    font-size: 0.9rem;
+    color: var(--text-body);
+    line-height: 1.85;
+  }
+
+  .intro-body p + p { margin-top: 0.85rem; }
+
+  .intro-submark {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* ── MODULES ── */
+  .modules {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+  }
+
+  .section-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-heading {
+    font-family: 'Lora', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--text-dark);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-heading em {
+    font-style: italic;
+    color: var(--copper);
+  }
+
+  .section-intro {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 3.5rem;
+    max-width: 520px;
+  }
+
+  .module-list { display: flex; flex-direction: column; }
+
+  .module-item {
+    display: grid;
+    grid-template-columns: 64px 1fr 80px;
+    gap: 0 1.75rem;
+    align-items: start;
+    padding: 2.25rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .module-item:first-child { border-top: 1px solid var(--border); }
+
+  .module-number {
+    font-family: 'Lora', serif;
+    font-size: 2.6rem;
+    font-weight: 300;
+    color: rgba(139, 58, 30, 0.2);
+    line-height: 1;
+    padding-top: 0.05rem;
+  }
+
+  .module-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.35rem;
+    display: block;
+  }
+
+  .module-title {
+    font-family: 'Lora', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
+  }
+
+  .module-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: 560px;
+  }
+
+  .module-duration {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--cream-2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.3rem 0.6rem;
+    text-align: center;
+    align-self: start;
+    margin-top: 0.15rem;
+    white-space: nowrap;
+  }
+
+  /* ── PHOTO BREAK ── */
+  .photo-break {
+    position: relative;
+    height: 340px;
+    overflow: hidden;
+  }
+
+  .photo-break img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    filter: sepia(15%) contrast(1.02);
+  }
+
+  .photo-break-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(26, 16, 8, 0.72) 0%,
+      rgba(26, 16, 8, 0.3) 55%,
+      rgba(26, 16, 8, 0.1) 100%
+    );
+    display: flex;
+    align-items: center;
+    padding: 3rem 5rem;
+  }
+
+  .photo-break-quote {
+    max-width: 480px;
+  }
+
+  .photo-break-quote p {
+    font-family: 'Lora', serif;
+    font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+
+  .photo-break-quote cite {
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  /* ── INCLUDED ── */
+  .included {
+    background: var(--cream-2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 6rem 3rem;
+  }
+
+  .included-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .included-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .included-card {
+    background: var(--cream-3);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1.75rem 2rem;
+  }
+
+  .included-card-marker {
+    width: 24px;
+    height: 2px;
+    background: var(--terracotta);
+    margin-bottom: 1.25rem;
+    border-radius: 1px;
+  }
+
+  .included-card-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.01em;
+  }
+
+  .included-card-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ── WHO IT'S FOR ── */
+  .audience {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+  }
+
+  .audience-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .audience-card {
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 2rem 2.25rem;
+  }
+
+  .audience-card.fit {
+    background: rgba(74, 92, 42, 0.04);
+    border-color: rgba(74, 92, 42, 0.25);
+  }
+
+  .audience-card.not-fit {
+    background: rgba(139, 58, 30, 0.03);
+    border-color: rgba(139, 58, 30, 0.15);
+  }
+
+  .audience-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+
+  .audience-card.fit .audience-label { color: var(--olive); }
+  .audience-card.not-fit .audience-label { color: var(--terracotta); }
+
+  .audience-list {
+    list-style: none;
+    font-size: 0.875rem;
+    color: var(--text-body);
+  }
+
+  .audience-list li {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    line-height: 1.6;
+  }
+
+  .audience-list li:last-child { border-bottom: none; }
+
+  /* ── CLOSING BAND ── */
+  .closing {
+    background: var(--dark);
+    padding: 6rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .closing-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 50%, rgba(139, 58, 30, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .closing-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .closing-submark {
+    height: 60px;
+    width: auto;
+    display: block;
+    margin: 0 auto 2rem;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+
+  .closing-title {
+    font-family: 'Lora', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+
+  .closing-body {
+    font-size: 0.9rem;
+    color: rgba(245, 239, 226, 0.55);
+    line-height: 1.8;
+    margin-bottom: 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--brown);
+    padding: 2.5rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    height: 32px;
+    width: auto;
+    filter: brightness(0) invert(0.7);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245, 239, 226, 0.45);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: rgba(245, 239, 226, 0.8); }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: rgba(245, 239, 226, 0.3);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .photo-band { grid-template-columns: repeat(2, 1fr); height: 200px; }
+    .photo-band img:nth-child(n+3) { display: none; }
+    .intro-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .intro-submark { max-width: 200px; }
+    .included-grid { grid-template-columns: 1fr; }
+    .audience-grid { grid-template-columns: 1fr; }
+    .module-item { grid-template-columns: 48px 1fr; }
+    .module-duration { display: none; }
+    .photo-break-overlay { padding: 2rem 2.5rem; }
+    footer { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-wordmark">
+    <img src="apis-logo-inverse.svg" alt="APIS" class="nav-logo">
+  </a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-photo-strip" aria-hidden="true">
+    <img src="Carousel Photos/field-1.jpg" alt="">
+    <img src="Carousel Photos/field-3.jpg" alt="">
+    <img src="Carousel Photos/field-5.jpg" alt="">
+    <img src="Carousel Photos/field-7.jpg" alt="">
+    <img src="Carousel Photos/field-2.jpg" alt="">
+  </div>
+  <div class="hero-inner">
+    <img src="apis-certifies-full-color-rgb.svg" alt="APIS Certifies" class="hero-submark">
+    <h1 class="hero-title">The credential that adds pollination management<br><em>to your advisor tool kit.</em></h1>
+    <p class="hero-sub">Practical, field-grounded, written for advisors who already know agronomy, and want to manage pollination the same way they manage everything else.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-number">7</span>
+        <span class="hero-stat-label">Core Modules</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-number">7–9</span>
+        <span class="hero-stat-label">Hours</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-number">75%</span>
+        <span class="hero-stat-label">Min. to Pass</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-number">Self-paced</span>
+        <span class="hero-stat-label">Online</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO BAND -->
+<div class="photo-band" aria-hidden="true">
+  <img src="Carousel Photos/field-4.jpg" alt="">
+  <img src="Carousel Photos/field-6.jpg" alt="">
+  <img src="Carousel Photos/field-8.jpg" alt="">
+  <img src="Carousel Photos/field-2.jpg" alt="">
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+  <div class="intro-inner">
+    <div>
+      <h2 class="intro-heading">The gap the<br><em>CCA exam left.</em></h2>
+      <div class="intro-body">
+        <p>The CCA exam mentions "pollination" once. There is no advisor-level framework for pollination timing, colony specifications, bloom-window spray decisions, or what to do when fruit set falls short.</p>
+        <p>Growers spend on bees and services without a qualified professional managing the outcome. APIS fills that gap, with the decision-making framework a crop adviser needs to manage pollination as a professional input.</p>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <img src="apis-certifies-full-color-rgb.svg" alt="APIS Certifies" class="intro-submark">
+    </div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section class="modules">
+  <h2 class="section-heading">The <em>seven modules</em></h2>
+  <p class="section-intro">Each module is self-directed and takes 55–65 minutes, including a 10-question knowledge check. Minimum passing score is 75%.</p>
+
+  <div class="module-list">
+
+    <div class="module-item">
+      <span class="module-number">01</span>
+      <div>
+        <span class="module-label">Module 1</span>
+        <h3 class="module-title">Pollination as a Managed Input</h3>
+        <p class="module-desc">Reframe pollination from background condition to managed agronomic input. Field evidence from almonds, blueberries, and strawberries shows what unmanaged pollination costs — and what a qualified recommendation changes.</p>
+      </div>
+      <span class="module-duration">~60 min</span>
+    </div>
+
+    <div class="module-item">
+      <span class="module-number">02</span>
+      <div>
+        <span class="module-label">Module 2</span>
+        <h3 class="module-title">Applied Pollinator Biology</h3>
+        <p class="module-desc">What an advisor needs to know about colony dynamics, foraging behavior, and native species — without becoming a beekeeper. Covers how weather, crop stage, and landscape context shape what pollinators do in a field.</p>
+      </div>
+      <span class="module-duration">~60 min</span>
+    </div>
+
+    <div class="module-item">
+      <span class="module-number">03</span>
+      <div>
+        <span class="module-label">Module 3</span>
+        <h3 class="module-title">Pollination Requirements Across Crop Systems</h3>
+        <p class="module-desc">A working framework for assessing any crop's pollination needs — from self-compatible to obligate cross-pollinators. Bloom window mapping, hive density and placement principles, and how to read fruit set as diagnostic feedback.</p>
+      </div>
+      <span class="module-duration">~60 min</span>
+    </div>
+
+    <div class="module-item">
+      <span class="module-number">04</span>
+      <div>
+        <span class="module-label">Module 4</span>
+        <h3 class="module-title">Writing a Pollination Management Recommendation</h3>
+        <p class="module-desc">How to structure and document a complete pollination plan — timing, colony specifications, placement, contingencies. Covers the documentation standards that make a recommendation professionally defensible, not just plausible.</p>
+      </div>
+      <span class="module-duration">~60 min</span>
+    </div>
+
+    <div class="module-item">
+      <span class="module-number">05</span>
+      <div>
+        <span class="module-label">Module 5</span>
+        <h3 class="module-title">Pesticide Decisions Before and During Bloom</h3>
+        <p class="module-desc">The highest-liability intersection in ag advising. Covers toxicity classification, label law under FIFRA, bloom-window pesticide calendars, and the communication protocols and documentation that protect the advisor when decisions are questioned.</p>
+      </div>
+      <span class="module-duration">~60 min</span>
+    </div>
+
+    <div class="module-item">
+      <span class="module-number">06</span>
+      <div>
+        <span class="module-label">Module 6</span>
+        <h3 class="module-title">In-Season Management and Troubleshooting</h3>
+        <p class="module-desc">What to do when conditions don't match the plan. Weather-driven adjustments, identifying under-pollination during bloom, mid-season hive corrections, escalation protocols, and the post-season debrief that makes next year's plan better.</p>
+      </div>
+      <span class="module-duration">~60 min</span>
+    </div>
+
+    <div class="module-item">
+      <span class="module-number">07</span>
+      <div>
+        <span class="module-label">Module 7</span>
+        <h3 class="module-title">Field Data, Regional Insights, and Professional Contribution</h3>
+        <p class="module-desc">How to collect and submit standardized field observations through APIS Reports, how regional data strengthens your client recommendations, and how data contribution feeds back into credential renewal. The capstone module.</p>
+      </div>
+      <span class="module-duration">~60 min</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- PHOTO BREAK WITH QUOTE -->
+<div class="photo-break">
+  <img src="Carousel Photos/field-5.jpg" alt="Field work">
+  <div class="photo-break-overlay">
+    <div class="photo-break-quote">
+      <p>"I've watched growers invest in pollination products and services that go nowhere, when the real problem, poor pollination, went unmanaged. The true gap isn't bees, or technology. It's knowledge."</p>
+      <cite>Angelita De la Luz PhD, Founder, APIS</cite>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT'S INCLUDED -->
+<section class="included">
+  <div class="included-inner">
+    <h2 class="section-heading">Beyond the <em>seven modules</em></h2>
+    <div class="included-grid">
+
+      <div class="included-card">
+        <div class="included-card-marker"></div>
+        <p class="included-card-title">Crop-Specific Modules</p>
+        <p class="included-card-desc">Go deeper on the crops you advise, for example almonds, blueberries, cane berries, strawberries and controlled environments. $215 each, released crop by crop.</p>
+      </div>
+
+      <div class="included-card">
+        <div class="included-card-marker"></div>
+        <p class="included-card-title">Quarterly Live Q&amp;As</p>
+        <p class="included-card-desc">Direct access to the founder and subject matter experts. Questions from the field, answered by people who work in it.</p>
+      </div>
+
+      <div class="included-card">
+        <div class="included-card-marker"></div>
+        <p class="included-card-title">30-Minute 1:1 Consultation</p>
+        <p class="included-card-desc">One session included for founding cohort members. Bring a client situation, a crop you haven't worked with, or a plan you want a second set of eyes on.</p>
+      </div>
+
+      <div class="included-card">
+        <div class="included-card-marker"></div>
+        <p class="included-card-title">APIS Reports Access</p>
+        <p class="included-card-desc">Field observation tool for recording pollinator activity, colony data, and bloom outcomes. Submissions count toward annual renewal credits.</p>
+      </div>
+
+      <div class="included-card">
+        <div class="included-card-marker"></div>
+        <p class="included-card-title">Annual Renewal Module</p>
+        <p class="included-card-desc">New content each renewal cycle. Credential maintenance includes continuing education — not just a fee.</p>
+      </div>
+
+      <div class="included-card">
+        <div class="included-card-marker"></div>
+        <p class="included-card-title">Regional Data Network</p>
+        <p class="included-card-desc">As the APIS advisor network grows, pooled field data becomes an input for your own recommendations — a feedback loop that improves with every submission.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="audience">
+  <h2 class="section-heading">Who this is <em>designed for</em></h2>
+  <div class="audience-grid">
+
+    <div class="audience-card fit">
+      <span class="audience-label">Good fit</span>
+      <ul class="audience-list">
+        <li>Certified Crop Advisers (CCAs) advising on specialty or perennial crops</li>
+        <li>PCAs working with growers who use managed pollinators</li>
+        <li>Working agronomists who want to add a defensible pollination recommendation to their practice</li>
+        <li>Consultants advising growers who have experienced fruit set shortfalls</li>
+      </ul>
+    </div>
+
+    <div class="audience-card not-fit">
+      <span class="audience-label">Not designed for</span>
+      <ul class="audience-list">
+        <li>Beekeepers or apiary managers: this is crop advising, not hive management</li>
+        <li>Conservation or habitat-focused practitioners: that is a different discipline</li>
+        <li>Row-crop or commodity advisors without perennial or specialty crop clients</li>
+        <li>Growers looking for a farm-level certification (see APIS Certified Farm)</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="closing-bg"></div>
+  <div class="closing-inner">
+    <img src="apis-certifies-full-color-rgb.svg" alt="APIS Certifies" class="closing-submark">
+    <h2 class="closing-title">The first professional credential in agricultural pollination management.</h2>
+    <p class="closing-body">Built for advisors who manage outcomes, not just inputs. First cohort opens November 2026.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img src="apis-logo.svg" alt="APIS" class="footer-logo">
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="core-course-interest.html">Get Early Access</a></li>
+    <li><a href="mailto:hello@apisinstitute.org">hello@apisinstitute.org</a></li>
+  </ul>
+  <span class="footer-copy">&copy; 2026 Applied Pollination Institute of Science</span>
+</footer>
+
+</body>
+</html>
