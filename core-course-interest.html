@@ -408,5 +408,50 @@ document.addEventListener('DOMContentLoaded', async function() {
   });
 })();
 </script>
+
+<script>
+(function() {
+  var BTN_STYLE = 'display:inline-block;margin-top:0.75rem;padding:0.5rem 1rem;background:var(--apis-dark-green,#4a5c2a);color:#fdf9f1;font-size:0.8rem;letter-spacing:0.05em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,sans-serif;';
+
+  function scrollToForm() {
+    var target = Array.from(document.querySelectorAll('*')).find(function(el) {
+      return el.childNodes && Array.from(el.childNodes).some(function(n){ return n.textContent && n.textContent.trim() === 'Pre-register below to learn more.'; });
+    });
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function addButtons() {
+    var tiers = ['Standard', 'Crop Specialist', 'Professional'];
+    var prices = ['$149', '$299', '$595'];
+    var cards = Array.from(document.querySelectorAll('div')).filter(function(el) {
+      var text = el.textContent.trim();
+      var hasOnePrice = prices.filter(function(p){ return text.includes(p); }).length === 1;
+      return hasOnePrice && el.children.length >= 2 && el.children.length <= 5 && !el.querySelector('button');
+    });
+    if (!cards.length) return false;
+    cards.forEach(function(card) {
+      var btn = document.createElement('button');
+      btn.textContent = 'Select this plan →';
+      btn.style.cssText = BTN_STYLE;
+      btn.addEventListener('mouseover', function(){ this.style.opacity='0.85'; });
+      btn.addEventListener('mouseout', function(){ this.style.opacity='1'; });
+      btn.addEventListener('click', scrollToForm);
+      card.appendChild(btn);
+      var note = document.createElement('p');
+      note.textContent = 'No charge now — renewal is included in your enrollment tuition.';
+      note.style.cssText = 'font-size:0.7rem;color:var(--text-muted,#888);margin-top:0.4rem;font-style:italic;';
+      card.appendChild(note);
+    });
+    return true;
+  }
+
+  function tryAdd() {
+    if (addButtons()) return;
+    setTimeout(tryAdd, 300);
+  }
+
+  window.addEventListener('load', function(){ setTimeout(tryAdd, 200); });
+})();
+</script>
 </body>
 </html>
