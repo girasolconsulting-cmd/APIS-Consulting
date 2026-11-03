@@ -411,32 +411,77 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 <script>
 (function() {
-  var BTN_STYLE = 'display:inline-block;margin-top:0.75rem;padding:0.5rem 1rem;background:var(--apis-dark-green,#4a5c2a);color:#fdf9f1;font-size:0.8rem;letter-spacing:0.05em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,sans-serif;';
+  var BTN_STYLE = 'display:inline-block;margin-top:auto;padding:0.5rem 1rem;background:var(--apis-dark-green,#4a5c2a);color:#fdf9f1;font-size:0.8rem;letter-spacing:0.05em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,sans-serif;';
+  var formSection = null;
 
-  function scrollToForm() {
-    var target = Array.from(document.querySelectorAll('*')).find(function(el) {
-      return el.childNodes && Array.from(el.childNodes).some(function(n){ return n.textContent && n.textContent.trim() === 'Pre-register below to learn more.'; });
+  function getFormSection() {
+    return Array.from(document.querySelectorAll('*')).find(function(el) {
+      return el.childNodes && Array.from(el.childNodes).some(function(n){
+        return n.textContent && n.textContent.trim() === 'Pre-register below to learn more.';
+      });
     });
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function selectPlan(tierName) {
+    if (!formSection) formSection = getFormSection();
+    if (!formSection) return;
+
+    // Show form
+    formSection.style.display = '';
+
+    // Update or create the selected tier label
+    var label = document.getElementById('apis-selected-tier');
+    if (!label) {
+      label = document.createElement('div');
+      label.id = 'apis-selected-tier';
+      label.style.cssText = 'padding:0.6rem 1rem;background:var(--apis-dark-green,#4a5c2a);color:#fdf9f1;font-size:0.8rem;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:1rem;border-radius:2px;';
+      formSection.insertBefore(label, formSection.firstChild);
+    }
+    label.textContent = 'Selected plan: ' + tierName;
+
+    // Inject hidden field into any form element
+    var form = document.querySelector('form');
+    if (form) {
+      var existing = document.getElementById('apis-tier-input');
+      if (existing) existing.remove();
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'renewal_tier';
+      input.value = tierName;
+      input.id = 'apis-tier-input';
+      form.appendChild(input);
+    }
+
+    // Scroll to form
+    formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function addButtons() {
-    var tiers = ['Standard', 'Crop Specialist', 'Professional'];
-    var prices = ['$149', '$299', '$595'];
+    var prices = ['49', '99', '95'];
+    var tierMap = { '49': 'Standard', '99': 'Crop Specialist', '95': 'Professional' };
     var cards = Array.from(document.querySelectorAll('div')).filter(function(el) {
       var text = el.textContent.trim();
       var hasOnePrice = prices.filter(function(p){ return text.includes(p); }).length === 1;
-      return hasOnePrice && el.children.length >= 2 && el.children.length <= 5 && !el.querySelector('button');
+      return hasOnePrice && el.children.length >= 2 && el.children.length <= 8 && !el.querySelector('button');
     });
     if (!cards.length) return false;
+
+    // Hide the form section until a plan is selected
+    formSection = getFormSection();
+    if (formSection) formSection.style.display = 'none';
+
     cards.forEach(function(card) {
+      var text = card.textContent;
+      var tier = prices.reduce(function(found, p){ return text.includes(p) ? tierMap[p] : found; }, '');
+
       var btn = document.createElement('button');
       btn.textContent = 'Select this plan →';
       btn.style.cssText = BTN_STYLE;
       btn.addEventListener('mouseover', function(){ this.style.opacity='0.85'; });
       btn.addEventListener('mouseout', function(){ this.style.opacity='1'; });
-      btn.addEventListener('click', scrollToForm);
+      btn.addEventListener('click', function(){ selectPlan(tier); });
       card.appendChild(btn);
+
       var note = document.createElement('p');
       note.textContent = 'No charge now — renewal is included in your enrollment tuition.';
       note.style.cssText = 'font-size:0.7rem;color:var(--text-muted,#888);margin-top:0.4rem;font-style:italic;';
@@ -445,12 +490,89 @@ document.addEventListener('DOMContentLoaded', async function() {
     return true;
   }
 
-  function tryAdd() {
-    if (addButtons()) return;
-    setTimeout(tryAdd, 300);
+  function tryAdd() { if (!addButtons()) setTimeout(tryAdd, 300); }
+  window.addEventListener('load', function(){ setTimeout(tryAdd, 200); });
+})();
+</script>
+
+<script>
+(function() {
+  function fixPricing() {
+    // Find the $1,500 tuition element
+    var all = Array.from(document.querySelectorAll('span'));
+    var fullPrice = all.find(function(el){ return el.textContent.trim() === '$1,500'; });
+    var foundingPrice = all.find(function(el){ return el.textContent.trim() === '$1,200'; });
+    if (!fullPrice || !foundingPrice) return false;
+
+    // Make $1,500 small and struck-through
+    fullPrice.style.cssText = 'font-size:0.9rem;text-decoration:line-through;color:var(--text-muted,#aaa);font-family:inherit;';
+    // Make its label (Tuition eyebrow) smaller too
+    var tuitionLabel = fullPrice.previousElementSibling;
+    if (tuitionLabel) tuitionLabel.style.cssText = 'font-size:0.7rem;color:var(--text-muted,#aaa);letter-spacing:0.05em;text-transform:uppercase;';
+
+    // Make $1,200 the big prominent number
+    foundingPrice.style.cssText = 'font-family:var(--font-display);font-size:2.4rem;line-height:1;font-weight:600;color:var(--apis-terracotta);';
+
+    // Move the $1,500 container to appear after (smaller, secondary)
+    var fullContainer = fullPrice.parentElement;
+    var foundingContainer = foundingPrice.parentElement;
+    if (fullContainer && foundingContainer && fullContainer.parentElement) {
+      fullContainer.parentElement.insertBefore(fullContainer, foundingContainer.nextSibling);
+    }
+
+    return true;
   }
 
-  window.addEventListener('load', function(){ setTimeout(tryAdd, 200); });
+  function tryFix() { if (!fixPricing()) setTimeout(tryFix, 300); }
+  window.addEventListener('load', function(){ setTimeout(tryFix, 200); });
+})();
+</script>
+
+<script>
+(function() {
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  function textToItems(text) {
+    text = text.replace(/\.+$/, '');
+    // Split on ", plus " or ", "
+    var parts = text.split(/,\s+(?:plus\s+)?/);
+    // Split last part on " and " if it contains it
+    var last = parts[parts.length - 1];
+    if (last.indexOf(' and ') > -1) {
+      var sub = last.split(' and ');
+      parts.splice(parts.length - 1, 1);
+      sub.forEach(function(s){ parts.push(s); });
+    }
+    return parts.map(function(s){ return cap(s.trim()); }).filter(Boolean);
+  }
+
+  function addBullets() {
+    var prices = ['$149', '$299', '$595'];
+    var cards = Array.from(document.querySelectorAll('div')).filter(function(el) {
+      var text = el.textContent.trim();
+      var hasOnePrice = prices.filter(function(p){ return text.includes(p); }).length === 1;
+      return hasOnePrice && el.children.length >= 2 && el.children.length <= 8;
+    });
+    if (!cards.length) return false;
+    cards.forEach(function(card) {
+      var desc = Array.from(card.children).find(function(c){ return c.tagName === 'P'; });
+      if (!desc || desc.querySelector('li')) return;
+      var items = textToItems(desc.textContent.trim());
+      var ul = document.createElement('ul');
+      ul.style.cssText = 'margin:0.25rem 0 0 1rem;padding:0;font-size:inherit;color:inherit;list-style:disc;display:flex;flex-direction:column;gap:0.25rem;';
+      items.forEach(function(item) {
+        var li = document.createElement('li');
+        li.textContent = item;
+        li.style.cssText = 'font-size:var(--text-body-sm,0.85rem);line-height:1.5;color:var(--text-body);';
+        ul.appendChild(li);
+      });
+      desc.parentNode.replaceChild(ul, desc);
+    });
+    return true;
+  }
+
+  function tryBullets() { if (!addBullets()) setTimeout(tryBullets, 300); }
+  window.addEventListener('load', function(){ setTimeout(tryBullets, 250); });
 })();
 </script>
 </body>
