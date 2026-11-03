@@ -17,6 +17,22 @@
       This page requires JavaScript to display.
     </div>
   </noscript>
+<script>
+(function() {
+  var SHEET = 'https://script.google.com/macros/s/AKfycbwIfsvczbTawKxesCSpfD32pueqvw_5FbgTsiDRD_tUq0kEuGTpr_04hIU6ywcOQmnxbg/exec';
+  var _fetch = window.fetch;
+  window.fetch = function(url, opts) {
+    if (url === SHEET && opts && opts.body) {
+      try {
+        var data = JSON.parse(opts.body);
+        data.renewalTier = window.__apisTier || '';
+        opts = Object.assign({}, opts, { body: JSON.stringify(data) });
+      } catch(e) {}
+    }
+    return _fetch.apply(this, arguments);
+  };
+})();
+</script>
 </head>
 <body>
   <div id="__bundler_thumbnail"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#1c1208"></rect></svg></div>
@@ -479,7 +495,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       btn.style.cssText = BTN_STYLE;
       btn.addEventListener('mouseover', function(){ this.style.opacity='0.85'; });
       btn.addEventListener('mouseout', function(){ this.style.opacity='1'; });
-      btn.addEventListener('click', function(){ selectPlan(tier); });
+      btn.addEventListener('click', function(){ window.__apisTier = tier; selectPlan(tier); });
       card.appendChild(btn);
 
       var note = document.createElement('p');
