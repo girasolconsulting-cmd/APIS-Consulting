@@ -591,5 +591,56 @@ document.addEventListener('DOMContentLoaded', async function() {
   window.addEventListener('load', function(){ setTimeout(tryBullets, 250); });
 })();
 </script>
+
+<script>
+/* Keep form hidden until a plan is selected */
+(function() {
+  var SHEET = 'https://script.google.com/macros/s/AKfycbwIfsvczbTawKxesCSpfD32pueqvw_5FbgTsiDRD_tUq0kEuGTpr_04hIU6ywcOQmnxbg/exec';
+  function getFormSection() {
+    return Array.from(document.querySelectorAll('*')).find(function(el) {
+      return el.childNodes && Array.from(el.childNodes).some(function(n){
+        return n.textContent && n.textContent.trim() === 'Pre-register below to learn more.';
+      });
+    });
+  }
+  function enforceHide() {
+    if (window.__apisTier) return;
+    var fs = getFormSection();
+    if (fs && fs.style.display !== 'none') fs.style.display = 'none';
+  }
+  setInterval(enforceHide, 400);
+  window.addEventListener('load', function(){ setTimeout(enforceHide, 300); });
+})();
+</script>
+
+<script>
+/* Add flower icon to top-right of each renewal tier card */
+(function() {
+  var FLOWER_SRC = 'apis-flower-icon.png';
+  var prices = ['$149', '$299', '$595'];
+
+  function addFlowers() {
+    var cards = Array.from(document.querySelectorAll('div')).filter(function(el) {
+      var text = el.textContent.trim();
+      var hasOnePrice = prices.filter(function(p){ return text.includes(p); }).length === 1;
+      return hasOnePrice && el.children.length >= 2 && el.children.length <= 10 && !el.querySelector('.apis-flower-mark');
+    });
+    if (!cards.length) return false;
+    cards.forEach(function(card) {
+      var cs = window.getComputedStyle(card);
+      if (cs.position === 'static') card.style.position = 'relative';
+      var img = document.createElement('img');
+      img.src = FLOWER_SRC;
+      img.className = 'apis-flower-mark';
+      img.alt = '';
+      img.style.cssText = 'position:absolute;top:0.75rem;right:0.75rem;width:28px;height:28px;object-fit:contain;opacity:0.55;pointer-events:none;';
+      card.appendChild(img);
+    });
+    return true;
+  }
+  function tryFlowers() { if (!addFlowers()) setTimeout(tryFlowers, 300); }
+  window.addEventListener('load', function(){ setTimeout(tryFlowers, 300); });
+})();
+</script>
 </body>
 </html>
