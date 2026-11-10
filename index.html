@@ -1203,10 +1203,19 @@
     resetAutoplay();
   }
 
-  let autoplay = setInterval(() => goToSlide(carouselIndex + 1), 5000);
+  let carouselPaused = false;
+  let autoplay = setInterval(() => { if (!carouselPaused) goToSlide(carouselIndex + 1); }, 8000);
   function resetAutoplay() {
     clearInterval(autoplay);
-    autoplay = setInterval(() => goToSlide(carouselIndex + 1), 5000);
+    autoplay = setInterval(() => { if (!carouselPaused) goToSlide(carouselIndex + 1); }, 8000);
+  }
+  // Pause while someone is hovering over or touching the photos
+  const carouselEl = document.getElementById('heroCarousel');
+  if (carouselEl) {
+    carouselEl.addEventListener('mouseenter', () => { carouselPaused = true; });
+    carouselEl.addEventListener('mouseleave', () => { carouselPaused = false; resetAutoplay(); });
+    carouselEl.addEventListener('touchstart', () => { carouselPaused = true; }, { passive: true });
+    carouselEl.addEventListener('touchend', () => { carouselPaused = false; resetAutoplay(); }, { passive: true });
   }
 
   // Scroll reveal
