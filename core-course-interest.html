@@ -585,7 +585,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 <script>
 /* Add flower icon to top-right of each renewal tier card */
 (function() {
-  var FLOWER_SRC = 'apis-flower-icon.png';
+  var FLOWER_SRC = 'apis-flower-mark.png';
   var prices = ['$149', '$299', '$595'];
 
   function addFlowers() {
@@ -602,7 +602,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       img.src = FLOWER_SRC;
       img.className = 'apis-flower-mark';
       img.alt = '';
-      img.style.cssText = 'position:absolute;top:0.75rem;right:0.75rem;width:28px;height:28px;object-fit:contain;opacity:0.55;pointer-events:none;';
+      img.style.cssText = 'position:absolute;top:0.75rem;right:0.75rem;width:34px;height:50px;object-fit:contain;opacity:0.9;pointer-events:none;';
       card.appendChild(img);
     });
     return true;
