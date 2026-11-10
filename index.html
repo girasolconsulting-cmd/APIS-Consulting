@@ -828,15 +828,21 @@
 
   .carousel-caption {
     position: absolute;
-    bottom: 1rem;
-    left: 1rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 10;
+    padding: 3.5rem 1.25rem 2rem;
+    background: linear-gradient(transparent, rgba(28,18,8,0.78));
     color: var(--cream);
-    font-size: 0.68rem;
-    font-style: italic;
-    letter-spacing: 0.02em;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.8), 0 1px 10px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
   }
+  .cap-desc { font-size: 0.82rem; line-height: 1.5; max-width: 36rem; }
+  .cap-credit { font-size: 0.66rem; font-style: italic; opacity: 0.8; letter-spacing: 0.02em; }
+  .carousel-dots { z-index: 11; }
 
   /* ABOUT PHOTO */
   .about-photo {
@@ -995,14 +1001,14 @@
   <div class="hero-right" style="padding:0; overflow:hidden;">
     <div class="carousel" id="heroCarousel">
       <div class="carousel-track" id="carouselTrack">
-        <div class="carousel-slide"><img src="field-1.jpg" alt="Field photo 1"><div class="carousel-caption">Photo: A. De la Luz. Oxnard, CA</div></div>
-        <div class="carousel-slide"><img src="field-2.jpg" alt="Field photo 2"><div class="carousel-caption">Photo: A. De la Luz. Lynden, WA</div></div>
-        <div class="carousel-slide"><img src="field-3.jpg" alt="Field photo 3"><div class="carousel-caption">Photo: A. De la Luz. Fresno, CA</div></div>
-        <div class="carousel-slide"><img src="field-4.jpg" alt="Field photo 4"><div class="carousel-caption">Photo: A. De la Luz. Aurora, OR</div></div>
-        <div class="carousel-slide"><img src="field-5.jpg" alt="Field photo 5"><div class="carousel-caption">Photo: A. De la Luz. Jaguaré, Espírito Santo, Brazil</div></div>
-        <div class="carousel-slide"><img src="field-6.jpg" alt="Field photo 6"><div class="carousel-caption">Photo: A. De la Luz. Osorno, Chile</div></div>
-        <div class="carousel-slide"><img src="field-7.jpg" alt="Field photo 7"><div class="carousel-caption">Photo: A. De la Luz. Independence, OR</div></div>
-        <div class="carousel-slide"><img src="field-8.jpg" alt="Field photo 8"><div class="carousel-caption">Photo: A. De la Luz. Aurora, OR</div></div>
+        <div class="carousel-slide"><img src="field-1.jpg" alt="Field photo 1"><div class="carousel-caption"><span class="cap-desc">Honey bee on a strawberry flower, with ripening fruit behind it. Each seed or achene needs to receive viable pollen in order to set a full, well-shaped berry. Strawberry yield and quality improve with bee pollination.</span><span class="cap-credit">Photo: A. De la Luz. Oxnard, CA</span></div></div>
+        <div class="carousel-slide"><img src="field-2.jpg" alt="Field photo 2"><div class="carousel-caption"><span class="cap-desc">Honey bee working a highbush blueberry flower. The bell shape of the flower and the need for ‘buzz pollination’ make it hard for honey bees to access the pollen inside.</span><span class="cap-credit">Photo: A. De la Luz. Lynden, WA</span></div></div>
+        <div class="carousel-slide"><img src="field-3.jpg" alt="Field photo 3"><div class="carousel-caption"><span class="cap-desc">Almond orchard at petal fall. The almond bloom window is short (about 2 weeks), so planning ahead to secure strong colonies and determine placement is critical.</span><span class="cap-credit">Photo: A. De la Luz. Fresno, CA</span></div></div>
+        <div class="carousel-slide"><img src="field-4.jpg" alt="Field photo 4"><div class="carousel-caption"><span class="cap-desc">Blueberry field during bloom next to natural habitat. Sometimes crops compete with bloom in the surrounding environment. Understanding each field’s environmental context is an important part of pollination management.</span><span class="cap-credit">Photo: A. De la Luz. Aurora, OR</span></div></div>
+        <div class="carousel-slide"><img src="field-5.jpg" alt="Field photo 5"><div class="carousel-caption"><span class="cap-desc">Coffee field in bloom. Honey bees love coffee flowers, and the caffeine in the nectar helps them remember where the good food is (Wright et al., 2013, <em>Science</em>).</span><span class="cap-credit">Photo: A. De la Luz. Jaguaré, Espírito Santo, Brazil</span></div></div>
+        <div class="carousel-slide"><img src="field-6.jpg" alt="Field photo 6"><div class="carousel-caption"><span class="cap-desc">Honey bee on blueberry blossoms in southern Chile, where the season runs opposite to the US. In addition to honey bees, bumble bees are important blueberry pollinators.</span><span class="cap-credit">Photo: A. De la Luz. Osorno, Chile</span></div></div>
+        <div class="carousel-slide"><img src="field-7.jpg" alt="Field photo 7"><div class="carousel-caption"><span class="cap-desc">Young blueberries sizing up after bloom. Fruit size and set are largely determined by how well each flower was pollinated.</span><span class="cap-credit">Photo: A. De la Luz. Independence, OR</span></div></div>
+        <div class="carousel-slide"><img src="field-8.jpg" alt="Field photo 8"><div class="carousel-caption"><span class="cap-desc">Honey bee swarm on blueberry bushes. Swarms usually happen when a hive has outgrown its nest space. Half the hive population splits off to find a new home.</span><span class="cap-credit">Photo: A. De la Luz. Aurora, OR</span></div></div>
       </div>
       <button class="carousel-btn prev" onclick="carouselMove(-1)">
         <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
