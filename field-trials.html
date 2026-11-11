@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Trials | APIS</title>
+<meta name="description" content="Sign up to be an APIS research partner. Growers and beekeepers can host independent field trials of new pollination and hive monitoring tools.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* APIS Design System tokens */
+  :root {
+    --surface-page: #fffdf9; --surface-alt: #f3e9d7; --surface-inverse: #1c1208;
+    --text-strong: #1c1208; --text-body: #33241a; --text-muted: #4a5c2a; --text-accent: #8b3a1e;
+    --text-on-dark: #fdf9f1; --text-on-dark-muted: rgba(253,249,241,0.6); --text-eyebrow-on-dark: #e8bd6d;
+    --border-hairline: rgba(74,92,42,0.2); --border-strong: rgba(74,92,42,0.45);
+    --action-primary: #8b3a1e; --action-primary-hover: #6f2d14; --action-primary-ink: #fdf9f1;
+    --focus-ring: #8b3a1e;
+    --font-display: 'Lora', Georgia, 'Times New Roman', serif;
+    --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+    --radius-sharp: 2px; --line-body: 1.8;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--surface-page); color: var(--text-body); font-family: var(--font-sans); font-weight: 300; line-height: var(--line-body); overflow-x: hidden; }
+  a { color: var(--text-accent); }
+  a:hover { color: var(--action-primary-hover); }
+  :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem; background: rgba(253,249,241,0.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-hairline); }
+  .nav-wordmark { display: inline-flex; align-items: center; text-decoration: none; }
+  .nav-wordmark img { height: 44px; width: auto; display: block; }
+  .nav-back { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
+  .nav-back:hover { color: var(--text-accent); }
+
+  /* HERO */
+  .hero { background: var(--surface-inverse); padding: 10rem 3rem 5rem; }
+  .hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 4rem; align-items: center; }
+  .hero-mark { width: 220px; height: auto; display: block; margin-left: 100px; margin-right: 5rem; }
+  .hero-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.3rem, 4.5vw, 3.6rem); line-height: 1.12; letter-spacing: -0.01em; color: var(--text-on-dark); margin-bottom: 1.5rem; }
+  .hero-sub { max-width: 580px; font-size: 1.55rem; line-height: 1.6; color: var(--text-on-dark-muted); }
+
+  /* INFO COLUMNS */
+  .info-section { padding: 5rem 3rem; }
+  .info-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3rem; }
+  .info-col h3 { display: flex; align-items: center; gap: 0.6rem; font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; line-height: 1.2; color: var(--text-strong); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-hairline); }
+  .info-col h3 svg { flex: none; }
+  .info-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+  .info-col li { position: relative; padding-left: 1.25rem; }
+  .info-col li::before { content: ''; position: absolute; left: 0; top: 0.75rem; width: 5px; height: 5px; border-radius: 50%; background: var(--action-primary); }
+
+  /* FORM */
+  .form-section { background: var(--surface-alt); padding: 4.5rem 3rem 5rem; }
+  .form-inner { max-width: 1170px; margin: 0 auto; }
+  .trial-form { display: flex; flex-direction: column; gap: 3.5rem; font-size: 1.4rem; }
+  .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 3.5rem 6rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; border: 0; }
+  .form-group.w60 { max-width: 60%; }
+  .form-group.w80 { max-width: 80%; }
+  .form-group > label, .form-group > legend { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+  .form-group > legend { margin-bottom: 0.6rem; }
+  .form-group input:not([type=radio]), .form-group select, .form-group textarea { width: 100%; background: var(--surface-page); border: 1px solid var(--border-strong); border-radius: var(--radius-sharp); color: var(--text-strong); font-family: var(--font-sans); font-size: 1.35rem; font-weight: 300; padding: 1.1rem 1.3rem; outline: none; transition: border-color 0.2s ease; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--action-primary); }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-muted); opacity: 0.6; }
+  .radio-row { display: flex; flex-wrap: wrap; gap: 1rem 2.6rem; }
+  .radio-option { display: flex; align-items: center; gap: 0.65rem; min-height: 44px; font-size: 1.4rem; cursor: pointer; }
+  .radio-option input { width: 20px; height: 20px; accent-color: var(--action-primary); }
+  .form-note { margin: 0; }
+  .form-submit { align-self: flex-start; background: var(--action-primary); color: var(--action-primary-ink); border: none; border-radius: var(--radius-sharp); padding: 1.2rem 3rem; font-family: var(--font-sans); font-size: 1rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s ease, transform 0.15s ease; }
+  .form-submit:hover { background: var(--action-primary-hover); transform: translateY(-1px); }
+  .form-submit:disabled { opacity: 0.6; cursor: default; transform: none; }
+  .form-error { display: none; color: var(--text-accent); }
+  .form-success { display: none; max-width: 640px; }
+  .form-success h2 { font-family: var(--font-display); font-weight: 400; font-size: 2.2rem; line-height: 1.15; letter-spacing: -0.01em; color: var(--text-strong); margin-bottom: 1rem; }
+  .form-success p { font-size: 1.2rem; }
+
+  /* FOOTER */
+  footer { background: var(--surface-inverse); padding: 2.5rem 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  footer img { height: 36px; width: auto; opacity: 0.7; display: block; }
+  .footer-note { font-size: 0.75rem; color: var(--text-on-dark-muted); }
+  .footer-link { font-size: 0.75rem; color: var(--text-on-dark-muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s ease; }
+  .footer-link:hover { color: var(--text-eyebrow-on-dark); }
+
+  @media (max-width: 900px) {
+    nav { padding: 0.9rem 1.5rem; }
+    .nav-wordmark img { height: 36px; }
+    .hero { padding: 8rem 1.5rem 3.5rem; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-mark { display: none; }
+    .hero-sub { font-size: 1.15rem; }
+    .info-section { padding: 3.5rem 1.5rem; }
+    .info-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .form-section { padding: 3rem 1.5rem 3.5rem; }
+    .trial-form { font-size: 1.1rem; gap: 2.25rem; }
+    .form-row { gap: 2.25rem; }
+    .form-group.w60, .form-group.w80 { max-width: 100%; }
+    .form-group > label, .form-group > legend { font-size: 0.9rem; }
+    .form-group input:not([type=radio]), .form-group select, .form-group textarea { font-size: 1.1rem; padding: 0.9rem 1rem; }
+    .radio-option { font-size: 1.15rem; }
+    footer { padding: 2rem 1.5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "73e6f033c6d645a588d00d7e101f41cc"}'></script><!-- End Cloudflare Web Analytics -->
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-wordmark"><img src="apis-logo.svg" alt="APIS, Applied Pollination Institute of Science"></a>
+  <a href="index.html" class="nav-back">&larr; APIS Home</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <img class="hero-mark" src="apis-flower-inverse.png" alt="" aria-hidden="true">
+    <div>
+      <h1 class="hero-title">Sign up to be an APIS<br>research partner</h1>
+      <p class="hero-sub">We are in search of growers and beekeepers to partner with on independent field trials of new pollination and hive monitoring tools, technologies, and products. Join us for the 2027 season.</p>
+    </div>
+  </div>
+</section>
+
+<section class="info-section">
+  <div class="info-inner">
+    <div class="info-col">
+      <h3><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="none" stroke="#8b3a1e" stroke-width="1.5"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7" fill="none" stroke="#8b3a1e" stroke-width="1.5" stroke-linecap="round"/></svg>Who We're Looking For</h3>
+      <ul>
+        <li>Growers of almonds, blueberries and other pollinator-dependent crops</li>
+        <li>Beekeepers with commercial colonies who are open to trying new technology</li>
+        <li>Crop advisors who work with either and want to be involved</li>
+      </ul>
+    </div>
+    <div class="info-col">
+      <h3><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><ellipse cx="7.5" cy="10" rx="4" ry="2.5" transform="rotate(-30 7.5 10)" fill="none" stroke="#8b3a1e" stroke-width="1.5"/><ellipse cx="16.5" cy="10" rx="4" ry="2.5" transform="rotate(30 16.5 10)" fill="none" stroke="#8b3a1e" stroke-width="1.5"/><ellipse cx="12" cy="15" rx="4" ry="5.5" fill="#fffdf9" stroke="#8b3a1e" stroke-width="1.5"/><circle cx="12" cy="7" r="2" fill="#fffdf9" stroke="#8b3a1e" stroke-width="1.5"/><path d="M8.5 13h7M8.3 16.5h7.4M12 20.5v2M11 5.3L9.5 3M13 5.3L14.5 3" fill="none" stroke="#8b3a1e" stroke-width="1.5" stroke-linecap="round"/></svg>What You Get</h3>
+      <ul>
+        <li>A report on your own colonies or pollination from blocks included in any research trials</li>
+        <li>Early access to new pollination and hive monitoring tools, technologies, and products</li>
+        <li>Independent data and insights, designed and analyzed by APIS</li>
+      </ul>
+    </div>
+    <div class="info-col">
+      <h3><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M12 21V9" fill="none" stroke="#8b3a1e" stroke-width="1.5" stroke-linecap="round"/><path d="M12 14c-1-4-4-6-8-6 0 4 3 7 8 6z" fill="#fffdf9" stroke="#8b3a1e" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 11c1-4 4-6 8-6 0 4-3 7-8 6z" fill="#fffdf9" stroke="#8b3a1e" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 21h12" fill="none" stroke="#8b3a1e" stroke-width="1.5" stroke-linecap="round"/></svg>What's Involved</h3>
+      <ul>
+        <li>Access for our team to your hives or orchard during the trial</li>
+        <li>We take the measurements and work around your operation</li>
+        <li>Details, timing and any devices are agreed with you in advance</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="form-section">
+  <div class="form-inner">
+    <form class="trial-form" id="trialForm" novalidate>
+      <fieldset class="form-group">
+        <legend>I Am A</legend>
+        <div class="radio-row">
+          <label class="radio-option"><input type="radio" name="role" value="Grower" required> Grower</label>
+          <label class="radio-option"><input type="radio" name="role" value="Beekeeper"> Beekeeper</label>
+          <label class="radio-option"><input type="radio" name="role" value="Grower and beekeeper"> Both</label>
+          <label class="radio-option"><input type="radio" name="role" value="Crop advisor"> Crop advisor</label>
+        </div>
+      </fieldset>
+
+      <div class="form-row">
+        <div class="form-group"><label for="first_name">First Name</label><input type="text" id="first_name" name="first_name" placeholder="First name" required></div>
+        <div class="form-group"><label for="last_name">Last Name</label><input type="text" id="last_name" name="last_name" placeholder="Last name" required></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" placeholder="your@email.com" required></div>
+        <div class="form-group"><label for="phone">Phone</label><input type="tel" id="phone" name="phone" placeholder="(optional)"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label for="organization">Farm / Business Name</label><input type="text" id="organization" name="organization" placeholder="Farm or business name"></div>
+        <div class="form-group"><label for="location">Location</label><input type="text" id="location" name="location" placeholder="County, State" required></div>
+      </div>
+      <div class="form-group w60"><label for="crops">Crop(s), Grown or Pollinated by Your Colonies</label><input type="text" id="crops" name="crops" placeholder="e.g. Almonds, Blueberries"></div>
+      <div class="form-row">
+        <div class="form-group"><label for="acres">Acres (Growers)</label><input type="text" id="acres" name="acres" placeholder="e.g. 120"></div>
+        <div class="form-group"><label for="colonies">Number of Colonies (Beekeepers)</label><input type="text" id="colonies" name="colonies" placeholder="e.g. 800"></div>
+      </div>
+      <div class="form-group w60">
+        <label for="source">How Did You Hear About Us?</label>
+        <select id="source" name="source">
+          <option value="">Select one</option>
+          <option>LinkedIn</option>
+          <option>Facebook</option>
+          <option>Instagram</option>
+          <option>Email from APIS</option>
+          <option>Referral from a colleague</option>
+          <option>Conference or event</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group w80"><label for="notes">Anything Else? Tools You Use Now, Questions</label><textarea id="notes" name="notes" rows="4" placeholder="Optional"></textarea></div>
+
+      <p class="form-note">Questions? Email us at <a href="mailto:hello@apisinstitute.org">hello@apisinstitute.org</a>.</p>
+      <p class="form-error" id="formError" role="alert"></p>
+      <button type="submit" class="form-submit" id="formSubmit">Register Interest</button>
+    </form>
+
+    <div class="form-success" id="formSuccess" role="status" tabindex="-1">
+      <h2>Thank You for Registering</h2>
+      <p>We've received your details. We'll be in touch when a trial matches your crop, region and season. Questions in the meantime? Email <a href="mailto:hello@apisinstitute.org">hello@apisinstitute.org</a>.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <img src="apis-logo-inverse.svg" alt="APIS, Applied Pollination Institute of Science">
+  <div class="footer-note">&copy; 2026 APIS, Applied Pollination Institute of Science</div>
+  <a href="index.html" class="footer-link">apisinstitute.org &rarr;</a>
+</footer>
+
+<script>
+  (function () {
+    var ENDPOINT = 'https://script.google.com/macros/s/AKfycbz7DnCOWOeHRbqdIUvfLAtagMVr5ol4mHb1PVWRm9Go3HyYm99FAnYY1gNo54voGYZD/exec';
+    var form = document.getElementById('trialForm');
+    var btn = document.getElementById('formSubmit');
+    var err = document.getElementById('formError');
+    var success = document.getElementById('formSuccess');
+
+    function showError(msg) { err.textContent = msg; err.style.display = 'block'; }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      err.style.display = 'none';
+      if (!form.querySelector('input[name="role"]:checked')) { showError('Please choose grower, beekeeper, both or crop advisor.'); return; }
+      if (!form.checkValidity()) { showError('Please fill in your name, a valid email address and your location.'); form.reportValidity(); return; }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      var body = new URLSearchParams(new FormData(form));
+
+      fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: body })
+        .then(function () {
+          form.style.display = 'none';
+          success.style.display = 'block';
+          success.focus();
+        })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Register Interest';
+          showError('Something went wrong sending the form. Please try again, or email hello@apisinstitute.org.');
+        });
+    });
+  })();
+</script>
+</body>
+</html>
