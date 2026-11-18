@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIS Live Q&amp;A, December 15</title>
+<meta name="description" content="Free live Q&amp;A with Dr. Angelita De la Luz on pollination management. Tuesday, December 15, 9:00 to 9:30 am Pacific, on Google Meet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1208;--body:#33241a;--muted:#6b5a4a;--paper:#fffdf9;--cream:#f3e9d7;--green:#4a5c2a;--clay:#8b3a1e;--clay-dark:#6f2d14;--line:rgba(74,92,42,0.25);}
+*{box-sizing:border-box;}
+[hidden]{display:none !important;}
+body{margin:0;background:var(--paper);color:var(--body);font-family:"DM Sans",system-ui,sans-serif;font-weight:300;}
+a{color:var(--clay);}a:hover{color:var(--clay-dark);}
+.wrap{max-width:640px;margin:0 auto;padding:4rem 1.5rem 3rem;display:flex;flex-direction:column;gap:1.25rem;min-height:100vh;}
+.logo{display:block;width:150px;margin-bottom:1rem;}.logo img{display:block;width:100%;height:auto;}
+.state{display:flex;flex-direction:column;gap:1.25rem;}
+h1{margin:0;font-family:"Lora",Georgia,serif;font-weight:400;font-size:clamp(1.8rem,5vw,2.4rem);line-height:1.15;color:var(--ink);text-wrap:balance;}
+p{margin:0;line-height:1.7;}
+.when{color:var(--ink);font-weight:400;}
+.muted{color:var(--muted);font-size:0.85rem;}
+.card{background:var(--cream);padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:0.75rem;}
+.card h2{margin:0;font-family:"Lora",Georgia,serif;font-weight:400;font-size:1.1rem;color:var(--ink);}
+label{display:flex;flex-direction:column;gap:.35rem;font-weight:400;color:var(--ink);}
+input,textarea{font:inherit;font-weight:300;padding:.7rem .8rem;border:1px solid var(--line);border-radius:2px;background:#fff;color:var(--body);}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;}
+.btn{align-self:flex-start;display:inline-flex;align-items:center;min-height:44px;padding:0 1.75rem;border:0;border-radius:2px;background:var(--green);color:#fdf9f1;font-family:"DM Sans",system-ui,sans-serif;font-size:0.8rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;cursor:pointer;}
+.btn:hover{background:#3b4a21;color:#fdf9f1;}
+.btn[disabled]{opacity:.5;cursor:default;}
+#err{color:var(--clay);min-height:1.2em;}
+footer{margin-top:auto;padding-top:2rem;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75rem;font-size:0.8rem;color:var(--muted);}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="logo" href="/"><img src="/apis-logo.svg" alt="APIS Applied Pollination Institute of Science"></a>
+
+  <div id="form-state" class="state">
+    <h1>APIS Certified Pollination Advisor Live Q&amp;A</h1>
+    <p class="when">Tuesday, December 15, 9:00 to 9:30 am Pacific (5:00 pm UK, 6:00 pm Central Europe), on Google Meet. Free.</p>
+    <p>Bring your questions about pollination management and the APIS Certified Pollination Advisor course.</p>
+    <form id="f" class="state" novalidate>
+      <label>Name<input name="name" autocomplete="name" required></label>
+      <label>Email<input name="email" type="email" autocomplete="email" required></label>
+      <label>What do you do? <span class="muted">(optional)</span><input name="role"></label>
+      <label>A question for the Q&amp;A <span class="muted">(optional)</span><textarea name="question" rows="3"></textarea></label>
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button id="b" class="btn" type="submit">Save my free seat</button>
+      <p class="muted">You'll get a confirmation email and a Google Calendar invite with the Meet link.</p>
+      <p id="err" role="alert"></p>
+    </form>
+  </div>
+
+  <div id="done-state" class="state" hidden>
+    <h1>You're in!</h1>
+    <p>Your confirmation email and calendar invite are on their way to <span id="who"></span>. They have the Google Meet link. If you don't see them in a few minutes, check your spam folder.</p>
+    <div class="card">
+      <h2>Want more time?</h2>
+      <p>Enrolled students stay after the open Q&amp;A for a students-only session with me. Enroll before the call and I'll add you.</p>
+      <a class="btn" href="https://buy.stripe.com/6oU6oI2yTbhP8hw1nc8og0b">Enroll and get student access</a>
+      <p class="muted">Course price: $1,500. Pay in full or in installments at checkout. On the waitlist? Your confirmation email has your rate.</p>
+    </div>
+  </div>
+
+  <footer><span>&copy; 2026 Applied Pollination Institute of Science</span><a href="/">apisinstitute.org</a></footer>
+</main>
+<script>
+(function () {
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbwDwmbaD6Bun1yo6g6hV71ufKFw6F7P5TcFKRvpCPelZR368FiIwTGd2BO7vfnChIMuiA/exec';
+  var CONTACT = 'hello@apisinstitute.org';
+  var src = (new URLSearchParams(location.search).get('src') || 'website').slice(0, 40);
+  var f = document.getElementById('f'), b = document.getElementById('b'), err = document.getElementById('err');
+  function fail(msg) {
+    b.disabled = false; b.textContent = 'Save my free seat';
+    err.textContent = msg || ('Something went wrong. Try again, or email ' + CONTACT + '.');
+  }
+  f.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var d = {
+      qa: 'join', name: f.name.value.trim(), email: f.email.value.trim(),
+      role: f.role.value.trim(), question: f.question.value.trim(),
+      website: f.website.value, src: src
+    };
+    if (!d.name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) { fail('Please enter your name and a valid email.'); return; }
+    b.disabled = true; b.textContent = 'Saving...'; err.textContent = '';
+    fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(d) })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (r && r.ok) {
+          document.getElementById('who').textContent = d.email;
+          document.getElementById('form-state').hidden = true;
+          document.getElementById('done-state').hidden = false;
+          window.scrollTo(0, 0);
+        } else { fail(r && r.msg); }
+      })
+      .catch(function () { fail(); });
+  });
+})();
+</script>
+</body>
+</html>
