@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2027 Almond Pollination Study | APIS</title>
+<meta name="description" content="APIS is looking for three almond growers to host a pollination study during 2027 bloom. Growers receive $1,000, the trial product at no cost, and pollination data from their own blocks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1208;--body:#33241a;--muted:#6b5a4a;--paper:#fffdf9;--cream:#f3e9d7;--green:#4a5c2a;--clay:#8b3a1e;--clay-dark:#6f2d14;--line:rgba(74,92,42,0.25);}
+*{box-sizing:border-box;}
+[hidden]{display:none !important;}
+body{margin:0;background:var(--paper);color:var(--body);font-family:"DM Sans",system-ui,sans-serif;font-weight:300;}
+a{color:var(--clay);}a:hover{color:var(--clay-dark);}
+.wrap{max-width:640px;margin:0 auto;padding:4rem 1.5rem 3rem;display:flex;flex-direction:column;gap:1.25rem;min-height:100vh;}
+.logo{display:block;width:150px;margin-bottom:1rem;}.logo img{display:block;width:100%;height:auto;}
+.hero{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;}
+.state{display:flex;flex-direction:column;gap:1.25rem;}
+h1{margin:0;font-family:"Lora",Georgia,serif;font-weight:400;font-size:clamp(1.8rem,5vw,2.4rem);line-height:1.15;color:var(--ink);text-wrap:balance;}
+h2{margin:0;font-family:"Lora",Georgia,serif;font-weight:400;font-size:1.2rem;color:var(--ink);}
+p{margin:0;line-height:1.7;}
+ul{margin:0;padding-left:1.2rem;line-height:1.7;}
+li::marker{color:var(--green);}
+.lead{color:var(--ink);font-weight:400;}
+.muted{color:var(--muted);font-size:0.85rem;}
+.card{background:var(--cream);padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:0.75rem;}
+label{display:flex;flex-direction:column;gap:.35rem;font-weight:400;color:var(--ink);}
+input,textarea,select{font:inherit;font-weight:300;padding:.7rem .8rem;border:1px solid var(--line);border-radius:2px;background:#fff;color:var(--body);}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media (max-width:520px){.row{grid-template-columns:1fr;}}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;}
+.btn{align-self:flex-start;display:inline-flex;align-items:center;min-height:44px;padding:0 1.75rem;border:0;border-radius:2px;background:var(--green);color:#fdf9f1;font-family:"DM Sans",system-ui,sans-serif;font-size:0.8rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;cursor:pointer;}
+.btn:hover{background:#3b4a21;color:#fdf9f1;}
+.btn[disabled]{opacity:.5;cursor:default;}
+#err{color:var(--clay);min-height:1.2em;}
+footer{margin-top:auto;padding-top:2rem;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75rem;font-size:0.8rem;color:var(--muted);}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="logo" href="/"><img src="/apis-logo.svg" alt="APIS Applied Pollination Institute of Science"></a>
+
+  <div id="form-state" class="state">
+    <img class="hero" src="/almond-orchard.jpg" alt="Almond orchard rows in full bloom">
+    <h1>2027 Almond Pollination Study</h1>
+    <p class="lead">APIS is looking for three almond growers to host an independent pollination study during 2027 bloom.</p>
+
+    <div class="card">
+      <h2>You get</h2>
+      <ul>
+        <li>$1,000 for participating</li>
+        <li>The trial product at no cost</li>
+        <li>Pollination data from your own blocks</li>
+      </ul>
+    </div>
+
+    <h2>What's involved</h2>
+    <ul>
+      <li>Three comparable blocks on your operation (similar variety, age and hive stocking)</li>
+      <li>Applying the trial product to those blocks during bloom, following the APIS trial protocol</li>
+      <li>Access for APIS to set up and check hive monitoring equipment</li>
+    </ul>
+    <p>APIS handles the trial design, monitoring and data collection. You run your operation as usual.</p>
+
+    <h2>Apply</h2>
+    <form id="f" class="state" novalidate>
+      <div class="row">
+        <label>Name<input name="name" autocomplete="name" required></label>
+        <label>Farm or business<input name="farm" autocomplete="organization"></label>
+      </div>
+      <div class="row">
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Phone<input name="phone" type="tel" autocomplete="tel" required></label>
+      </div>
+      <div class="row">
+        <label>County<input name="county"></label>
+        <label>Almond acres<input name="acres" inputmode="numeric"></label>
+      </div>
+      <div class="row">
+        <label>Comparable blocks you could offer
+          <select name="blocks"><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4 or more</option></select>
+        </label>
+        <label>Do you rent hives for bloom?
+          <select name="hives"><option value="">Select</option><option>Yes</option><option>No</option></select>
+        </label>
+      </div>
+      <label>How did you hear about this?
+        <select name="heard"><option value="">Select</option><option>LinkedIn</option><option>Email from APIS</option><option>Referral from my PCA or crop advisor</option><option>Referral from a colleague</option><option>Conference or event</option><option>Other</option></select>
+      </label>
+      <label>Anything else? <span class="muted">(optional)</span><textarea name="notes" rows="3" placeholder="Varieties, timing, questions"></textarea></label>
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button id="b" class="btn" type="submit">Apply to host</button>
+      <p class="muted">Spots are limited to three growers. I'll follow up by phone or email to talk through your blocks.</p>
+      <p id="err" role="alert"></p>
+    </form>
+  </div>
+
+  <div id="done-state" class="state" hidden>
+    <h1>Thank you for applying</h1>
+    <p>I've received your application and sent a confirmation to <span id="who"></span>. I'll reach out within a few business days to talk through your blocks.</p>
+    <p>Questions in the meantime? Email <a href="mailto:hello@apisinstitute.org?subject=2027%20almond%20pollination%20study">hello@apisinstitute.org</a>.</p>
+  </div>
+
+  <footer><span>&copy; 2026 Applied Pollination Institute of Science</span><a href="/">apisinstitute.org</a></footer>
+</main>
+<script>
+(function () {
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbwDwmbaD6Bun1yo6g6hV71ufKFw6F7P5TcFKRvpCPelZR368FiIwTGd2BO7vfnChIMuiA/exec';
+  var CONTACT = 'hello@apisinstitute.org';
+  var src = (new URLSearchParams(location.search).get('src') || 'website').slice(0, 40);
+  var f = document.getElementById('f'), b = document.getElementById('b'), err = document.getElementById('err');
+  function fail(msg) {
+    b.disabled = false; b.textContent = 'Apply to host';
+    err.textContent = msg || ('Something went wrong. Try again, or email ' + CONTACT + '.');
+  }
+  f.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var d = { trial: 'almond', src: src, website: f.website.value };
+    ['name','farm','email','phone','county','acres','blocks','hives','heard','notes'].forEach(function (k) {
+      d[k] = f[k].value.trim();
+    });
+    if (!d.name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email) || !d.phone) {
+      fail('Please enter your name, a valid email and a phone number.'); return;
+    }
+    b.disabled = true; b.textContent = 'Sending...'; err.textContent = '';
+    fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(d) })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (r && r.ok) {
+          document.getElementById('who').textContent = d.email;
+          document.getElementById('form-state').hidden = true;
+          document.getElementById('done-state').hidden = false;
+          window.scrollTo(0, 0);
+        } else { fail(r && r.msg); }
+      })
+      .catch(function () { fail(); });
+  });
+})();
+</script>
+</body>
+</html>
