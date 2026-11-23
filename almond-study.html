@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>2027 Almond Pollination Study | APIS</title>
-<meta name="description" content="APIS is looking for three almond growers to host a pollination study during 2027 bloom. Growers receive $1,000, the trial product at no cost, and pollination data from their own blocks.">
+<title>2027 California Almond Pollination Study | APIS</title>
+<meta name="description" content="APIS is looking for three California almond growers to host a pollination study during 2027 bloom. Growers receive $1,000, the trial product at no cost, and pollination data from their own blocks.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Lora:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -13,9 +13,14 @@
 [hidden]{display:none !important;}
 body{margin:0;background:var(--paper);color:var(--body);font-family:"DM Sans",system-ui,sans-serif;font-weight:300;}
 a{color:var(--clay);}a:hover{color:var(--clay-dark);}
-.wrap{max-width:640px;margin:0 auto;padding:4rem 1.5rem 3rem;display:flex;flex-direction:column;gap:1.25rem;min-height:100vh;}
+.wrap{max-width:1080px;margin:0 auto;padding:4rem 1.5rem 3rem;display:flex;flex-direction:column;gap:1.25rem;min-height:100vh;}
 .logo{display:block;width:150px;margin-bottom:1rem;}.logo img{display:block;width:100%;height:auto;}
 .hero{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;}
+.cols{display:flex;flex-direction:column;gap:2rem;}
+.col{display:flex;flex-direction:column;gap:1.25rem;}
+.jump{display:inline-flex;}
+@media (min-width:900px){.cols{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;}.side{position:sticky;top:1.5rem;}.jump{display:none !important;}.hero{aspect-ratio:16/9;}}
+#apply{scroll-margin-top:1rem;}
 .state{display:flex;flex-direction:column;gap:1.25rem;}
 h1{margin:0;font-family:"Lora",Georgia,serif;font-weight:400;font-size:clamp(1.8rem,5vw,2.4rem);line-height:1.15;color:var(--ink);text-wrap:balance;}
 h2{margin:0;font-family:"Lora",Georgia,serif;font-weight:400;font-size:1.2rem;color:var(--ink);}
@@ -41,10 +46,13 @@ footer{margin-top:auto;padding-top:2rem;border-top:1px solid var(--line);display
 <main class="wrap">
   <a class="logo" href="/"><img src="/apis-logo.svg" alt="APIS Applied Pollination Institute of Science"></a>
 
-  <div id="form-state" class="state">
+  <div id="form-state" class="cols">
+    <div class="col">
     <img class="hero" src="/almond-orchard.jpg" alt="Almond orchard rows in full bloom">
-    <h1>2027 Almond Pollination Study</h1>
-    <p class="lead">APIS is looking for three almond growers to host an independent pollination study during 2027 bloom.</p>
+    <h1>2027 California Almond Pollination Study</h1>
+    <p class="lead">APIS is looking for three California almond growers to host an independent pollination study during 2027 bloom.</p>
+    <p class="muted">Open to almond operations in California only.</p>
+    <a class="btn jump" href="#apply">Apply now</a>
 
     <div class="card">
       <h2>You get</h2>
@@ -59,9 +67,11 @@ footer{margin-top:auto;padding-top:2rem;border-top:1px solid var(--line);display
     <ul>
       <li>Three comparable blocks on your operation (similar variety, age and hive stocking)</li>
       <li>Applying the trial product to those blocks during bloom, following the APIS trial protocol</li>
-      <li>Access for APIS to set up and check hive monitoring equipment</li>
+      <li>Access for APIS to assess hive activity in your blocks during bloom</li>
     </ul>
     <p>APIS handles the trial design, monitoring and data collection. You run your operation as usual.</p>
+    </div>
+    <div class="col side" id="apply">
 
     <h2>Apply</h2>
     <form id="f" class="state" novalidate>
@@ -74,7 +84,7 @@ footer{margin-top:auto;padding-top:2rem;border-top:1px solid var(--line);display
         <label>Phone<input name="phone" type="tel" autocomplete="tel" required></label>
       </div>
       <div class="row">
-        <label>County<input name="county"></label>
+        <label>County, California<input name="county" placeholder="For example: Fresno"></label>
         <label>Almond acres<input name="acres" inputmode="numeric"></label>
       </div>
       <div class="row">
@@ -91,9 +101,10 @@ footer{margin-top:auto;padding-top:2rem;border-top:1px solid var(--line);display
       <label>Anything else? <span class="muted">(optional)</span><textarea name="notes" rows="3" placeholder="Varieties, timing, questions"></textarea></label>
       <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button id="b" class="btn" type="submit">Apply to host</button>
-      <p class="muted">Spots are limited to three growers. I'll follow up by phone or email to talk through your blocks.</p>
+      <p class="muted">Spots are limited to three California growers. I'll follow up by phone or email to talk through your blocks.</p>
       <p id="err" role="alert"></p>
     </form>
+    </div>
   </div>
 
   <div id="done-state" class="state" hidden>
