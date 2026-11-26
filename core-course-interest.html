@@ -603,5 +603,41 @@ document.addEventListener('DOMContentLoaded', async function() {
   window.addEventListener('load', function(){ setTimeout(tryFlowers, 300); });
 })();
 </script>
+<script>
+/* Black Friday banner: shows "starts tomorrow" before Nov 27, the code Nov 27 to Nov 30, then hides itself */
+(function() {
+  var START = new Date('2026-11-27T00:00:00-08:00');
+  var END = new Date('2026-12-01T00:00:00-08:00'); // code expires Mon Nov 30, 11:59 pm Pacific
+  function msg(now) {
+    if (now >= END) return '';
+    if (now < START) return 'Black Friday sale starts tomorrow: 15% off the course, Friday, Nov 27 through Monday, Nov 30.';
+    return 'Black Friday sale: 15% off through Monday, Nov 30. Use code <strong style="letter-spacing:0.06em">APISBF26</strong> at checkout ($1,275, was $1,500).';
+  }
+  function addBanner() {
+    var text = msg(new Date());
+    if (!text) return true;
+    if (!document.body || document.getElementById('apis-bf-banner')) return !!document.getElementById('apis-bf-banner');
+    if (!document.querySelector('main')) return false; // wait until the page has rendered
+    var b = document.createElement('div');
+    b.id = 'apis-bf-banner';
+    b.setAttribute('role', 'note');
+    b.innerHTML = text;
+    b.style.cssText = 'background:#8b3a1e;color:#fdf9f1;text-align:center;padding:0.7rem 1.25rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:0.9rem;line-height:1.45;position:relative;z-index:50;';
+    document.body.insertBefore(b, document.body.firstChild);
+    placeBackNav();
+    return true;
+  }
+  /* Keep the fixed "← APIS" link below the banner instead of on top of it */
+  function placeBackNav() {
+    var nav = document.getElementById('apis-back-nav'), b = document.getElementById('apis-bf-banner');
+    if (nav && b) nav.style.top = 'calc(' + b.offsetHeight + 'px + 1.2rem)';
+  }
+  window.addEventListener('resize', placeBackNav);
+  function tryBanner() { if (!addBanner()) setTimeout(tryBanner, 300); }
+  window.addEventListener('load', function(){ setTimeout(tryBanner, 200); });
+  setInterval(function(){ if (!document.getElementById('apis-bf-banner') && msg(new Date())) addBanner(); else placeBackNav(); }, 1000);
+})();
+</script>
+
 </body>
 </html>
